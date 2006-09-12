@@ -1,0 +1,24 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {authenticate = id; getFrob = id; getToken = id; }; 
+            CLASS = ObjectiveFlickrDemoDelegate; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                authMsg = id; 
+                authenticateButton = id; 
+                browserBox = id; 
+                frobMsg = id; 
+                getFrobButton = id; 
+                getTokenButton = id; 
+                photoList = id; 
+                progressIndicator = id; 
+                tokenMsg = id; 
+                webView = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
