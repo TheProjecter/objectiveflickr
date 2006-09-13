@@ -32,9 +32,9 @@
 #import <WebKit/WebKit.h>
 #import "ObjectiveFlickrDemoDelegate.h"
 
-// #error Please put your own Flickr API key here
+#error Please put your own Flickr API key here
 NSString *OFDemo_apikey=@"";
-// #error Please put your own Shared Secret here
+#error Please put your own Shared Secret here
 NSString *OFDemo_secret=@"";
 
 @implementation ObjectiveFlickrDemoDelegate
