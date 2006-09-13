@@ -11,6 +11,7 @@
 		6A52EE5E0AB727A100E8E996 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52EE5D0AB727A100E8E996 /* ObjectiveFlickr.m */; };
 		6A52EE620AB727B800E8E996 /* CocoaCryptoHashing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52EE610AB727B800E8E996 /* CocoaCryptoHashing.m */; };
 		6A52EE6F0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52EE6D0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.m */; };
+		6AC2635C0AB78FAE00787B6D /* libcrypto.0.9.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC2635B0AB78FAE00787B6D /* libcrypto.0.9.7.dylib */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -33,8 +34,9 @@
 		6A52EE610AB727B800E8E996 /* CocoaCryptoHashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CocoaCryptoHashing.m; path = CocoaCryptoHashing/CocoaCryptoHashing.m; sourceTree = "<group>"; };
 		6A52EE6D0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
 		6A52EE6E0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObjectiveFlickrDemoDelegate.h; sourceTree = "<group>"; };
+		6AC2635B0AB78FAE00787B6D /* libcrypto.0.9.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.0.9.7.dylib; path = /usr/lib/libcrypto.0.9.7.dylib; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* ObjectiveFlickrDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObjectiveFlickrDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* ObjectiveFlickrDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ObjectiveFlickrDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				6A52EE580AB7278900E8E996 /* WebKit.framework in Frameworks */,
+				6AC2635C0AB78FAE00787B6D /* libcrypto.0.9.7.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +86,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6AC2635B0AB78FAE00787B6D /* libcrypto.0.9.7.dylib */,
 				6A52EE570AB7278900E8E996 /* WebKit.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
