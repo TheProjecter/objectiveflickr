@@ -34,7 +34,7 @@
 
 // #error Please put your own Flickr API key here
 NSString *OFDemo_apikey=@"";
-// #erro Please put your own Shared Secret here
+// #error Please put your own Shared Secret here
 NSString *OFDemo_secret=@"";
 
 @implementation ObjectiveFlickrDemoDelegate
