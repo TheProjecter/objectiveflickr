@@ -44,7 +44,7 @@
 - (NSString*)authURL:(NSString*)permission withFrob:(NSString*)frob;
 - (NSString*)methodURL:(NSString*)method useToken:(BOOL)usetoken useAPIKey:(BOOL)usekey arguments:(NSDictionary*)arg;
 - (NSDictionary*)uploadPOSTDictionary:(NSString*)filename;
-// - (NSString*)uploadCallbackURL:(NSString*)photoId;
+- (NSString*)uploadCallbackURL:(NSString*)photoId;
 // - (NSString*)uploadCallbackWithPhotos:(NSArray*)photoIdArray;
 @end;
 
