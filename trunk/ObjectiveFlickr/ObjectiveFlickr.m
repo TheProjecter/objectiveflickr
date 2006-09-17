@@ -31,9 +31,11 @@
 #import "CocoaCryptoHashing.h"
 #import "ObjectiveFlickr.h"
 
-#define FR_RESTAPI_ENDPOINT @"http://api.flickr.com/services/rest/?"
-#define FR_AUTHAPI_ENDPOINT @"http://flickr.com/services/auth/?"
-#define FR_PHOTOURL_PREFIX  @"http://static.flickr.com/"
+#define FR_RESTAPI_ENDPOINT  @"http://api.flickr.com/services/rest/?"
+#define FR_AUTHAPI_ENDPOINT  @"http://flickr.com/services/auth/?"
+#define FR_PHOTOURL_PREFIX   @"http://static.flickr.com/"
+#define FR_UPLOADURL_ENDPONT @"http://api.flickr.com/services/upload/"
+#define FR_UPLOAD_CALLBACK   @"http://www.flickr.com/tools/uploader_edit.gne?ids="
 
 @implementation FlickrRESTURL
 - (FlickrRESTURL*)initWithAPIKey:(NSString*)key secret:(NSString*)sec
@@ -111,8 +113,9 @@
 }
 - (NSDictionary*)uploadPOSTDictionary:(NSString*)filename
 {
-	NSMutableDictionary *d;
+	NSMutableDictionary *d=[NSMutableDictionary dictionary];
 	
+	[d setObject:FR_UPLOADURL_ENDPONT forKey:@"url"];
 	[d setObject:[NSString stringWithString:api_key] forKey:@"api_key"];
 	[d setObject:[NSString stringWithString:auth_token] forKey:@"auth_token"];
 
@@ -124,14 +127,20 @@
 	
 	[d setObject:lastpart forKey:@"filename"];
 	
-	if ([extension isEqualToString:@".png"]) {
+	if ([extension isEqualToString:@"png"]) {
 		[d setObject:@"image/png" forKey:@"content-type"];
 	}
 	else {
 		[d setObject:@"image/jpeg" forKey:@"content-type"];
 	}
 	
+	// NSLog([d description]);
+	
 	return d;
+}
+- (NSString*)uploadCallbackURL:(NSString*)photoId
+{
+	return [NSString stringWithFormat:@"%@%@", FR_UPLOAD_CALLBACK, photoId];
 }
 @end
 
@@ -413,37 +422,37 @@ static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType
 	}
 	if (timer) {
 		[timer invalidate];
-		[timer release];
+		// [timer release];
 		timer=nil;
 	}
 }
 - (BOOL)upload:(NSString*)filename withURLRequest:(FlickrRESTURL*)req
 {
 	NSDictionary *dict = [req uploadPOSTDictionary:filename];
-	NSURL *url = [dict objectForKey:@"url"];
+	NSURL *url = [NSURL URLWithString:[dict objectForKey:@"url"]];
 
 	// create the HTTP POST body
 	CFHTTPMessageRef httpreq;
 	httpreq = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (CFURLRef)url, kCFHTTPVersion1_1);
 
-	NSString *separator=@"----------0xKhTmLbOuNdArY";
+	NSString *separator=@"---------------------------7d44e178b0434";
 	NSString *headerfield=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", separator];
 	CFHTTPMessageSetHeaderFieldValue(httpreq, CFSTR("Content-Type"), (CFStringRef)headerfield);
 
 	NSString *apikey_str = [NSString stringWithFormat:
-		@"%@\r\nContent-Disposition: form-data; name=\"api_key\"\r\n\r\n%@\r\n",
+		@"--%@\r\nContent-Disposition: form-data; name=\"api_key\"\r\n\r\n%@\r\n",
 		separator, [dict objectForKey:@"api_key"]];
 	
 	NSString *authtoken_str = [NSString stringWithFormat:
-		@"%@\r\nContent-Disposition: form-data; name=\"auth_token\"\r\n\r\n%@\r\n",
+		@"--%@\r\nContent-Disposition: form-data; name=\"auth_token\"\r\n\r\n%@\r\n",
 		separator, [dict objectForKey:@"auth_token"]];
 	
 	NSString *apisig_str = [NSString stringWithFormat:
-		@"%@\r\nContent-Disposition: form-data; name=\"api_sig\"\r\n\r\n%@\r\n",
+		@"--%@\r\nContent-Disposition: form-data; name=\"api_sig\"\r\n\r\n%@\r\n",
 		separator, [dict objectForKey:@"api_sig"]];
 		
 	NSString *filename_str = [NSString stringWithFormat:
-		@"%@\r\nContent-Disposition: form-data; name=\"photo\"\r\n filename=\"%@\"\r\nContent-Type: %@\r\n",
+		@"--%@\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"%@\"\r\nContent-Type: %@\r\n\r\n",
 		separator, [dict objectForKey:@"filename"], [dict objectForKey:@"content-type"]];
 
 	NSMutableData *postdata = [[NSMutableData alloc] initWithCapacity:60000];
@@ -453,13 +462,18 @@ static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType
 	[postdata appendData:[apisig_str dataUsingEncoding:NSUTF8StringEncoding]];
 	[postdata appendData:[filename_str dataUsingEncoding:NSUTF8StringEncoding]];
 
+	// NSLog([[[NSString alloc] initWithData:postdata encoding:NSUTF8StringEncoding] autorelease]);
+
 	NSDictionary *fileAtributes = [[NSFileManager defaultManager] fileAttributesAtPath:filename traverseLink:YES];
-	uploadSize = [[fileAtributes objectForKey:NSFileSize] longValue];
+	// uploadSize = [[fileAtributes objectForKey:NSFileSize] longValue];
 
 	[postdata appendData:[NSData dataWithContentsOfFile:filename]];
 
-	NSString *endmark = [NSString stringWithFormat: @"\r\n%@--", separator];
+	NSString *endmark = [NSString stringWithFormat: @"\r\n--%@--", separator];
 	[postdata appendData:[endmark dataUsingEncoding:NSUTF8StringEncoding]];
+
+	// NSLog(@"post data total length=%ld", [postdata length]);
+	uploadSize = [postdata length];
 	
 	CFHTTPMessageSetBody(httpreq, (CFDataRef)postdata); 
 
@@ -481,7 +495,7 @@ static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType
 
 	CFReadStreamOpen(stream);
 
-	timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
+	timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
 	return YES;
 }
 
@@ -503,6 +517,7 @@ static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType
 	else if (bytesRead)
 	{
 		[response appendBytes:(void *)buffer length:(unsigned)bytesRead];
+		// NSLog(@"got response! current response=%@", [[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding] autorelease]);
 	}
 }
 - (void)handleError
@@ -511,9 +526,32 @@ static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType
 }
 - (void)handleComplete
 {
-	#warning TO-DO: handle response id
-	NSString *rep = [[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding] autorelease];
-	[delegate flickrUploader:self didComplete:rep];
+	NSXMLDocument *x=[[NSXMLDocument alloc] initWithData:response options:0 error:nil];
+	[x autorelease];
+	if (x) {
+		NSXMLElement *r = [x rootElement];
+
+		NSXMLNode *stat =[r attributeForName:@"stat"];
+		// NSLog(@"stat attribute, name = %@, value =%@", [stat name], [stat stringValue]);
+		
+		if ([[stat stringValue] isEqualToString:@"ok"]) {
+			NSXMLNode *i = [r childAtIndex:0];
+			[delegate flickrUploader:self didComplete:[i stringValue]];
+		}
+		else {
+			NSXMLNode *e = [r childAtIndex:0];
+			NSXMLNode *code = [(NSXMLElement*)e attributeForName:@"code"];
+			NSXMLNode *msg = [(NSXMLElement*)e attributeForName:@"msg"];
+			// NSLog(@"error code=%@, msg=%@", [code stringValue], [msg stringValue]);
+
+			[delegate flickrUploader:self error:[[code stringValue] intValue] /* message:[msg stringValue] */];
+		}
+	}
+	else {
+		[delegate flickrUploader:self error:FRREError /* message:@"Malformed XML document" */];
+	}
+
+	stream = NULL;		// the stream is already released
 	[self reset];
 }
 

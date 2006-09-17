@@ -47,6 +47,8 @@ NSString *OFDemo_secret=@"";
 	furl = [[FlickrRESTURL alloc] initWithAPIKey:OFDemo_apikey secret:OFDemo_secret];
 	freq = [[FlickrRESTRequest alloc] initWithDelegate:self timeoutInterval:10.0];
 	
+	uploadFilename=nil;
+	
 	[photoList setDataSource:self];
 	[photoList setDelegate:self];
 	[webView setFrameLoadDelegate:self];
@@ -56,6 +58,7 @@ NSString *OFDemo_secret=@"";
 	if (frob) [frob release];
 	if (token) [token release];
 	if (photos) [photos release];
+	if (uploadFilename) [uploadFilename release];
 	[furl release];
 	[freq release];
 	[super dealloc];
@@ -72,7 +75,7 @@ NSString *OFDemo_secret=@"";
 	}
 	
 	[getTokenButton setEnabled:YES];
-	NSString *authurl=[furl authURL:@"read" withFrob:frob];
+	NSString *authurl=[furl authURL:@"write" withFrob:frob];
 	system([[NSString stringWithFormat:@"open '%@'", authurl] UTF8String]);
 	[authenticateButton setEnabled:NO];
 }
@@ -96,7 +99,9 @@ NSString *OFDemo_secret=@"";
 - (void)flickrRESTRequest:(FlickrRESTRequest*)request didReceiveData:(NSXMLDocument*)document state:(NSString*)state
 {
 	[progressIndicator stopAnimation:self];
-	NSLog(@"Data received! state=%@", [document description], state);
+	// NSLog(@"Data received! state=%@", [document description], state);
+	NSLog(@"Data received! state=%@", state);
+
 
 	if ([state isEqualToString:@"getFrob"]) {
 		if (frob) [frob release];
@@ -119,6 +124,8 @@ NSString *OFDemo_secret=@"";
 		[tokenMsg setStringValue:[NSString stringWithFormat:@"token obtained, logged in as %@", [token objectForKey:@"username"]]];
 		[authenticateButton setEnabled:NO];
 		[getTokenButton setEnabled:NO];
+		
+		[uploadButton setEnabled:YES];
 		
 		[browserBox setTitle:@"Getting my recent photos..."];
 		[progressIndicator startAnimation:self];
@@ -225,5 +232,55 @@ reauth:
 {
 	[progressIndicator stopAnimation:self];
 }
-@end
+
+- (IBAction)upload:(id)sender
+{
+	NSOpenPanel *op=[NSOpenPanel openPanel];
+	[op setAllowsMultipleSelection:FALSE];
+	if ([op runModalForDirectory:nil file:nil]==NSFileHandlingPanelOKButton) {
+		NSString *f=[[op filenames] objectAtIndex:0];
+
+		uploadFilename=[[f lastPathComponent] retain];
+
+		FlickrUploader *up = [[FlickrUploader alloc] initWithDelegate:self];
+		if ([up upload:f withURLRequest:furl]) {
+			[uploadMsg setStringValue:[NSString stringWithFormat:@"uploading %@", uploadFilename]];
+		}
+		else {
+			[uploadMsg setStringValue:[NSString stringWithFormat:@"cannot upload %@", uploadFilename]];
+		}
+	}
+}
+
+- (void)flickrUploader:(FlickrUploader*)uploader didComplete:(NSString*)response
+{
+	// NSLog(@"photo id = %@", response);
+	[uploadMsg setStringValue:@"browser opened to finish the upload process"];
+	
+	NSString *callback = [furl uploadCallbackURL:response];
+	system([[NSString stringWithFormat:@"open %@", callback] UTF8String]);
+	
+	[uploader release];
+	
+}
+- (void)flickrUploader:(FlickrUploader*)uploader error:(int)code
+{
+	[uploadMsg setStringValue:[NSString stringWithFormat:@"upload error, code=%d", code]];
+	[uploader release];
+}
+- (void)flickrUploader:(FlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength
+{
+	if (length != totalLength) {
+		[uploadMsg setStringValue:[NSString stringWithFormat:@"%ld bytes uploaded (of %ld bytes)", length, totalLength]];
+	}
+	else {
+		[uploadMsg setStringValue:@"upload complete, waiting Flickr response..."];
+	}
+}
+- (void)flickrUploaderDidCancel:(FlickrUploader*)uploader
+{
+	[uploadMsg setStringValue:@"upload canceled"];
+	[uploader release];
+}
+@end;
 

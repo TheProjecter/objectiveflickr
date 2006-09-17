@@ -2,7 +2,7 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
-            ACTIONS = {authenticate = id; getFrob = id; getToken = id; }; 
+            ACTIONS = {authenticate = id; getFrob = id; getToken = id; upload = id; }; 
             CLASS = ObjectiveFlickrDemoDelegate; 
             LANGUAGE = ObjC; 
             OUTLETS = {
@@ -15,6 +15,8 @@
                 photoList = id; 
                 progressIndicator = id; 
                 tokenMsg = id; 
+                uploadButton = id; 
+                uploadMsg = id; 
                 webView = id; 
             }; 
             SUPERCLASS = NSObject; 

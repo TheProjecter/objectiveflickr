@@ -32,7 +32,7 @@
 		6A52EE5D0AB727A100E8E996 /* ObjectiveFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickr.m; path = ObjectiveFlickr/ObjectiveFlickr.m; sourceTree = "<group>"; };
 		6A52EE600AB727B800E8E996 /* CocoaCryptoHashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CocoaCryptoHashing.h; path = CocoaCryptoHashing/CocoaCryptoHashing.h; sourceTree = "<group>"; };
 		6A52EE610AB727B800E8E996 /* CocoaCryptoHashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CocoaCryptoHashing.m; path = CocoaCryptoHashing/CocoaCryptoHashing.m; sourceTree = "<group>"; };
-		6A52EE6D0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
+		6A52EE6D0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
 		6A52EE6E0AB72CA900E8E996 /* ObjectiveFlickrDemoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObjectiveFlickrDemoDelegate.h; sourceTree = "<group>"; };
 		6AC2635B0AB78FAE00787B6D /* libcrypto.0.9.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.0.9.7.dylib; path = /usr/lib/libcrypto.0.9.7.dylib; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };

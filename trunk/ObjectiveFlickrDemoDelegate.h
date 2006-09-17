@@ -30,7 +30,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
 #import <Cocoa/Cocoa.h>
 #import "ObjectiveFlickr.h"
 
@@ -39,6 +38,8 @@
 	NSString *frob;
 	NSDictionary *token;
 	NSArray *photos;
+	
+	NSString *uploadFilename;
 	
 	FlickrRESTURL *furl;
 	FlickrRESTRequest *freq;
@@ -52,9 +53,12 @@
     IBOutlet id photoList;
     IBOutlet id progressIndicator;
     IBOutlet id tokenMsg;
+    IBOutlet id uploadButton;
+    IBOutlet id uploadMsg;
     IBOutlet id webView;
 }
 - (IBAction)authenticate:(id)sender;
 - (IBAction)getFrob:(id)sender;
 - (IBAction)getToken:(id)sender;
-@end
+- (IBAction)upload:(id)sender;
+@end;
