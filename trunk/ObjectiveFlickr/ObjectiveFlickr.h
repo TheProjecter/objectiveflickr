@@ -43,6 +43,9 @@
 - (NSString*)getFrobURL;
 - (NSString*)authURL:(NSString*)permission withFrob:(NSString*)frob;
 - (NSString*)methodURL:(NSString*)method useToken:(BOOL)usetoken useAPIKey:(BOOL)usekey arguments:(NSDictionary*)arg;
+- (NSDictionary*)uploadPOSTDictionary:(NSString*)filename;
+// - (NSString*)uploadCallbackURL:(NSString*)photoId;
+// - (NSString*)uploadCallbackWithPhotos:(NSArray*)photoIdArray;
 @end;
 
 
@@ -82,4 +85,31 @@ enum {
 	FRREError = -1,
 	FRRETimeout = -2
 };
+
+@interface FlickrUploader : NSObject
+{
+	id delegate;
+	size_t uploadSize;
+	CFReadStreamRef stream;
+	NSMutableData *response;
+	NSTimer *timer;
+}
+- (id)initWithDelegate:(id)deleg;
+- (BOOL)upload:(NSString*)filename withURLRequest:(FlickrRESTURL*)req;
+- (void)cancel;
+
+// internal functions
+- (void)reset;
+- (void)handleResponse;
+- (void)handleError;
+- (void)handleComplete;
+- (void)handleTimer:(NSTimer*)t;
+@end;
+
+@protocol FlickrUploaderDelegate
+- (void)flickrUploader:(FlickrUploader*)uploader didComplete:(NSString*)response;
+- (void)flickrUploader:(FlickrUploader*)uploader error:(int)code;
+- (void)flickrUploader:(FlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength;
+- (void)flickrUploaderDidCancel:(FlickrUploader*)uploader;
+@end;
 

@@ -109,6 +109,30 @@
 	
 	return call;
 }
+- (NSDictionary*)uploadPOSTDictionary:(NSString*)filename
+{
+	NSMutableDictionary *d;
+	
+	[d setObject:[NSString stringWithString:api_key] forKey:@"api_key"];
+	[d setObject:[NSString stringWithString:auth_token] forKey:@"auth_token"];
+
+	NSString *sig=[[NSString stringWithFormat:@"%@api_key%@auth_token%@", secret, api_key, auth_token] md5HexHash];
+	[d setObject:sig forKey:@"api_sig"];
+	
+	NSString *lastpart = [filename lastPathComponent];
+	NSString *extension = [filename pathExtension];
+	
+	[d setObject:lastpart forKey:@"filename"];
+	
+	if ([extension isEqualToString:@".png"]) {
+		[d setObject:@"image/png" forKey:@"content-type"];
+	}
+	else {
+		[d setObject:@"image/jpeg" forKey:@"content-type"];
+	}
+	
+	return d;
+}
 @end
 
 
@@ -336,3 +360,172 @@
 }
 
 @end
+
+
+static const CFOptionFlags FUClientNetworkEvents = 
+	kCFStreamEventOpenCompleted     |
+	kCFStreamEventHasBytesAvailable |
+	kCFStreamEventEndEncountered    |
+	kCFStreamEventErrorOccurred;
+	
+static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType type, void *callbackInfo)
+{
+	switch (type)
+	{
+	 case kCFStreamEventHasBytesAvailable:
+		  [(FlickrUploader*)callbackInfo handleResponse];
+		  break;			
+	 case kCFStreamEventEndEncountered:
+		  [(FlickrUploader*)callbackInfo handleComplete];
+		  break;
+	 case kCFStreamEventErrorOccurred:
+		  [(FlickrUploader*)callbackInfo handleError];
+		  break;
+	 }
+}
+
+
+@implementation FlickrUploader
+- (id)initWithDelegate:(id)deleg
+{
+	if ((self = [super init])) {
+		delegate = deleg;
+		uploadSize = 0;
+		stream = NULL;
+		response = nil;
+		timer = nil;
+	}
+	return self;
+}
+- (void)dealloc {
+	[self reset];
+	[super dealloc];
+}
+- (void)reset {
+	uploadSize = 0;
+	if (stream) {
+		CFRelease(stream);
+		stream = NULL;
+	}
+	if (response) {
+		[response release];
+		response=nil;
+	}
+	if (timer) {
+		[timer invalidate];
+		[timer release];
+		timer=nil;
+	}
+}
+- (BOOL)upload:(NSString*)filename withURLRequest:(FlickrRESTURL*)req
+{
+	NSDictionary *dict = [req uploadPOSTDictionary:filename];
+	NSURL *url = [dict objectForKey:@"url"];
+
+	// create the HTTP POST body
+	CFHTTPMessageRef httpreq;
+	httpreq = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (CFURLRef)url, kCFHTTPVersion1_1);
+
+	NSString *separator=@"----------0xKhTmLbOuNdArY";
+	NSString *headerfield=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", separator];
+	CFHTTPMessageSetHeaderFieldValue(httpreq, CFSTR("Content-Type"), (CFStringRef)headerfield);
+
+	NSString *apikey_str = [NSString stringWithFormat:
+		@"%@\r\nContent-Disposition: form-data; name=\"api_key\"\r\n\r\n%@\r\n",
+		separator, [dict objectForKey:@"api_key"]];
+	
+	NSString *authtoken_str = [NSString stringWithFormat:
+		@"%@\r\nContent-Disposition: form-data; name=\"auth_token\"\r\n\r\n%@\r\n",
+		separator, [dict objectForKey:@"auth_token"]];
+	
+	NSString *apisig_str = [NSString stringWithFormat:
+		@"%@\r\nContent-Disposition: form-data; name=\"api_sig\"\r\n\r\n%@\r\n",
+		separator, [dict objectForKey:@"api_sig"]];
+		
+	NSString *filename_str = [NSString stringWithFormat:
+		@"%@\r\nContent-Disposition: form-data; name=\"photo\"\r\n filename=\"%@\"\r\nContent-Type: %@\r\n",
+		separator, [dict objectForKey:@"filename"], [dict objectForKey:@"content-type"]];
+
+	NSMutableData *postdata = [[NSMutableData alloc] initWithCapacity:60000];
+
+	[postdata appendData:[apikey_str dataUsingEncoding:NSUTF8StringEncoding]];
+	[postdata appendData:[authtoken_str dataUsingEncoding:NSUTF8StringEncoding]];
+	[postdata appendData:[apisig_str dataUsingEncoding:NSUTF8StringEncoding]];
+	[postdata appendData:[filename_str dataUsingEncoding:NSUTF8StringEncoding]];
+
+	NSDictionary *fileAtributes = [[NSFileManager defaultManager] fileAttributesAtPath:filename traverseLink:YES];
+	uploadSize = [[fileAtributes objectForKey:NSFileSize] longValue];
+
+	[postdata appendData:[NSData dataWithContentsOfFile:filename]];
+
+	NSString *endmark = [NSString stringWithFormat: @"\r\n%@--", separator];
+	[postdata appendData:[endmark dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	CFHTTPMessageSetBody(httpreq, (CFDataRef)postdata); 
+
+	stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, httpreq);
+	CFRelease(httpreq);
+
+	CFStreamClientContext context = {0, self, NULL, NULL, NULL};
+
+	// Wir teilen CFNetwork jetzt mit, dass wir Callbacks erhalten möchten.
+	if (!CFReadStreamSetClient(stream, FUClientNetworkEvents, FUReadStreamClientCallBack, &context))
+	{
+		[self reset];
+		return NO;
+	}
+
+	CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
+
+	response = [[NSMutableData data] retain];
+
+	CFReadStreamOpen(stream);
+
+	timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
+	return YES;
+}
+
+- (void)cancel 
+{
+	CFReadStreamClose(stream);
+	[self reset];
+	[delegate flickrUploaderDidCancel:self];
+}
+- (void)handleResponse
+{
+	UInt8 buffer[2048];
+	CFIndex bytesRead = CFReadStreamRead(stream, buffer, sizeof(buffer));
+
+	if (bytesRead < 0)
+	{
+		  NSLog(@"Warning: Error (< 0b from CFReadStreamRead");
+	}
+	else if (bytesRead)
+	{
+		[response appendBytes:(void *)buffer length:(unsigned)bytesRead];
+	}
+}
+- (void)handleError
+{
+	[delegate flickrUploader:self error:FRREError];
+}
+- (void)handleComplete
+{
+	#warning TO-DO: handle response id
+	NSString *rep = [[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding] autorelease];
+	[delegate flickrUploader:self didComplete:rep];
+	[self reset];
+}
+
+- (void)handleTimer:(NSTimer*)t
+{
+	CFNumberRef bytesWrittenProperty = (CFNumberRef)CFReadStreamCopyProperty (stream, kCFStreamPropertyHTTPRequestBytesWrittenCount); 
+	int bytesWritten;
+	CFNumberGetValue (bytesWrittenProperty, 3, &bytesWritten);
+	long written = (long)bytesWritten;
+
+	[delegate flickrUploader:self progress:(size_t)written total:uploadSize];
+}
+
+@end;
+
