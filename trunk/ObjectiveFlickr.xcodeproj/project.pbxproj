@@ -52,28 +52,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */;
+			remoteGlobalIDString = 6AD7B2B20AC6B57C004644DE;
 			remoteInfo = ObjectiveFlickr;
 		};
 		6AA0A0400AC6C7A5003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6AD7B2E30AC6B778004644DE /* FlickrBasics */;
+			remoteGlobalIDString = 6AD7B2E30AC6B778004644DE;
 			remoteInfo = FlickrBasics;
 		};
 		6AA0A0420AC6C7A7003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6A31EAE60AC6BF2D0084DA74 /* ContactsBrowser */;
+			remoteGlobalIDString = 6A31EAE60AC6BF2D0084DA74;
 			remoteInfo = ContactsBrowser;
 		};
 		6AA0A0640AC6C7BA003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */;
+			remoteGlobalIDString = 6AD7B2B20AC6B57C004644DE;
 			remoteInfo = ObjectiveFlickr;
 		};
 		6AD7B2EA0AC6B783004644DE /* PBXContainerItemProxy */ = {
