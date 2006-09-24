@@ -13,7 +13,7 @@
 //    notice, this list of conditions and the following disclaimer in the
 //    documentation and/or other materials provided with the distribution.
 // 3. Neither the name of ObjectiveFlickr nor the names of its contributors
-//    may be used to endorse or promote products derived from this software
+//    may be used to endorse or promote products derived OFom this software
 //    without specific prior written permission.
 // 
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -28,88 +28,88 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
 #import <Cocoa/Cocoa.h>
 
-@interface FlickrRESTURL : NSObject
+@interface OFFlickrApplicationContext : NSObject
 {
-	NSString *api_key;
-	NSString *secret;
-	NSString *auth_token;
+	NSString *_APIKey;
+	NSString *_sharedSecret;
+	NSString *_authToken;
+	NSDictionary *_endPoints;
 }
-- (FlickrRESTURL*)initWithAPIKey:(NSString*)key secret:(NSString*)sec;
-- (void)dealloc;
-- (void)setToken:(NSString*)token;
-- (NSString*)getFrobURL;
-- (NSString*)authURL:(NSString*)permission withFrob:(NSString*)frob;
-- (NSString*)methodURL:(NSString*)method useToken:(BOOL)usetoken useAPIKey:(BOOL)usekey arguments:(NSDictionary*)arg;
-- (NSDictionary*)uploadPOSTDictionary:(NSString*)filename;
-- (NSString*)uploadCallbackURL:(NSString*)photoId;
-// - (NSString*)uploadCallbackWithPhotos:(NSArray*)photoIdArray;
-@end;
++ (OFFlickrApplicationContext*)contextWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
+- (OFFlickrApplicationContext*)initWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
+- (void)setAuthToken:(NSString*)token;
+- (NSString*)authToken;
+- (void)setEndPoints:(NSDictionary*)newEndPoints;
+- (NSDictionary*)endPoints;
+- (NSString*)RESTAPIEndPoint;
+- (NSString*)prepareRESTGETURL:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign;
+- (NSString*)prepareLoginURL:(NSString*)frob permission:(NSString*)perm;
+- (NSData*)prepareRESTPOSTData:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign;
+- (NSData*)prepareUploadData:(NSData*)data filename:(NSString*)filename information:(NSDictionary*)info;	 /* incl. title, description, tags, is_public, is_OFiend, is_family */
+- (NSString*)uploadURL;
+- (NSString*)uploadCallBackURLWithPhotos:(NSArray*)photo_ids;
+- (NSString*)uploadCallBackURLWithPhotoID:(NSString*)photo_id;
+- (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type;
+@end
 
-
-@interface FlickrRESTRequest : NSObject
+@interface OFFlickrRESTRequest : NSObject
 {
-	NSTimeInterval timeoutInterval;
-	id delegate;
-	
-	NSMutableData *rawdata;
-	NSURLConnection *connection;
-	size_t expectedLength;
-	NSTimer *timer;
-	NSString *state;
+	id _delegate;	
+	NSTimeInterval _timeoutInterval;
+
+	BOOL _closed;
+	NSURLConnection *_connection;
+	NSTimer *_timer;
+	id _userInfo;
+	size_t _expectedLength;
+	NSMutableData *_receivedData;
 }
-- (FlickrRESTRequest*)initWithDelegate:(id)deleg timeoutInterval:(NSTimeInterval)interval;
-- (void)dealloc;
++ (OFFlickrRESTRequest*)requestWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
+- (OFFlickrRESTRequest*)initWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
+- (BOOL)isClosed;
 - (void)reset;
-- (void)timeout:(NSTimer*)timer;
 - (void)cancel;
-- (BOOL)requestURL:(NSString*)url withState:(NSString*)st;
-+ (NSString*)extractToken:(NSXMLDocument*)doc;
-+ (NSDictionary*)extractTokenDictionary:(NSXMLDocument*)doc;
-+ (NSString*)extractFrob:(NSXMLDocument*)doc;
-+ (NSString*)photoSourceURLFromServerID:(NSString*)serverid photoID:(NSString*)pid secret:(NSString*)sec size:(NSString*)s type:(NSString*)t;
-+ (NSDictionary*)extractPhotos:(NSXMLDocument*)doc;
-@end;
+- (BOOL)GETRequest:(NSString*)url userInfo:(id)info;
+- (BOOL)POSTRequest:(NSString*)url data:(NSData*)data userInfo:(id)info;
+@end
 
-@protocol FlickrRESTRequestDelegate
-- (void)flickrRESTRequestDidCancel:(FlickrRESTRequest*)request state:(NSString*)state;
-- (void)flickrRESTRequest:(FlickrRESTRequest*)request didReceiveData:(NSXMLDocument*)document state:(NSString*)state;
-- (void)flickrRESTRequest:(FlickrRESTRequest*)request error:(int)errorCode message:(NSString*)msg state:(NSString*)state;
-- (void)flickrRESTRequest:(FlickrRESTRequest*)request progress:(size_t)length total:(size_t)expectedLength state:(NSString*)state;
-@end;
+#define OFRequestDefaultTimeoutInterval  10.0			// 10 seconds
 
 enum {
-	// FRRE = FlickrRESTRequest Error
-	FRREError = -1,
-	FRRETimeout = -2
+	OFRequestConnectionError = -1,
+	OFRequestConnectionTimeout = -2,
+	OFRequestMalformedXMLDocument = -3
 };
 
-@interface FlickrUploader : NSObject
+@interface NSObject(OFFlickrRESTReqestDelegate)
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didCancel:(id)userinfo;
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didFetchData:(NSXMLDocument*)xmldoc userInfo:(id)userinfo;
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errorCode errorInfo:(id)errinfo userInfo:(id)userinfo;
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo;
+@end;
+
+@interface OFFlickrUploader : NSObject
 {
-	id delegate;
-	size_t uploadSize;
-	CFReadStreamRef stream;
-	NSMutableData *response;
-	NSTimer *timer;
+	id _delegate;
+	
+	id _userInfo;
+	size_t _uploadSize;
+	CFReadStreamRef _stream;
+	NSMutableData *_response;
+	NSTimer *_timer;
 }
-- (id)initWithDelegate:(id)deleg;
-- (BOOL)upload:(NSString*)filename withURLRequest:(FlickrRESTURL*)req;
+- (id)initWithDelegate:(id)aDelegate;
+- (BOOL)upload:(NSData*)data filename:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo;
+- (BOOL)uploadWithContentsOfFile:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo;
+- (BOOL)isClosed;
 - (void)cancel;
+@end
 
-// internal functions
-- (void)reset;
-- (void)handleResponse;
-- (void)handleError;
-- (void)handleComplete;
-- (void)handleTimer:(NSTimer*)t;
-@end;
-
-@protocol FlickrUploaderDelegate
-- (void)flickrUploader:(FlickrUploader*)uploader didComplete:(NSString*)response;
-- (void)flickrUploader:(FlickrUploader*)uploader error:(int)code;
-- (void)flickrUploader:(FlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength;
-- (void)flickrUploaderDidCancel:(FlickrUploader*)uploader;
-@end;
-
+@interface NSObject(OFFlickrUploaderDelegate)
+- (void)flickrUploader:(OFFlickrUploader*)uploader didComplete:(NSXMLDocument*)response userInfo:(id)userinfo;
+- (void)flickrUploader:(OFFlickrUploader*)uploader error:(int)code errorInfo:(id)errinfo userInfo:(id)userinfo;
+- (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength userInfo:(id)userinfo;
+- (void)flickrUploader:(OFFlickrUploader*)uploader didCancel:(id)userinfo;
+@end

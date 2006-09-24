@@ -38,11 +38,11 @@
 	NSString *frob;
 	NSDictionary *token;
 	NSArray *photos;
-	
+
 	NSString *uploadFilename;
-	
-	FlickrRESTURL *furl;
-	FlickrRESTRequest *freq;
+
+	OFFlickrApplicationContext *appContext;
+	OFFlickrRESTRequest *request;
 
     IBOutlet id authenticateButton;	
     IBOutlet id authMsg;
