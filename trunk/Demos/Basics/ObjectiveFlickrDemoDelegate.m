@@ -31,16 +31,22 @@
 
 #import <WebKit/WebKit.h>
 #import "ObjectiveFlickrDemoDelegate.h"
+#import "OFDemoAPIKey.h"
 
-// #error Please put your own Flickr API key here
-NSString *OFDemo_apikey=@"bf67a649fffb210651334a09b92df02e";
-// #error Please put your own Shared Secret here
-NSString *OFDemo_secret=@"1f98d3b085285783";
+#ifndef OFDemoAPIKey
+	#error Please define your OFDemoAPIKey in DemoAPIKey.h. This file will be ignored by svn in subsequent commits.
+	#define OFDemoAPIKey @""
+#endif
+
+#ifndef OFDemoSharedSecret
+	#error Please define your OFDemoSharedSecret in DemoAPIKey.h. This file will be ignored by svn in subsequent commits.
+	#define OFDemoSharedSecret @""
+#endif
 
 @implementation ObjectiveFlickrDemoDelegate
 - (void)awakeFromNib 
 {	
-	appContext = [[OFFlickrApplicationContext alloc] initWithAPIKey:OFDemo_apikey sharedSecret:OFDemo_secret];
+	appContext = [[OFFlickrApplicationContext alloc] initWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret];
 	request = [[OFFlickrRESTRequest alloc] initWithDelegate:self timeoutInterval:OFRequestDefaultTimeoutInterval];
 	
 	frob = nil;
