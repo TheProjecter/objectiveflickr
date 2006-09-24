@@ -1,7 +1,7 @@
 /* ContactsBrowserDelegate */
 
 #import <Cocoa/Cocoa.h>
-#import "ObjectiveFlickr.h"
+#import <ObjectiveFlickr/ObjectiveFlickr.h>
 
 @interface ContactsBrowserDelegate : NSObject
 {

@@ -31,7 +31,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #import <Cocoa/Cocoa.h>
-#import "ObjectiveFlickr.h"
+#import <ObjectiveFlickr/ObjectiveFlickr.h>
 
 @interface ObjectiveFlickrDemoDelegate : NSObject
 {
