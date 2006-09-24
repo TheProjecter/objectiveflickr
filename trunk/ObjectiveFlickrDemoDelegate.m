@@ -32,10 +32,10 @@
 #import <WebKit/WebKit.h>
 #import "ObjectiveFlickrDemoDelegate.h"
 
-// #error Please put your own Flickr API key here
-NSString *OFDemo_apikey=@"bf67a649fffb210651334a09b92df02e";
-// #error Please put your own Shared Secret here
-NSString *OFDemo_secret=@"1f98d3b085285783";
+#error Please put your own Flickr API key here
+NSString *OFDemo_apikey=@"";
+#error Please put your own Shared Secret here
+NSString *OFDemo_secret=@"";
 
 @implementation ObjectiveFlickrDemoDelegate
 - (void)awakeFromNib 
