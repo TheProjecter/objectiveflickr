@@ -31,539 +31,569 @@
 #import "CocoaCryptoHashing.h"
 #import "ObjectiveFlickr.h"
 
-#define FR_RESTAPI_ENDPOINT  @"http://api.flickr.com/services/rest/?"
-#define FR_AUTHAPI_ENDPOINT  @"http://flickr.com/services/auth/?"
-#define FR_PHOTOURL_PREFIX   @"http://static.flickr.com/"
-#define FR_UPLOADURL_ENDPONT @"http://api.flickr.com/services/upload/"
-#define FR_UPLOAD_CALLBACK   @"http://www.flickr.com/tools/uploader_edit.gne?ids="
+#define OFRESTAPIEndPointKey			@"api_endpoint"
+#define OFAuthenticationEndPointKey		@"auth_endpoint"
+#define OFPhotoURLPrefixKey				@"photo_url_prefix"
+#define OFUploadEndPointKey				@"upload_endpoint"
+#define OFUploadCallBackEndPointKey		@"upload_callback_endpoint"
 
-@implementation FlickrRESTURL
-- (FlickrRESTURL*)initWithAPIKey:(NSString*)key secret:(NSString*)sec
+#define OFDefaultRESTAPIEndPoint			@"http://api.flickr.com/services/rest/"				/* key "api_endpoint" */
+#define OFDefaultAuthenticationEndPoint		@"http://flickr.com/services/auth/"					/* key "auth_endpoint" */
+#define OFDefaultPhotoURLPrefix				@"http://static.flickr.com/"						/* key "photo_url_prefix" */
+#define OFDefaultUploadEndPoint				@"http://api.flickr.com/services/upload/"			/* key "upload_endpoint" */
+#define OFDefaultUploadCallBackEndPoint		@"http://www.flickr.com/tools/uploader_edit.gne"	/* key "upload_callback_endpoint" */
+
+#define OFSharedSeparator	@"---------------------------7d44e178b0434"
+
+@implementation OFFlickrApplicationContext
++ (OFFlickrApplicationContext*)contextWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret
+{
+	return [[[OFFlickrApplicationContext alloc] initWithAPIKey:key sharedSecret:secret] autorelease];
+}
+- (OFFlickrApplicationContext*)initWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret
 {
 	if ((self = [super init])) {
-		api_key=[[NSString alloc] initWithString:key];
-		secret=[[NSString alloc] initWithString:sec];
-		auth_token=[[NSString alloc] init];
-	}
-	return self;
-}
-- (void)dealloc
-{
-	[api_key release];
-	[secret release];
-	[auth_token release];
-	[super dealloc];
-}
-- (void)setToken:(NSString*)token 
-{
-	[auth_token release];
-	auth_token=[[NSString alloc] initWithString:token];
-}
-- (NSString*)getFrobURL
-{
-	NSString *sig=[[NSString stringWithFormat:@"%@api_key%@method%@", 
-		secret, api_key, @"flickr.auth.getFrob"] md5HexHash];
-
-	return [NSString stringWithFormat:
-		@"%@method=flickr.auth.getFrob&api_key=%@&api_sig=%@",
-		FR_RESTAPI_ENDPOINT, api_key, sig];
-}
-- (NSString*)authURL:(NSString*)permission withFrob:(NSString*)frob
-{
-	NSString *sig=[[NSString stringWithFormat:@"%@api_key%@frob%@perms%@",
-		secret, api_key, frob, permission] md5HexHash];
-	return [NSString stringWithFormat:
-		@"%@api_key=%@&perms=%@&frob=%@&api_sig=%@",
-		FR_AUTHAPI_ENDPOINT, api_key, permission, frob, sig];
-}
-
-- (NSString*)methodURL:(NSString*)method useToken:(BOOL)usetoken useAPIKey:(BOOL)usekey arguments:(NSDictionary*)arg
-{
-	NSMutableDictionary *param=[NSMutableDictionary dictionaryWithDictionary:arg];
-	[param setObject:method forKey:@"method"];
+		_APIKey = [[NSString alloc] initWithString:key];
+		_sharedSecret = [[NSString alloc] initWithString:secret];
+		_authToken = [[NSString alloc] init];
 	
-	if (usekey) [param setObject:api_key forKey:@"api_key"];
-	if (usetoken) [param setObject:auth_token forKey:@"auth_token"];
-	
-	NSMutableString *call=[NSMutableString stringWithString:FR_RESTAPI_ENDPOINT];
-	
-	NSMutableString *sigstr=[NSMutableString stringWithString:secret];
-	NSArray *sortedkeys=[[param allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-
-	int c=[sortedkeys count];
-	int i;
-	for (i=0; i<c; i++) {
-		NSString *k=[sortedkeys objectAtIndex:i];
-		NSString *v=[param objectForKey:k];
-		if (i) [call appendString:@"&"];
-		[call appendString:k];
-		[call appendString:@"="];
-		[call appendString:[param objectForKey:k]];
-		
-		[sigstr appendString:k];
-		[sigstr appendString:v];
-	}
-	
-	if (1) {
-		[call appendString:@"&api_sig="];
-		[call appendString:[sigstr md5HexHash]];
-	}
-	
-	return call;
-}
-- (NSDictionary*)uploadPOSTDictionary:(NSString*)filename
-{
-	NSMutableDictionary *d=[NSMutableDictionary dictionary];
-	
-	[d setObject:FR_UPLOADURL_ENDPONT forKey:@"url"];
-	[d setObject:[NSString stringWithString:api_key] forKey:@"api_key"];
-	[d setObject:[NSString stringWithString:auth_token] forKey:@"auth_token"];
-
-	NSString *sig=[[NSString stringWithFormat:@"%@api_key%@auth_token%@", secret, api_key, auth_token] md5HexHash];
-	[d setObject:sig forKey:@"api_sig"];
-	
-	NSString *lastpart = [filename lastPathComponent];
-	NSString *extension = [filename pathExtension];
-	
-	[d setObject:lastpart forKey:@"filename"];
-	
-	if ([extension isEqualToString:@"png"]) {
-		[d setObject:@"image/png" forKey:@"content-type"];
-	}
-	else {
-		[d setObject:@"image/jpeg" forKey:@"content-type"];
-	}
-	
-	// NSLog([d description]);
-	
-	return d;
-}
-- (NSString*)uploadCallbackURL:(NSString*)photoId
-{
-	return [NSString stringWithFormat:@"%@%@", FR_UPLOAD_CALLBACK, photoId];
-}
-@end
-
-
-@implementation FlickrRESTRequest
-- (FlickrRESTRequest*)initWithDelegate:(id)deleg timeoutInterval:(NSTimeInterval)interval
-{
-	if ((self = [super init])) {
-		delegate=deleg;
-		timeoutInterval = interval;
-		
-		rawdata = nil;
-		connection = nil;
-		state = nil;
-		expectedLength = 0;
-	}
-	return self;
-}
-
-- (void)dealloc
-{
-	if (rawdata) [rawdata release];
-	if (connection) [connection release];
-	if (state) [state release];
-	[super dealloc];
-}
-- (void)reset
-{
-	// NSLog(@"flickr request reset");
-	if (rawdata) {
-		[rawdata release];
-		rawdata = nil;
-	}
-	if (connection) {
-		[connection cancel];
-		[connection release];
-		connection = nil;
-	}
-	if (timer) {
-		[timer invalidate];
-		timer = nil;
-	}
-	if (state) {
-		[state release];
-		state = nil;
-	}
-	expectedLength = 0;
-}
-- (void)cancel
-{
-	// NSLog(@"flickr request canceled");
-	[connection cancel];
-	if ([delegate respondsToSelector:@selector(flickrRESTRequestDidCancel:state:)]) {
-		[delegate flickrRESTRequestDidCancel:self state:state];
-	}
-	[self reset];
-}
-- (BOOL)requestURL:(NSString*)url withState:(NSString*)st {
-	NSLog(@"flickr requesting URL %@", url);
-	[self reset];
-
-	state = [[NSString alloc] initWithString:st];
-	rawdata=[[NSMutableData data] retain];
-
-	NSURLRequest *req=[NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:timeoutInterval];
-	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
-	if (!connection) {
-		// NSLog(@"cannot establish connection");
-		[self reset];
-		return NO;
-	}
-	
-	timer=[NSTimer scheduledTimerWithTimeInterval:timeoutInterval target:self selector:@selector(timeout:) userInfo:nil repeats:NO];
-
-	return YES;
-}
-- (void)timeout:(NSTimer*)timer 
-{
-	// NSLog(@"flickr request timeout");
-	if ([delegate respondsToSelector:@selector(flickrRESTRequest:error:message:state:)]) {
-		[delegate flickrRESTRequest:self error:FRRETimeout message:@"Request timeout" state:state];
-	}
-	[self reset];
-}
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-	// if we encounter a redirect response, we set data pointer to zero
-    [rawdata setLength:0];
-	expectedLength = (size_t)[response expectedContentLength];
-	// NSLog(@"flickr request received response");
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)d
-{
-    // append the new data to the receivedData
-    [rawdata appendData:d];
-	// NSLog(@"flickr request received data, length=%d, now total=%d", [d length], [rawdata length]);
-	
-	if ([delegate respondsToSelector:@selector(flickrRESTRequest:progress:total:state:)]) {
-		[delegate flickrRESTRequest:self progress:[rawdata length] total:expectedLength state:state];
-	}
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)conn
-{
-    // do something with the data
-    // NSLog(@"Succeeded! Received %d bytes of data",[rawdata length]);
-
-	// close connection
-	if (connection) {
-		[connection release];
-		connection = nil;
-	}
-	if (timer) {
-		[timer invalidate];
-		timer = nil;
-	}
-
-	NSXMLDocument *x=[[NSXMLDocument alloc] initWithData:rawdata options:0 error:nil];
-	[x autorelease];
-	if (x) {
-		NSXMLElement *r = [x rootElement];
-
-		NSXMLNode *stat =[r attributeForName:@"stat"];
-		// NSLog(@"stat attribute, name = %@, value =%@", [stat name], [stat stringValue]);
-		
-		if ([[stat stringValue] isEqualToString:@"ok"]) {
-			if ([delegate respondsToSelector:@selector(flickrRESTRequest:didReceiveData:state:)]) {
-				[delegate flickrRESTRequest:self didReceiveData:x state:state];
-			}
-		}
-		else {
-			NSXMLNode *e = [r childAtIndex:0];
-			NSXMLNode *code = [(NSXMLElement*)e attributeForName:@"code"];
-			NSXMLNode *msg = [(NSXMLElement*)e attributeForName:@"msg"];
-			// NSLog(@"error code=%@, msg=%@", [code stringValue], [msg stringValue]);
-
-			if ([delegate respondsToSelector:@selector(flickrRESTRequest:error:message:state:)]) {
-				[delegate flickrRESTRequest:self error:[[code stringValue] intValue] message:[msg stringValue] state:state];
-			}
-		}
-	}
-	else {
-		if ([delegate respondsToSelector:@selector(flickrRESTRequest:error:message:state:)]) {
-			[delegate flickrRESTRequest:self error:FRREError message:@"Malformed XML document" state:state];
-		}	
-	}
-
-	// we can't do this at this stage, otherwise it'll be miserable
-	// [self reset];
-}
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	if ([delegate respondsToSelector:@selector(flickrRESTRequest:error:message:state:)]) {
-		[delegate flickrRESTRequest:self error:FRREError message:@"Connection failed" state:state];
-	}
-	[self reset];
-}
-+ (NSString*)extractToken:(NSXMLDocument*)doc
-{
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/auth/token" error:nil] objectAtIndex:0];
-	return [NSString stringWithString:[e stringValue]];
-}
-+ (NSDictionary*)extractTokenDictionary:(NSXMLDocument*)doc
-{
-	NSMutableDictionary *d=[NSMutableDictionary dictionary];
-
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/auth/token" error:nil] objectAtIndex:0];
-	[d setObject:[e stringValue] forKey:@"token"];
-	e = [[doc nodesForXPath:@"/rsp/auth/perms" error:nil] objectAtIndex:0];
-	[d setObject:[e stringValue] forKey:@"perms"];
-	e = [[doc nodesForXPath:@"/rsp/auth/user" error:nil] objectAtIndex:0];
-	[d setObject:[[e attributeForName:@"nsid"] stringValue] forKey:@"nsid"];
-	[d setObject:[[e attributeForName:@"username"] stringValue] forKey:@"username"];
-	[d setObject:[[e attributeForName:@"fullname"] stringValue] forKey:@"fullname"];
-
-	return d;
-}
-+ (NSString*)extractFrob:(NSXMLDocument*)doc
-{
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/frob" error:nil] objectAtIndex:0];
-	return [NSString stringWithString:[e stringValue]];
-}
-+ (NSString*)photoSourceURLFromServerID:(NSString*)serverid photoID:(NSString*)pid secret:(NSString*)sec size:(NSString*)s type:(NSString*)t
-{
-	NSMutableString *r=[NSMutableString stringWithFormat:@"%@%@/%@_%@", FR_PHOTOURL_PREFIX, serverid, pid, sec];
-	
-	if (s) {
-		if ([s length]) {
-			[r appendString:@"_"];
-			[r appendString:s];
-		}
-	}
-	
-	[r appendString:@"."];
-	if (t) [r appendString:t]; else [r appendString:@"jpg"];
-	return r;
-}
-+ (NSDictionary*)extractPhotos:(NSXMLDocument*)doc
-{
-	NSMutableDictionary *d=[NSMutableDictionary dictionary];
-
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/photos" error:nil] objectAtIndex:0];
-	[d setObject:[[e attributeForName:@"page"] stringValue] forKey:@"page"];
-	[d setObject:[[e attributeForName:@"pages"] stringValue] forKey:@"pages"];
-	[d setObject:[[e attributeForName:@"perpage"] stringValue] forKey:@"perpage"];
-	[d setObject:[[e attributeForName:@"total"] stringValue] forKey:@"total"];
-	
-	NSMutableArray *a=[NSMutableArray array];
-	size_t i, c=[e childCount];
-	for (i=0; i<c; i++) {
-		NSXMLElement *f = (NSXMLElement*)[e childAtIndex:i];
-		
-		NSMutableDictionary *p=[NSMutableDictionary dictionary];
-		[p setObject:[[f attributeForName:@"id"] stringValue] forKey:@"id"];
-		[p setObject:[[f attributeForName:@"owner"] stringValue] forKey:@"owner"];
-		[p setObject:[[f attributeForName:@"secret"] stringValue] forKey:@"secret"];
-		[p setObject:[[f attributeForName:@"server"] stringValue] forKey:@"server"];
-		[p setObject:[[f attributeForName:@"title"] stringValue] forKey:@"title"];
-		[p setObject:[[f attributeForName:@"ispublic"] stringValue] forKey:@"ispublic"];
-		[p setObject:[[f attributeForName:@"isfriend"] stringValue] forKey:@"isfriend"];
-		[p setObject:[[f attributeForName:@"isfamily"] stringValue] forKey:@"isfamily"];
-		[a addObject:p];
-	}
-
-	[d setObject:a forKey:@"photos"];
-	return d;
-}
-
-@end
-
-
-static const CFOptionFlags FUClientNetworkEvents = 
-	kCFStreamEventOpenCompleted     |
-	kCFStreamEventHasBytesAvailable |
-	kCFStreamEventEndEncountered    |
-	kCFStreamEventErrorOccurred;
-	
-static void FUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType type, void *callbackInfo)
-{
-	switch (type)
-	{
-	 case kCFStreamEventHasBytesAvailable:
-		  [(FlickrUploader*)callbackInfo handleResponse];
-		  break;			
-	 case kCFStreamEventEndEncountered:
-		  [(FlickrUploader*)callbackInfo handleComplete];
-		  break;
-	 case kCFStreamEventErrorOccurred:
-		  [(FlickrUploader*)callbackInfo handleError];
-		  break;
-	 }
-}
-
-
-@implementation FlickrUploader
-- (id)initWithDelegate:(id)deleg
-{
-	if ((self = [super init])) {
-		delegate = deleg;
-		uploadSize = 0;
-		stream = NULL;
-		response = nil;
-		timer = nil;
+		// populate the default end points
+		NSMutableDictionary *ma = [[NSMutableDictionary alloc] init];
+		[ma setObject:OFDefaultRESTAPIEndPoint forKey:OFRESTAPIEndPointKey];
+		[ma setObject:OFDefaultAuthenticationEndPoint forKey:OFAuthenticationEndPointKey];
+		[ma setObject:OFDefaultPhotoURLPrefix forKey:OFPhotoURLPrefixKey];
+		[ma setObject:OFDefaultUploadEndPoint forKey:OFUploadEndPointKey];
+		[ma setObject:OFDefaultUploadCallBackEndPoint forKey:OFUploadCallBackEndPointKey];
+		_endPoints = ma;
 	}
 	return self;
 }
 - (void)dealloc {
-	[self reset];
+	if (_APIKey) [_APIKey release];
+	if (_sharedSecret) [_sharedSecret release];
+	if (_authToken) [_authToken release];
+	if (_endPoints) [_endPoints release];
 	[super dealloc];
 }
+- (NSString*)description {
+	return [NSString stringWithFormat:@"api_key=\"%@\", shared_secret=\"%@\", auth_token=\"%@\", end_points=%@",
+		_APIKey, _sharedSecret, _authToken, _endPoints];
+}
+- (void)setAuthToken:(NSString*)token {
+	if (_authToken) [_authToken release];
+	_authToken = [[NSString alloc] initWithString:token];
+}
+- (NSString*)authToken {
+	return [NSString stringWithString:_authToken];
+}
+- (void)setEndPoints:(NSDictionary*)newEndPoints {
+	if (_endPoints) [_endPoints release];
+	_endPoints = [[NSDictionary dictionaryWithDictionary:newEndPoints] autorelease];
+}
+- (NSDictionary*)endPoints {
+	return [NSDictionary dictionaryWithDictionary:_endPoints];
+}
+- (NSString*)RESTAPIEndPoint {
+	return [NSString stringWithString:[_endPoints objectForKey:OFRESTAPIEndPointKey]];
+}
+- (NSString*)signatureForCall:(NSDictionary*)parameters {
+	NSMutableString *sigstr=[NSMutableString stringWithString:_sharedSecret];
+	NSArray *sortedkeys=[[parameters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+
+	unsigned i, c=[sortedkeys count];
+	for (i=0; i<c; i++) {
+		NSString *k=[sortedkeys objectAtIndex:i];
+		NSString *v=[parameters objectForKey:k];
+		[sigstr appendString:k];
+		[sigstr appendString:v];
+	}
+	
+	NSLog(@"signature string %@, md5=%@", sigstr, [sigstr md5HexHash]);
+	return [sigstr md5HexHash];
+}
+- (NSString*)prepareRESTGETURL:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign
+{
+	NSMutableString *urlstr=[NSMutableString stringWithFormat:@"%@?", [_endPoints objectForKey:OFRESTAPIEndPointKey]];
+	NSMutableDictionary *newparam=[NSMutableDictionary dictionaryWithDictionary:parameters];
+
+	[newparam setObject:_APIKey forKey:@"api_key"];
+	if (auth) [newparam setObject:_authToken forKey:@"auth_token"];
+
+	NSArray *keys=[newparam allKeys];
+	unsigned i, c=[keys count];
+ 	
+	for (i=0; i<c; i++) {
+		NSString *k=[keys objectAtIndex:i];
+		NSString *v=[newparam objectForKey:k];
+		[urlstr appendString:[NSString stringWithFormat:((i == c-1) ? @"%@=%@" : @"%@=%@&"), k, v]];
+	}
+
+	if (sign) {
+		NSString *apisig=[self signatureForCall:newparam];
+		[urlstr appendString:[NSString stringWithFormat:@"&api_sig=%@", apisig]];
+	}
+	
+	return urlstr;
+}
+- (NSString*)prepareLoginURL:(NSString*)frob permission:(NSString*)perm
+{
+	NSDictionary *authdict=[NSDictionary dictionaryWithObjectsAndKeys:
+		_APIKey, @"api_key",
+		perm, @"perms",
+		frob, @"frob", nil];
+		
+	return [NSString stringWithFormat:@"%@?api_key=%@&perms=%@&frob=%@&api_sig=%@",
+		[_endPoints objectForKey:OFAuthenticationEndPointKey], _APIKey, perm, frob, [self signatureForCall:authdict]];
+}
+- (NSMutableData*)internalPreparePOSTData:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign endMark:(BOOL)endmark
+{
+	NSMutableData *data=[NSMutableData data];
+	NSMutableDictionary *newparam=[NSMutableDictionary dictionaryWithDictionary:parameters];
+
+	[newparam setObject:_APIKey forKey:@"api_key"];
+	if (auth) [newparam setObject:_authToken forKey:@"auth_token"];
+
+	if (sign) {
+		NSString *apisig=[self signatureForCall:newparam];
+		[newparam setObject:apisig forKey:@"api_sig"];
+	}
+
+	NSArray *keys=[newparam allKeys];
+	unsigned i, c=[keys count];
+ 	
+	for (i=0; i<c; i++) {
+		NSString *k=[keys objectAtIndex:i];
+		NSString *v=[newparam objectForKey:k];
+		
+		NSString *addstr = [NSString stringWithFormat:
+			@"--%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n",
+			OFSharedSeparator, k, v];
+
+		[data appendData:[addstr dataUsingEncoding:NSUTF8StringEncoding]];
+	}
+	
+	if (endmark) {
+		NSString *ending = [NSString stringWithFormat: @"--%@--", OFSharedSeparator];
+		[data appendData:[ending dataUsingEncoding:NSUTF8StringEncoding]];	
+	}
+	
+	return data;
+}
+- (NSData*)prepareRESTPOSTData:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign
+{
+	return [self internalPreparePOSTData:parameters authentication:auth sign:sign endMark:YES];
+}
+- (NSData*)prepareUploadData:(NSData*)data filename:(NSString*)filename information:(NSDictionary*)info
+{
+	NSMutableData *cooked=[self internalPreparePOSTData:(info ? info : [NSDictionary dictionary]) authentication:YES sign:YES endMark:NO];
+
+	NSString *lastpart = [filename lastPathComponent];
+	NSString *extension = [filename pathExtension];
+	NSString *content_type = @"image/jpeg";
+	
+	if ([extension isEqualToString:@"png"]) {
+		content_type = @"image/png";
+	}
+	else if ([extension isEqualToString:@"gif"]) {
+		content_type = @"image/gif";
+	}
+	
+	NSString *filename_str = [NSString stringWithFormat:
+		@"--%@\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"%@\"\r\nContent-Type: %@\r\n\r\n",
+		OFSharedSeparator, lastpart, content_type];
+
+	[cooked appendData:[filename_str dataUsingEncoding:NSUTF8StringEncoding]];
+	[cooked appendData:data];	
+	NSString *endmark = [NSString stringWithFormat: @"\r\n--%@--", OFSharedSeparator];
+	[cooked appendData:[endmark dataUsingEncoding:NSUTF8StringEncoding]];
+	return cooked;
+}
+- (NSString*)uploadURL
+{
+	return [NSString stringWithString:[_endPoints objectForKey:OFUploadEndPointKey]];
+}
+- (NSString*)uploadCallBackURLWithPhotos:(NSArray*)photo_ids
+{
+	NSMutableString *urlstr=[NSMutableString stringWithFormat:@"%@?ids=", [_endPoints objectForKey:OFUploadCallBackEndPointKey]];
+	unsigned i, c=[photo_ids count];
+	
+	for (i=0; i<c; i++) {
+		NSString *pid=[photo_ids objectAtIndex:i];
+		[urlstr appendString:[NSString stringWithFormat:((i == c-1) ? @"%@" : @"%@,"), pid]];
+	}
+	
+	NSLog(@"finished preparing uploadCallBackURL: %@", urlstr);
+	return urlstr;
+}
+- (NSString*)uploadCallBackURLWithPhotoID:(NSString*)photo_id
+{
+	return [self uploadCallBackURLWithPhotos:[NSArray arrayWithObject:photo_id]];
+}
+- (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type
+{
+	NSMutableString *r=[NSMutableString stringWithFormat:@"%@%@/%@_%@", [_endPoints objectForKey:OFPhotoURLPrefixKey], server_id, photo_id, secret];
+	
+	if (size) {
+		if ([size length]) {
+			[r appendString:@"_"];
+			[r appendString:size];
+		}
+	}
+	
+ 	[r appendString:[NSString stringWithFormat:@".%@", (type ? ([type length] ? type : @"jpg") : @"jpg")]];
+	return r;
+}
+@end
+
+
+@implementation OFFlickrRESTRequest
++ (OFFlickrRESTRequest*)requestWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval
+{
+	return [[[OFFlickrRESTRequest alloc] initWithDelegate:aDelegate timeoutInterval:interval] autorelease];
+}
+- (OFFlickrRESTRequest*)initWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval
+{
+	if ((self = [super init])) {
+		_delegate = [aDelegate retain];
+		_timeoutInterval = (interval > 0) ? interval : OFRequestDefaultTimeoutInterval;
+		
+		_closed = YES;
+		_connection = nil;
+		_timer = nil;
+		_userInfo = nil;
+		_expectedLength = 0;
+		_receivedData = nil;
+	}
+	return self;
+}
+- (void)dealloc {
+	if (_delegate) [_delegate release];
+	if (_connection) [_connection release];
+	if (_timer) [_timer release];
+	if (_userInfo) [_userInfo release];
+	if (_receivedData) [_receivedData release];
+	[super dealloc];
+}
+- (BOOL)isClosed {
+	return _closed;
+}
 - (void)reset {
-	uploadSize = 0;
-	if (stream) {
-		CFRelease(stream);
-		stream = NULL;
+	if (!_closed) [self cancel];
+	
+	_closed = YES;
+	_expectedLength = 0;
+
+	if (_connection) {
+		[_connection release];
+		_connection = nil;
 	}
-	if (response) {
-		[response release];
-		response=nil;
+	if (_timer) {
+		if ([_timer isValid]) {
+			[_timer invalidate];
+		}
+		[_timer release];
+		_timer = nil;
 	}
-	if (timer) {
-		[timer invalidate];
-		// [timer release];
-		timer=nil;
+	if (_userInfo) {
+		[_userInfo release];
+		_userInfo = nil;
+	}
+	if (_receivedData) {
+		[_receivedData release];
+		_receivedData = nil;
 	}
 }
-- (BOOL)upload:(NSString*)filename withURLRequest:(FlickrRESTURL*)req
+- (void)cancel {
+	if (!_closed) return;
+	[_connection cancel];
+	[_timer invalidate];
+	_closed = YES;
+	
+	if ([_delegate respondsToSelector:@selector(flickrRESTRequest:didCancel:)]) {
+		[_delegate flickrRESTRequest:self didCancel:_userInfo];
+	}
+}
+- (BOOL)GETRequest:(NSString*)url userInfo:(id)info {
+	if (!_closed) return NO;
+
+	[self reset];
+	_userInfo = [info retain];
+	_receivedData = [[NSMutableData data] retain];
+
+	NSURLRequest *req=[NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:_timeoutInterval];
+	_connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+	if (!_connection) {
+		[self reset];
+		return NO;
+	}
+	
+	_timer = [NSTimer scheduledTimerWithTimeInterval:_timeoutInterval target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
+	[_timer retain];
+
+	return YES;
+
+}
+- (BOOL)POSTRequest:(NSString*)url data:(NSData*)data userInfo:(id)info
 {
-	NSDictionary *dict = [req uploadPOSTDictionary:filename];
-	NSURL *url = [NSURL URLWithString:[dict objectForKey:@"url"]];
+	if (!_closed) return NO;
+
+	[self reset];
+	_userInfo = [info retain];
+	_receivedData = [[NSMutableData data] retain];
+
+	NSMutableURLRequest *req=[[[NSMutableURLRequest alloc] init] autorelease];
+	[req setURL:[NSURL URLWithString:url]];
+	[req setCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[req setTimeoutInterval:_timeoutInterval];
+	[req setHTTPMethod:@"POST"];
+	
+	NSString *header=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", OFSharedSeparator];
+	[req setValue:header forHTTPHeaderField:@"Content-Type"];
+	[req setHTTPBody:data];
+	
+	_connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+	if (!_connection) {
+		[self reset];
+		return NO;
+	}
+	
+	_timer = [NSTimer scheduledTimerWithTimeInterval:_timeoutInterval target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
+	return YES;
+}
+
+- (void)handleTimeout:(NSTimer*)timer
+{
+	if ([_delegate respondsToSelector:@selector(flickrRESTRequest:error:errorInfo:userInfo:)]) {
+		[_delegate flickrRESTRequest:self error:OFRequestConnectionTimeout errorInfo:nil userInfo:_userInfo];
+	}
+	
+	[_connection cancel];
+	_closed = YES;
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+	[_receivedData setLength:0];
+	_expectedLength = (size_t)[response expectedContentLength];
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	[_receivedData appendData:data];
+	if ([_delegate respondsToSelector:@selector(flickrRESTRequest:progress:expectedTotal:userInfo:)]) {
+		[_delegate flickrRESTRequest:self progress:[_receivedData length] expectedTotal:_expectedLength userInfo:_userInfo];
+	}
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)conn
+{
+	if (_timer) [_timer invalidate];
+	_closed = YES;
+
+	NSXMLDocument *x=[[NSXMLDocument alloc] initWithData:_receivedData options:0 error:nil];
+	
+	if (!x) {
+		if ([_delegate respondsToSelector:@selector(flickrRESTRequest:error:errorInfo:userInfo:)]) {
+			[_delegate flickrRESTRequest:self error:OFRequestMalformedXMLDocument errorInfo:nil userInfo:_userInfo];
+		}
+		return;
+	}
+	
+	[x autorelease];
+
+	if ([_delegate respondsToSelector:@selector(flickrRESTRequest:didFetchData:userInfo:)]) {
+		[_delegate flickrRESTRequest:self didFetchData:x userInfo:_userInfo];
+	}
+}
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+	NSLog(@"error!");
+
+	if (_timer) [_timer invalidate];
+	_closed = YES;
+
+	if ([_delegate respondsToSelector:@selector(flickrRESTRequest:error:errorInfo:userInfo:)]) {
+		[_delegate flickrRESTRequest:self error:OFRequestConnectionError errorInfo:error userInfo:_userInfo];
+	}
+}
+
+@end
+
+@interface OFFlickrUploader(OFFlickrUploaderInternals)
+- (void)handleResponse;
+- (void)handleError;
+- (void)handleTimer:(NSTimer*)timer;
+- (void)handleComplete;
+@end
+
+static void OFFUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType type, void *callbackInfo)
+{
+	switch (type)
+	{
+	 case kCFStreamEventHasBytesAvailable:
+		  [(OFFlickrUploader*)callbackInfo handleResponse];
+		  break;			
+	 case kCFStreamEventEndEncountered:
+		  [(OFFlickrUploader*)callbackInfo handleComplete];
+		  break;
+	 case kCFStreamEventErrorOccurred:
+		  [(OFFlickrUploader*)callbackInfo handleError];
+		  break;
+	 }
+}
+
+@implementation OFFlickrUploader
+- (id)initWithDelegate:(id)aDelegate
+{
+	if ((self = [super init])) {
+		_delegate = [aDelegate retain];
+		_userInfo = nil;
+		_uploadSize = 0;
+		_stream = NULL;
+		_response = nil;
+		_timer = nil;
+	}
+	return self;
+}
+- (void)dealloc
+{
+	if (_delegate) [_delegate release];
+	if (_userInfo) [_userInfo release];
+	if (_response) [_response release];
+	if (_stream) CFRelease(_stream);
+	if (_timer) [_timer release];
+	[super dealloc];
+}
+- (void)reset
+{
+	if (_timer) {
+		if ([_timer isValid]) {
+			[_timer invalidate];
+		}
+		[_timer release];
+		_timer = nil;
+	}
+	if (_userInfo) {
+		[_userInfo release];
+		_userInfo = nil;
+	}
+	if (_response) {
+		[_response release];
+		_response = nil;
+	}
+	if (_stream) {
+		CFRelease(_stream);
+		_stream = NULL;
+	}
+
+	_uploadSize = 0;
+}
+- (BOOL)isClosed {
+	return _stream ? NO : YES;
+}
+- (void)cancel 
+{
+	CFReadStreamClose(_stream);
+	_stream = NULL;
+	
+	[_timer invalidate];
+
+	if ([_delegate respondsToSelector:@selector(flickrUploader:didCancel:)])
+	{
+		[_delegate flickrUploader:self didCancel:_userInfo];
+	}
+}
+- (BOOL)upload:(NSData*)data filename:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo
+{
+	// if the stream is still open, we fail
+	if (_stream) return NO;
+
+	_userInfo = [userinfo retain];
+
+	NSURL *uploadurl = [NSURL URLWithString:[context uploadURL]];
 
 	// create the HTTP POST body
 	CFHTTPMessageRef httpreq;
-	httpreq = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (CFURLRef)url, kCFHTTPVersion1_1);
+	httpreq = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (CFURLRef)uploadurl, kCFHTTPVersion1_1);
 
-	NSString *separator=@"---------------------------7d44e178b0434";
-	NSString *headerfield=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", separator];
+	NSString *headerfield=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", OFSharedSeparator];
 	CFHTTPMessageSetHeaderFieldValue(httpreq, CFSTR("Content-Type"), (CFStringRef)headerfield);
 
-	NSString *apikey_str = [NSString stringWithFormat:
-		@"--%@\r\nContent-Disposition: form-data; name=\"api_key\"\r\n\r\n%@\r\n",
-		separator, [dict objectForKey:@"api_key"]];
-	
-	NSString *authtoken_str = [NSString stringWithFormat:
-		@"--%@\r\nContent-Disposition: form-data; name=\"auth_token\"\r\n\r\n%@\r\n",
-		separator, [dict objectForKey:@"auth_token"]];
-	
-	NSString *apisig_str = [NSString stringWithFormat:
-		@"--%@\r\nContent-Disposition: form-data; name=\"api_sig\"\r\n\r\n%@\r\n",
-		separator, [dict objectForKey:@"api_sig"]];
+	NSData *uploaddata = [context prepareUploadData:data filename:filename information:photoinfo];
+	_uploadSize = [uploaddata length];
 		
-	NSString *filename_str = [NSString stringWithFormat:
-		@"--%@\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"%@\"\r\nContent-Type: %@\r\n\r\n",
-		separator, [dict objectForKey:@"filename"], [dict objectForKey:@"content-type"]];
+	CFHTTPMessageSetBody(httpreq, (CFDataRef)uploaddata); 
 
-	NSMutableData *postdata = [[NSMutableData alloc] initWithCapacity:60000];
-
-	[postdata appendData:[apikey_str dataUsingEncoding:NSUTF8StringEncoding]];
-	[postdata appendData:[authtoken_str dataUsingEncoding:NSUTF8StringEncoding]];
-	[postdata appendData:[apisig_str dataUsingEncoding:NSUTF8StringEncoding]];
-	[postdata appendData:[filename_str dataUsingEncoding:NSUTF8StringEncoding]];
-
-	// NSLog([[[NSString alloc] initWithData:postdata encoding:NSUTF8StringEncoding] autorelease]);
-
-	NSDictionary *fileAtributes = [[NSFileManager defaultManager] fileAttributesAtPath:filename traverseLink:YES];
-	// uploadSize = [[fileAtributes objectForKey:NSFileSize] longValue];
-
-	[postdata appendData:[NSData dataWithContentsOfFile:filename]];
-
-	NSString *endmark = [NSString stringWithFormat: @"\r\n--%@--", separator];
-	[postdata appendData:[endmark dataUsingEncoding:NSUTF8StringEncoding]];
-
-	// NSLog(@"post data total length=%ld", [postdata length]);
-	uploadSize = [postdata length];
-	
-	CFHTTPMessageSetBody(httpreq, (CFDataRef)postdata); 
-
-	stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, httpreq);
+	_stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, httpreq);
 	CFRelease(httpreq);
 
-	CFStreamClientContext context = {0, self, NULL, NULL, NULL};
-
-	// Wir teilen CFNetwork jetzt mit, dass wir Callbacks erhalten möchten.
-	if (!CFReadStreamSetClient(stream, FUClientNetworkEvents, FUReadStreamClientCallBack, &context))
+	CFStreamClientContext streamcontext = {0, self, NULL, NULL, NULL};
+	CFOptionFlags eventflags = kCFStreamEventOpenCompleted | kCFStreamEventHasBytesAvailable |
+		kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred;
+	
+	// open the stream with callback function
+	if (!CFReadStreamSetClient(_stream, eventflags, OFFUReadStreamClientCallBack, &streamcontext))
 	{
 		[self reset];
 		return NO;
 	}
 
-	CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
+	CFReadStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
+	_response = [[NSMutableData data] retain];
 
-	response = [[NSMutableData data] retain];
+	if (!CFReadStreamOpen(_stream)) 
+	{
+		[self reset];
+		return NO;
+	}
 
-	CFReadStreamOpen(stream);
-
-	timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
+	[_timer retain];
 	return YES;
 }
-
-- (void)cancel 
+- (BOOL)uploadWithContentsOfFile:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo
 {
-	CFReadStreamClose(stream);
-	[self reset];
-	[delegate flickrUploaderDidCancel:self];
+	return [self upload:[NSData dataWithContentsOfFile:filename] filename:filename photoInformation:photoinfo applicationContext:context userInfo:userinfo];
 }
 - (void)handleResponse
 {
 	UInt8 buffer[2048];
-	CFIndex bytesRead = CFReadStreamRead(stream, buffer, sizeof(buffer));
+	CFIndex bytesread = CFReadStreamRead(_stream, buffer, sizeof(buffer));
 
-	if (bytesRead < 0)
-	{
-		  NSLog(@"Warning: Error (< 0b from CFReadStreamRead");
-	}
-	else if (bytesRead)
-	{
-		[response appendBytes:(void *)buffer length:(unsigned)bytesRead];
-		// NSLog(@"got response! current response=%@", [[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding] autorelease]);
-	}
+	if (bytesread > 0) [_response appendBytes:(void*)buffer length:(unsigned)bytesread];
 }
 - (void)handleError
 {
-	[delegate flickrUploader:self error:FRREError];
+	if ([_delegate respondsToSelector:@selector(flickrUploader:error:errorInfo:userInfo:)]) {
+		[_delegate flickrUploader:self error:OFRequestConnectionError errorInfo:nil userInfo:_userInfo];
+	}
+}
+- (void)handleTimer:(NSTimer*)timer
+{
+	if (!_stream) return;
+	CFNumberRef bytesWrittenProperty = (CFNumberRef)CFReadStreamCopyProperty(_stream, kCFStreamPropertyHTTPRequestBytesWrittenCount); 
+	int bytesWritten;
+	CFNumberGetValue (bytesWrittenProperty, kCFNumberSInt32Type, &bytesWritten);
+
+	if ([_delegate respondsToSelector:@selector(flickrUploader:progress:total:userInfo:)]) {
+		[_delegate flickrUploader:self progress:(size_t)bytesWritten total:_uploadSize userInfo:_userInfo];
+	}
 }
 - (void)handleComplete
 {
-	NSXMLDocument *x=[[NSXMLDocument alloc] initWithData:response options:0 error:nil];
+	// CFReadStreamClose(_stream);
+	// CFRelease(_stream);
+	_stream = NULL; // the stream is already released, so we just set to NULL
+	[_timer invalidate];
+
+	NSXMLDocument *x=[[NSXMLDocument alloc] initWithData:_response options:0 error:nil];
 	[x autorelease];
-	if (x) {
-		NSXMLElement *r = [x rootElement];
-
-		NSXMLNode *stat =[r attributeForName:@"stat"];
-		// NSLog(@"stat attribute, name = %@, value =%@", [stat name], [stat stringValue]);
-		
-		if ([[stat stringValue] isEqualToString:@"ok"]) {
-			NSXMLNode *i = [r childAtIndex:0];
-			[delegate flickrUploader:self didComplete:[i stringValue]];
-		}
-		else {
-			NSXMLNode *e = [r childAtIndex:0];
-			NSXMLNode *code = [(NSXMLElement*)e attributeForName:@"code"];
-			NSXMLNode *msg = [(NSXMLElement*)e attributeForName:@"msg"];
-			// NSLog(@"error code=%@, msg=%@", [code stringValue], [msg stringValue]);
-
-			[delegate flickrUploader:self error:[[code stringValue] intValue] /* message:[msg stringValue] */];
+	
+	if (!x) {
+		if ([_delegate respondsToSelector:@selector(flickrUploader:error:errorInfo:userInfo:)]) {
+			[_delegate flickrUploader:self error:OFRequestMalformedXMLDocument errorInfo:nil userInfo:_userInfo];
 		}
 	}
-	else {
-		[delegate flickrUploader:self error:FRREError /* message:@"Malformed XML document" */];
+	
+	if ([_delegate respondsToSelector:@selector(flickrUploader:didComplete:userInfo:)]) {
+		[_delegate flickrUploader:self didComplete:x userInfo:_userInfo];
 	}
-
-	stream = NULL;		// the stream is already released
-	[self reset];
 }
-
-- (void)handleTimer:(NSTimer*)t
-{
-	CFNumberRef bytesWrittenProperty = (CFNumberRef)CFReadStreamCopyProperty (stream, kCFStreamPropertyHTTPRequestBytesWrittenCount); 
-	int bytesWritten;
-	CFNumberGetValue (bytesWrittenProperty, 3, &bytesWritten);
-	long written = (long)bytesWritten;
-
-	[delegate flickrUploader:self progress:(size_t)written total:uploadSize];
-}
-
-@end;
-
+@end
