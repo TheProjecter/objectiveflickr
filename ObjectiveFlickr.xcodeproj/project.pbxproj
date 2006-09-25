@@ -24,6 +24,12 @@
 
 /* Begin PBXBuildFile section */
 		6A0792C20AC7087F0004DA47 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0792C00AC7087F0004DA47 /* MainMenu.nib */; };
+		6A0792DA0AC70AD30004DA47 /* LoginSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A0792D80AC70AD30004DA47 /* LoginSheetController.h */; };
+		6A0792DB0AC70AD30004DA47 /* LoginSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792D90AC70AD30004DA47 /* LoginSheetController.m */; };
+		6A0792DE0AC70AD80004DA47 /* ContactsBrowserController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A0792DC0AC70AD80004DA47 /* ContactsBrowserController.h */; };
+		6A0792DF0AC70AD80004DA47 /* ContactsBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */; };
+		6A0792E20AC70AE00004DA47 /* ContactsBrowserApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */; };
+		6A0792E30AC70AE00004DA47 /* ContactsBrowserApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
 		6AA09E9A0AC6C15F003E682E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
@@ -99,6 +105,12 @@
 
 /* Begin PBXFileReference section */
 		6A0792C10AC7087F0004DA47 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Demos/ContactsBrowser/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		6A0792D80AC70AD30004DA47 /* LoginSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginSheetController.h; path = Demos/ContactsBrowser/LoginSheetController.h; sourceTree = "<group>"; };
+		6A0792D90AC70AD30004DA47 /* LoginSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginSheetController.m; path = Demos/ContactsBrowser/LoginSheetController.m; sourceTree = "<group>"; };
+		6A0792DC0AC70AD80004DA47 /* ContactsBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserController.h; path = Demos/ContactsBrowser/ContactsBrowserController.h; sourceTree = "<group>"; };
+		6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserController.m; path = Demos/ContactsBrowser/ContactsBrowserController.m; sourceTree = "<group>"; };
+		6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserApplication.h; path = Demos/ContactsBrowser/ContactsBrowserApplication.h; sourceTree = "<group>"; };
+		6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserApplication.m; path = Demos/ContactsBrowser/ContactsBrowserApplication.m; sourceTree = "<group>"; };
 		6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
@@ -165,6 +177,12 @@
 				6A4639640AC6DCC20015C3E9 /* Resources */,
 				6A31EAEE0AC6BFBD0084DA74 /* main.m */,
 				6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */,
+				6A0792D80AC70AD30004DA47 /* LoginSheetController.h */,
+				6A0792D90AC70AD30004DA47 /* LoginSheetController.m */,
+				6A0792DC0AC70AD80004DA47 /* ContactsBrowserController.h */,
+				6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */,
+				6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */,
+				6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */,
 			);
 			name = ContactsBrowser;
 			sourceTree = "<group>";
@@ -269,6 +287,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AA0A0060AC6C66B003E682E /* OFDemoAPIKey.h in Headers */,
+				6A0792DA0AC70AD30004DA47 /* LoginSheetController.h in Headers */,
+				6A0792DE0AC70AD80004DA47 /* ContactsBrowserController.h in Headers */,
+				6A0792E20AC70AE00004DA47 /* ContactsBrowserApplication.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +412,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */,
+				6A0792DB0AC70AD30004DA47 /* LoginSheetController.m in Sources */,
+				6A0792DF0AC70AD80004DA47 /* ContactsBrowserController.m in Sources */,
+				6A0792E30AC70AE00004DA47 /* ContactsBrowserApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,10 +489,7 @@
 		6A31EAEB0AC6BF2D0084DA74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -495,10 +516,7 @@
 		6A31EAEC0AC6BF2D0084DA74 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = i386;
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -546,6 +564,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
@@ -553,6 +572,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Release;
 		};
