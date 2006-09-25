@@ -69,7 +69,6 @@
 + (OFFlickrRESTRequest*)requestWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
 - (OFFlickrRESTRequest*)initWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
 - (BOOL)isClosed;
-- (void)reset;
 - (void)cancel;
 - (BOOL)GETRequest:(NSString*)url userInfo:(id)info;
 - (BOOL)POSTRequest:(NSString*)url data:(NSData*)data userInfo:(id)info;
@@ -89,6 +88,54 @@ enum {
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errorCode errorInfo:(id)errinfo userInfo:(id)userinfo;
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo;
 @end;
+
+// This is what we want to do. There are two flavors that you can choose for API
+// callbacks. One is to use the traditional "delegate" flavor, with which
+// you get the three states (fetched, error [cancel now counted as an error], progress).
+// Or you can choose the "selector" flavor. The selector must have the
+// signature caller:error:data:, which conforms to the following argument list
+//     - (void)APICaller:(OFFlickrAPICaller*)caller error:(int)errorNo data:(id)data
+// if no error occurs, errorNo is set to nil, data is the loaded XML payload
+// (from which you can get an NSDictionary object later by sending flickrDictionaryFromDocument: to it)
+// if any error occurs, data is set to the error message
+// NOTE: WE DO FLICKR ERROR MESSAGE BLOCK PARSING IN OFFlickrAPICaller
+
+@interface OFFlickrAPICaller : NSObject
+{
+	id _delegate;
+	SEL _selector;
+	NSTimeInterval _timeoutInterval;
+	
+	id _userInfo;
+	OFFlickrApplicationContext *_context;
+}
++ (OFFlickrAPICaller*)callerWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context timeoutInterval:(NSTimeInterval)interval;
++ (OFFlickrAPICaller*)callerWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context;
+- (OFFlickrAPICaller*)initWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context timeoutInterval:(NSTimeInterval)interval;
+- (OFFlickrAPICaller*)initWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context;
+- (void)setUserInfo:(id)userinfo;
+- (id)userInfo;
+- (void)setSelector:(SEL)aSelector;
+- (BOOL)performMethod:(NSString*)method parametersAsArray:(NSArray*)parameter;
+// - (id)performBlockingCall:(NSString*)method parametersAsArray:(NSArray*)parameter;
+@end
+
+@interface NSObject(OFFlickrAPICallerDelegate)
+- (void)flickrAPICaller:(OFFlickrAPICaller*)caller didFetchData:(NSXMLDocument*)xmldoc;
+- (void)flickrAPICaller:(OFFlickrAPICaller*)caller error:(int)errorCode errorInfo:(id)errInfo;
+- (void)flickrAPICaller:(OFFlickrAPICaller*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total;
+@end;
+
+
+#define OFAPIDefaultTimeoutInterval		OFRequestDefaultTimeoutInterval
+
+enum {
+	OFAPIConnectionError = OFRequestConnectionError,
+	OFAPIConnectionTimeout = OFRequestConnectionTimeout,
+	OFAPIMalformedXMLDocument = OFRequestMalformedXMLDocument,
+	OFAPICallCanceled = -4
+};
+
 
 @interface OFFlickrUploader : NSObject
 {
@@ -113,3 +160,18 @@ enum {
 - (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength userInfo:(id)userinfo;
 - (void)flickrUploader:(OFFlickrUploader*)uploader didCancel:(id)userinfo;
 @end
+
+@interface NSXMLNode(OFFlickrXMLExtension)
+- (NSDictionary*)flickrDictionaryFromNode;
+@end
+
+@interface NSXMLElement(OFFlickrXMLExtension)
+- (NSDictionary*)flickrDictionaryFromNode;
+@end
+
+
+@interface NSXMLDocument(OFFlickrXMLExtension)
+- (BOOL)hasFlickrError:(int*)errorCode message:(NSString**)errorMsg;
+- (NSDictionary*)flickrDictionaryFromDocument;
+@end
+

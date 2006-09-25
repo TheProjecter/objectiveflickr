@@ -49,7 +49,7 @@
 - (NSString*)storedAuthToken
 {
 	CFStringRef token = (CFStringRef)CFPreferencesCopyAppValue((CFStringRef)@"auth_token", kCFPreferencesCurrentApplication);
-	if (!token) return nil;
+	if (!token) return @"";
 	
 	NSString *s=[NSString stringWithString:(NSString*)token];
 	CFRelease(token);
