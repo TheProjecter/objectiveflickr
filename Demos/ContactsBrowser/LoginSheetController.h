@@ -9,10 +9,18 @@
     IBOutlet id progressIndicator;
     IBOutlet id textMessage;
 	
-	OFFlickrApplicationContext *context;
-	OFFlickrRESTRequest *request;
+	OFFlickrAPICaller *apicall;
+	
+	int state;
 }
 - (IBAction)buttonAction:(id)sender;
 - (void)startLogin;
 - (void)closeSheet;
 @end
+
+enum {
+	LSCheckPrevAuthToken = 0,
+	LSGetFrob = 1,
+	LSOpenBrowser = 2,
+	LSBackFromBrowser = 3
+};
