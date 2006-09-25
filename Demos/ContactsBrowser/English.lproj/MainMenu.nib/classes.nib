@@ -1,20 +1,4 @@
 {
-    IBClasses = (
-        {
-            ACTIONS = {terminate = id; }; 
-            CLASS = ContactsBrowserController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {loginSheet = id; loginSheetController = id; }; 
-            SUPERCLASS = NSWindowController; 
-        }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {
-            ACTIONS = {buttonAction = id; }; 
-            CLASS = LoginSheetController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {actionButton = id; messageText = id; progressIndicator = id; }; 
-            SUPERCLASS = NSWindowController; 
-        }
-    ); 
+    IBClasses = ({CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }); 
     IBVersion = 1; 
 }

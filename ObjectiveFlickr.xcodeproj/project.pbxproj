@@ -23,16 +23,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		6A0792C20AC7087F0004DA47 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0792C00AC7087F0004DA47 /* MainMenu.nib */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
-		6A4639700AC6DCD30015C3E9 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6A46396F0AC6DCD30015C3E9 /* MainMenu.nib */; };
-		6A4639870AC6DED30015C3E9 /* ContactsBrowserController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A4639850AC6DED30015C3E9 /* ContactsBrowserController.h */; };
-		6A4639880AC6DED30015C3E9 /* ContactsBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4639860AC6DED30015C3E9 /* ContactsBrowserController.m */; };
-		6A46398B0AC6DEDA0015C3E9 /* LoginSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A4639890AC6DEDA0015C3E9 /* LoginSheetController.h */; };
-		6A46398C0AC6DEDA0015C3E9 /* LoginSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A46398A0AC6DEDA0015C3E9 /* LoginSheetController.m */; };
 		6AA09E9A0AC6C15F003E682E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
 		6AA09F3D0AC6C165003E682E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
-		6AA09F490AC6C1B6003E682E /* ContactsBrowserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AA09F480AC6C1B6003E682E /* ContactsBrowserDelegate.m */; };
 		6AA0A0060AC6C66B003E682E /* OFDemoAPIKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */; };
 		6AA0A08D0AC6C827003E682E /* ObjectiveFlickr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6AB518360AC6B8580083374D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB518350AC6B8580083374D /* WebKit.framework */; };
@@ -103,18 +98,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A0792C10AC7087F0004DA47 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Demos/ContactsBrowser/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
 		6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowser_Prefix.pch; path = Demos/ContactsBrowser/ContactsBrowser_Prefix.pch; sourceTree = "<group>"; };
 		6A31EB030AC6C08C0084DA74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/ContactsBrowser/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6A4639510AC6DCB90015C3E9 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Demos/ContactsBrowser/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		6A4639850AC6DED30015C3E9 /* ContactsBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserController.h; path = Demos/ContactsBrowser/ContactsBrowserController.h; sourceTree = "<group>"; };
-		6A4639860AC6DED30015C3E9 /* ContactsBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserController.m; path = Demos/ContactsBrowser/ContactsBrowserController.m; sourceTree = "<group>"; };
-		6A4639890AC6DEDA0015C3E9 /* LoginSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginSheetController.h; path = Demos/ContactsBrowser/LoginSheetController.h; sourceTree = "<group>"; };
-		6A46398A0AC6DEDA0015C3E9 /* LoginSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginSheetController.m; path = Demos/ContactsBrowser/LoginSheetController.m; sourceTree = "<group>"; };
-		6AA09F470AC6C1B6003E682E /* ContactsBrowserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserDelegate.h; path = Demos/ContactsBrowser/ContactsBrowserDelegate.h; sourceTree = "<group>"; };
-		6AA09F480AC6C1B6003E682E /* ContactsBrowserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserDelegate.m; path = Demos/ContactsBrowser/ContactsBrowserDelegate.m; sourceTree = "<group>"; };
 		6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFDemoAPIKey.h; path = Demos/OFDemoAPIKey.h; sourceTree = "<group>"; };
 		6AB518350AC6B8580083374D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FlickrBasics-Info.plist"; sourceTree = "<group>"; };
@@ -176,12 +165,6 @@
 				6A4639640AC6DCC20015C3E9 /* Resources */,
 				6A31EAEE0AC6BFBD0084DA74 /* main.m */,
 				6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */,
-				6AA09F470AC6C1B6003E682E /* ContactsBrowserDelegate.h */,
-				6AA09F480AC6C1B6003E682E /* ContactsBrowserDelegate.m */,
-				6A4639850AC6DED30015C3E9 /* ContactsBrowserController.h */,
-				6A4639860AC6DED30015C3E9 /* ContactsBrowserController.m */,
-				6A4639890AC6DEDA0015C3E9 /* LoginSheetController.h */,
-				6A46398A0AC6DEDA0015C3E9 /* LoginSheetController.m */,
 			);
 			name = ContactsBrowser;
 			sourceTree = "<group>";
@@ -189,8 +172,8 @@
 		6A4639640AC6DCC20015C3E9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6A0792C00AC7087F0004DA47 /* MainMenu.nib */,
 				6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */,
-				6A46396F0AC6DCD30015C3E9 /* MainMenu.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -286,8 +269,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AA0A0060AC6C66B003E682E /* OFDemoAPIKey.h in Headers */,
-				6A4639870AC6DED30015C3E9 /* ContactsBrowserController.h in Headers */,
-				6A46398B0AC6DEDA0015C3E9 /* LoginSheetController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */,
-				6A4639700AC6DCD30015C3E9 /* MainMenu.nib in Resources */,
+				6A0792C20AC7087F0004DA47 /* MainMenu.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,9 +391,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */,
-				6AA09F490AC6C1B6003E682E /* ContactsBrowserDelegate.m in Sources */,
-				6A4639880AC6DED30015C3E9 /* ContactsBrowserController.m in Sources */,
-				6A46398C0AC6DEDA0015C3E9 /* LoginSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,20 +443,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		6A0792C00AC7087F0004DA47 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A0792C10AC7087F0004DA47 /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
 		6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6A31EB030AC6C08C0084DA74 /* English */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		6A46396F0AC6DCD30015C3E9 /* MainMenu.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6A4639510AC6DCB90015C3E9 /* English */,
-			);
-			name = MainMenu.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
