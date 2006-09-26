@@ -145,6 +145,7 @@ enum {
 	NSDictionary *d = [(NSXMLDocument*)data flickrDictionaryFromDocument];
 	NSString *t = [[[d objectForKey:@"auth"] objectForKey:@"token"] objectForKey:@"$"];
 	[[NSApp delegate] setStoredAuthToken:t];
+	[[_apicall context] setAuthToken:t];
 	NSLog(@"logged in, token = %@, user name = %@", t, [[[d objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"@fullname"]);
 	
 	_token = [NSDictionary dictionaryWithDictionary:d];
