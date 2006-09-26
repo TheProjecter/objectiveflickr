@@ -1,4 +1,5 @@
 #import "ContactsBrowserApplication.h"
+#import "ContactsBrowserController.h"
 #import "LoginSheetController.h"
 #import "OFDemoAPIKey.h"
 
