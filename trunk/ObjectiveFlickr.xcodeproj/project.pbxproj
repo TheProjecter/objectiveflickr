@@ -185,8 +185,8 @@
 				6A0792D90AC70AD30004DA47 /* LoginSheetController.m */,
 				6A0792DC0AC70AD80004DA47 /* ContactsBrowserController.h */,
 				6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */,
-				6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */,
 				6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */,
+				6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */,
 			);
 			name = ContactsBrowser;
 			sourceTree = "<group>";

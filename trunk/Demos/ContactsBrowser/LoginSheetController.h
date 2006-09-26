@@ -9,10 +9,12 @@
     IBOutlet id progressIndicator;
     IBOutlet id textMessage;
 	
-	OFFlickrAPICaller *apicall;
-	int state;
+	NSDictionary *_token;
+	OFFlickrAPICaller *_apicall;
+	int _state;
 }
 - (IBAction)buttonAction:(id)sender;
 - (void)startSheet;
 - (void)closeSheet;
+- (NSDictionary*)token;
 @end

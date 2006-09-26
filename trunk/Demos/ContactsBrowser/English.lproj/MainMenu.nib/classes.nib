@@ -4,12 +4,26 @@
             ACTIONS = {terminate = id; }; 
             CLASS = ContactsBrowserApplication; 
             LANGUAGE = ObjC; 
-            OUTLETS = {browserWindow = id; sheetController = id; sheetWindow = id; }; 
+            OUTLETS = {
+                browserController = id; 
+                browserWindow = id; 
+                sheetController = id; 
+                sheetWindow = id; 
+            }; 
             SUPERCLASS = NSObject; 
         }, 
         {
             CLASS = ContactsBrowserController; 
             LANGUAGE = ObjC; 
+            OUTLETS = {
+                contactsList = id; 
+                labelFamily = id; 
+                labelFriend = id; 
+                labelRealName = id; 
+                labelUserName = id; 
+                progressIndicator = id; 
+                sheetController = id; 
+            }; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

@@ -42,6 +42,10 @@
 }
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
 {
+	if ([sheetController token]) {
+		NSLog(@"token obtained, let the show begin");
+		[browserController startBrowser];
+	}
 }
 - (OFFlickrApplicationContext*)context {
 	if (!_context) {
