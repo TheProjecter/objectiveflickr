@@ -4,7 +4,7 @@
 #ifndef __DemoAPIKey_inc
 #define __DemoAPIKey_inc
 
-// #define OFDemoAPIKey				@""
+// #define OFDemoAPIKey			@""
 // #define OFDemoSharedSecret		@""
 
 #endif

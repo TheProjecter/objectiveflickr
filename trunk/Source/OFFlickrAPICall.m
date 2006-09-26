@@ -152,6 +152,29 @@ NSSet *OFGetRequireAuthSet() {
 }
 
 
+NSArray *OFParseSelectorString(const char *selname)
+{
+	NSMutableArray *a = [NSMutableArray array];
+	if (selname[strlen(selname) - 1] != ':') return a;
+	
+	NSMutableString *current = [NSMutableString string];
+	
+	const char *p = selname;	
+	while (*p) {
+		if (*p == ':') {
+			[a addObject:current];
+			current = [NSMutableString string];
+		}
+		else {
+			[current appendString:[NSString stringWithFormat:@"%c", *p]];
+		}
+		p++;
+	}
+	return a;
+}
+
+
+
 @implementation OFFlickrAPICaller
 + (OFFlickrAPICaller*)callerWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context timeoutInterval:(NSTimeInterval)interval
 {
@@ -187,7 +210,7 @@ NSSet *OFGetRequireAuthSet() {
 - (void)setUserInfo:(id)userinfo
 {
 	if (_userInfo) [_userInfo release];
-	_userInfo = [userinfo retain];
+	if (userinfo) _userInfo = [userinfo retain]; else _userInfo = nil;
 }
 - (id)userInfo 
 {
@@ -320,5 +343,82 @@ NSSet *OFGetRequireAuthSet() {
 		[_delegate flickrAPICaller:self progress:receivedBytes expectedTotal:total];
 	}
 }
-@end
 
+
+
+-(NSMethodSignature*)methodSignatureForSelector:(SEL)aSelector
+{
+	const char *selname = sel_getName(aSelector);
+	unsigned c = [OFParseSelectorString(selname) count];
+	int l = c + 4;
+	char *s = (char*)malloc(l);
+	int i;
+	for (i = 3; i < c+3 ; i++) s[i] = '@';
+	s[0]='@';
+	s[1]='@';
+	s[2]=':';
+	s[c+3] = 0;
+	NSString *sig = [NSString stringWithUTF8String:s];
+	free(s);
+	
+    NSLog(@"NSMethodSignature! selname=%s sig=%@", selname, sig);
+    return [NSMethodSignature signatureWithObjCTypes:[sig UTF8String]];
+}
+-(void)forwardInvocation:(NSInvocation*)inv
+{
+    NSLog(@"method invocation, detail=%@", [inv description]);
+
+	const char *selname = sel_getName([inv selector]);
+	NSArray *selarray = OFParseSelectorString(selname);
+
+	NSLog(@"method invocation, selname=%s, array=%@", selname, [selarray description]);
+
+	NSMutableArray *param = [NSMutableArray array];
+	
+	unsigned i, c = [selarray count];
+	
+	NSString *methodname;
+	
+	id arg;
+	if (c > 0) {
+		methodname = [selarray objectAtIndex:0];
+		[inv getArgument:&arg atIndex:2];
+		[self setUserInfo:arg];
+		NSLog(@"has user info = %@", arg);
+	}
+	else {
+		methodname = [NSString stringWithUTF8String:selname];
+	}
+	
+	// replace every _ to .
+	char *repstr = (char*)malloc(strlen([methodname UTF8String] + 1));
+	strcpy(repstr, [methodname UTF8String]);
+	char *rp = repstr;
+	while (*rp) {
+		if (*rp == '_') *rp = '.';
+		rp++;
+	}
+	methodname = [NSString stringWithUTF8String:repstr];
+	
+	for (i = 1; i < c; i++) {
+		[param addObject:[selarray objectAtIndex:i]];		
+		[inv getArgument:&arg atIndex:2+i];
+		[param addObject:arg];
+	}
+	
+	NSLog(@"finished prepared, method = %@, argument = %@", methodname, [param description]);
+
+	if (c > 0) {
+		[inv setReturnValue:&self];
+	}
+/*
+	
+	BOOL r;
+	NSString *null = @"";
+	r = [self performMethod:methodname parametersAsArray:param];
+	if (r)  [inv setReturnValue:&self];
+	
+	*/
+}
+
+@end

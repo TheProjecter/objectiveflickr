@@ -39,6 +39,14 @@
 	[apicall setSelector:@selector(APICaller:error:data:)];
 	[apicall performMethod:@"flickr.auth.getFrob" parametersAsArray:nil];
 
+
+	id test=[apicall testCall];
+	NSLog(test ? @"not null" : @"null");
+	test=[apicall testArray:[NSArray arrayWithObjects:@"foo", @"bar", nil]];
+	NSLog(test ? @"not null" : @"null");
+	test=[apicall testTest:nil orz:@"bar" bling:[NSArray arrayWithObjects:@"foo", @"bar", nil]];
+	NSLog(test ? @"not null" : @"null");
+
 /*	
 	context = (OFFlickrApplicationContext*)[[NSApp delegate] context];
 	request = [[OFFlickrRESTRequest requestWithDelegate:self timeoutInterval:OFRequestDefaultTimeoutInterval] retain];
