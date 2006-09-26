@@ -32,6 +32,7 @@
 		6A0792E30AC70AE00004DA47 /* ContactsBrowserApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
+		6A7D7CF40AC9C1B400E9FCA3 /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6AA09E9A0AC6C15F003E682E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
 		6AA09F3D0AC6C165003E682E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
 		6AA0A0060AC6C66B003E682E /* OFDemoAPIKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */; };
@@ -93,6 +94,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6A7D7CF00AC9C1A400E9FCA3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6A7D7CF40AC9C1B400E9FCA3 /* ObjectiveFlickr.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AB5185C0AC6B8EA0083374D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -132,7 +143,7 @@
 		6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		6AD7B2D30AC6B6D0004644DE /* libcrypto.0.9.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.0.9.7.dylib; path = /usr/lib/libcrypto.0.9.7.dylib; sourceTree = "<absolute>"; };
-		6AD7B2E40AC6B778004644DE /* FlickrBasics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrBasics.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AD7B2E40AC6B778004644DE /* FlickrBasics.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FlickrBasics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AD7B2EF0AC6B7BF004644DE /* English.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English.lproj; path = Demos/Basics/English.lproj; sourceTree = "<group>"; };
 		6AD7B2F30AC6B7BF004644DE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/Basics/main.m; sourceTree = "<group>"; };
 		6AD7B2F40AC6B7BF004644DE /* ObjectiveFlickr_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr_Prefix.pch; path = Demos/Basics/ObjectiveFlickr_Prefix.pch; sourceTree = "<group>"; };
@@ -318,6 +329,7 @@
 				6A31EAE40AC6BF2D0084DA74 /* Sources */,
 				6A31EAE30AC6BF2D0084DA74 /* Resources */,
 				6A31EAE50AC6BF2D0084DA74 /* Frameworks */,
+				6A7D7CF00AC9C1A400E9FCA3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
