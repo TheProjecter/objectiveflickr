@@ -289,8 +289,6 @@ NSArray *OFParseSelectorString(const char *selname)
 	if ([OFGetRequireAuthSet() containsObject:method]) auth = YES;
 	if ([OFGetRequirePOSTSet() containsObject:method]) post = YES;
 	
-	if (auth) sign = YES;
-
 	NSLog(@"method %@, auth = %@, sign = %@, use HTTP POST = %@", method,
 		auth ? @"YES" : @"NO",
 		sign ? @"YES" : @"NO",
@@ -300,6 +298,8 @@ NSArray *OFParseSelectorString(const char *selname)
 		auth = YES;
 		[d removeObjectForKey:@"auth"];
 	}
+
+	if (auth) sign = YES;
 	
 	[d setObject:method forKey:@"method"];
 	
