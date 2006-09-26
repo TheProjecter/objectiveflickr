@@ -1,12 +1,25 @@
 #import "ObjectiveFlickr.h"
 
-static NSSet *ofRequiresAuthSet = nil;
+static NSSet *ofRequiresSignSet = nil;
+static NSSet *ofRequiresAuthSet = nil;		// anything requires auth requires sign
 static NSSet *ofRequiresPOSTSet = nil;
+
+NSSet *OFGetRequireSignSet() {
+	if (ofRequiresSignSet) return ofRequiresSignSet;
+	
+	ofRequiresSignSet = [NSSet setWithObjects:
+		@"flickr.auth.getFrob", 
+		nil];
+		
+	[ofRequiresSignSet retain];
+	return ofRequiresSignSet;
+}
+
 
 NSSet *OFGetRequirePOSTSet() {
 	if (ofRequiresPOSTSet) return ofRequiresPOSTSet;
 	
-	ofRequiresAuthSet = [NSSet setWithObjects:
+	ofRequiresPOSTSet = [NSSet setWithObjects:
 		@"flickr.blogs.postPhoto", 
 		@"flickr.favorites.add", 
 		@"flickr.favorites.remove", 
@@ -42,8 +55,8 @@ NSSet *OFGetRequirePOSTSet() {
 		@"flickr.photosets.comments.editComment", 
 		nil];
 		
-	[ofRequiresAuthSet retain];
-	return ofRequiresAuthSet;
+	[ofRequiresPOSTSet retain];
+	return ofRequiresPOSTSet;
 }
 
 NSSet *OFGetRequireAuthSet() {
@@ -51,7 +64,7 @@ NSSet *OFGetRequireAuthSet() {
 	
 	ofRequiresAuthSet = [NSSet setWithObjects:
 		@"flickr.auth.checkToken", 
-		@"flickr.auth.getFrob", 
+		// @"flickr.auth.getFrob", 
 		@"flickr.auth.getFullToken", 
 		@"flickr.auth.getToken", 
 		@"flickr.blogs.getList", 
@@ -192,6 +205,7 @@ NSArray *OFParseSelectorString(const char *selname)
 		_context = [context retain];
 		_userInfo = nil;
 		_timeoutInterval = interval;
+		_currentRequest = nil;
 	}
 
 	return self;
@@ -220,6 +234,10 @@ NSArray *OFParseSelectorString(const char *selname)
 {
 	_selector = aSelector;
 	if (![_delegate respondsToSelector:_selector]) _selector = nil;
+}
+- (OFFlickrApplicationContext*)context
+{
+	return _context;
 }
 - (NSString*)combineStringWithComma:(NSArray*)array;
 {
@@ -254,16 +272,29 @@ NSArray *OFParseSelectorString(const char *selname)
 	}
 	return d;
 }
-- (BOOL)performMethod:(NSString*)method parametersAsArray:(NSArray*)parameter
+- (id)cancel
+{
+	if (_currentRequest) [_currentRequest cancel];
+}
+- (BOOL)callMethod:(NSString*)method arguments:(NSArray*)args
 {
 	NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:
-		[self prepareParameterDictionary:parameter]];
+		[self prepareParameterDictionary:args]];
 
 	BOOL auth = NO;
+	BOOL sign = NO;
 	BOOL post = NO;
-	
+
+	if ([OFGetRequireSignSet() containsObject:method]) sign = YES;
 	if ([OFGetRequireAuthSet() containsObject:method]) auth = YES;
 	if ([OFGetRequirePOSTSet() containsObject:method]) post = YES;
+	
+	if (auth) sign = YES;
+
+	NSLog(@"method %@, auth = %@, sign = %@, use HTTP POST = %@", method,
+		auth ? @"YES" : @"NO",
+		sign ? @"YES" : @"NO",
+		post ? @"YES" : @"NO");
 	
 	if ([d objectForKey:@"auth"]) {
 		auth = YES;
@@ -277,23 +308,42 @@ NSArray *OFParseSelectorString(const char *selname)
 	BOOL r=NO;
 	
 	if (post) {
-		r = [request POSTRequest:[_context RESTAPIEndPoint] data:[_context prepareRESTPOSTData:d authentication:auth sign:auth] userInfo:nil];
+		r = [request POSTRequest:[_context RESTAPIEndPoint] data:[_context prepareRESTPOSTData:d authentication:auth sign:sign] userInfo:nil];
 	}
 	else {
-		r = [request GETRequest:[_context prepareRESTGETURL:d authentication:auth sign:auth] userInfo:nil];
+		r = [request GETRequest:[_context prepareRESTGETURL:d authentication:auth sign:sign] userInfo:nil];
 	}
 	
+	_currentRequest = nil;
 	if (!r) return NO;
 	
 	[request retain];
+	_currentRequest = request;
+
 	return YES;
 }
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didCancel:(id)userinfo
 {
-	if ([_delegate respondsToSelector:@selector(flickrAPICaller:error:errorInfo:)]) {
-		[_delegate flickrAPICaller:self error:OFAPICallCanceled errorInfo:nil];
+	NSString *errmsg = nil;
+	int errcode = OFAPICallCanceled;
+	if (_selector) {
+		// we can be quote sure this works only if _delegate reponses to _selector
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:_selector];
+		NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
+		[inv setArgument:&_delegate atIndex:0];
+		[inv setArgument:&_selector atIndex:1];
+		[inv setArgument:&self atIndex:2];
+		[inv setArgument:&errcode atIndex:3];
+		[inv setArgument:&errmsg atIndex:4];
+		[inv invokeWithTarget:_delegate];
+	}
+	else {
+		if ([_delegate respondsToSelector:@selector(flickrAPICaller:error:errorInfo:)]) {
+			[_delegate flickrAPICaller:self error:OFAPICallCanceled errorInfo:nil];
+		}
 	}
 	[request autorelease];
+	_currentRequest = nil;
 }
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didFetchData:(NSXMLDocument*)xmldoc userInfo:(id)userinfo
 {
@@ -329,16 +379,32 @@ NSArray *OFParseSelectorString(const char *selname)
 	}
 
 	[request autorelease];
+	_currentRequest = nil;
 }
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errorCode errorInfo:(id)errinfo userInfo:(id)userinfo
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errcode errorInfo:(id)errinfo userInfo:(id)userinfo
 {
-	if ([_delegate respondsToSelector:@selector(flickrAPICaller:error:errorInfo:)]) {
-		[_delegate flickrAPICaller:self error:errorCode errorInfo:errinfo];
+	if (_selector) {
+		// we can be quote sure this works only if _delegate reponses to _selector
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:_selector];
+		NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
+		[inv setArgument:&_delegate atIndex:0];
+		[inv setArgument:&_selector atIndex:1];
+		[inv setArgument:&self atIndex:2];
+		[inv setArgument:&errcode atIndex:3];
+		[inv setArgument:&errinfo atIndex:4];
+		[inv invokeWithTarget:_delegate];
+	}
+	else {
+		if ([_delegate respondsToSelector:@selector(flickrAPICaller:error:errorInfo:)]) {
+			[_delegate flickrAPICaller:self error:errcode errorInfo:errinfo];
+		}
 	}
 	[request autorelease];
+	_currentRequest = nil;
 }
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo
 {
+	_currentRequest = request;
 	if ([_delegate respondsToSelector:@selector(flickrAPICaller:progress:expectedTotal:)]) {
 		[_delegate flickrAPICaller:self progress:receivedBytes expectedTotal:total];
 	}
@@ -408,17 +474,9 @@ NSArray *OFParseSelectorString(const char *selname)
 	
 	NSLog(@"finished prepared, method = %@, argument = %@", methodname, [param description]);
 
-	if (c > 0) {
-		[inv setReturnValue:&self];
-	}
-/*
-	
 	BOOL r;
-	NSString *null = @"";
-	r = [self performMethod:methodname parametersAsArray:param];
+	r = [self callMethod:methodname arguments:param];
 	if (r)  [inv setReturnValue:&self];
-	
-	*/
 }
 
 @end
