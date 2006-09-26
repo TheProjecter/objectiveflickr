@@ -7,25 +7,31 @@ enum {
 	LSButtonCancelState = 0,
 	LSButtonLoginState = 1,
 	LSButtonContinueState = 2,
-	LSButtonRetryState = 3
+	LSButtonRetryState = 3,
 };
 
 @implementation LoginSheetController
+- (void)dealloc
+{
+	if (_apicall) [_apicall release];
+	if (_token) [_token release];
+	[super dealloc];
+}
+- (NSDictionary*)token
+{
+	return _token;
+}
 - (void)setState:(int)s
 {
-	state = s;
+	_state = s;
 
-	// set button equivalent to none
-	[actionButton setKeyEquivalent:@""];
-	
-	switch(state)
+	switch(_state)
 	{
 		case LSButtonCancelState:
 			// set button equivalent to ESC
 			[actionButton setTitle:MSG(@"Cancel")];
 			break;
 		case LSButtonLoginState:
-			[actionButton setKeyEquivalent:@"\x1b"];
 			[textMessage setStringValue:@"Please login"];
 			[actionButton setTitle:MSG(@"Login")];
 			break;
@@ -35,21 +41,25 @@ enum {
 			[actionButton setTitle:MSG(@"Continue")];
 			break;
 		case LSButtonRetryState:
-			state = LSButtonLoginState;
+			_state = LSButtonLoginState;
 			[textMessage setStringValue:@"Login failed, please try"];
 			[actionButton setTitle:MSG(@"Retry")];
 			break;
 	}
 }
+- (void)awakeFromNib 
+{
+	[self setState:LSButtonLoginState];
+}
 - (IBAction)buttonAction:(id)sender
 {
 	NSString *token;
 
-	switch(state)
+	switch(_state)
 	{
 		case LSButtonCancelState:
 			// cancel connection
-			[apicall cancel];
+			[_apicall cancel];
 			[self setState:LSButtonLoginState];
 			break;
 			
@@ -65,16 +75,16 @@ enum {
 			token = [[NSApp delegate] storedAuthToken];
 			
 			if ([token length]) {
-				[[apicall context] setAuthToken:token];
-				[apicall setSelector:@selector(handleCheckAuth:error:data:)];
-				[apicall callMethod:@"flickr.auth.checkToken" arguments:nil];
+				[[_apicall context] setAuthToken:token];
+				[_apicall setSelector:@selector(handleCheckAuth:error:data:)];
+				[_apicall callMethod:@"flickr.auth.checkToken" arguments:nil];
 				break;
 			}
 			
 			// if not, get a frob
 			[textMessage setStringValue:MSG(@"Connecting to Flickr...")];
-			[apicall setSelector:@selector(handleGetFrob:error:data:)];
-			[apicall callMethod:@"flickr.auth.getFrob" arguments:nil];
+			[_apicall setSelector:@selector(handleGetFrob:error:data:)];
+			[_apicall callMethod:@"flickr.auth.getFrob" arguments:nil];
 			break;
 		case LSButtonContinueState:	
 			[self setState:LSButtonCancelState];
@@ -85,10 +95,10 @@ enum {
 			[[NSApp delegate] setStoredAuthToken:@""];
 			
 			// we re-use the handleCheckAuth, which is a propos
-			[apicall setSelector:@selector(handleCheckAuth:error:data:)];
+			[_apicall setSelector:@selector(handleCheckAuth:error:data:)];
 			
-			[apicall flickr_auth_getToken:nil frob:token];
-			//[apicall callMethod:@"flickr.auth.getToken" arguments: [NSArray arrayWithObjects:@"frob", token, nil]];
+			[_apicall flickr_auth_getToken:nil frob:token];
+			//[_apicall callMethod:@"flickr.auth.getToken" arguments: [NSArray arrayWithObjects:@"frob", token, nil]];
 			break;
 	}
 	
@@ -98,9 +108,10 @@ enum {
 - (void)startSheet
 {
 	NSLog(@"sheet start");
+	_token = nil;
 	OFFlickrApplicationContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
-	apicall = [OFFlickrAPICaller callerWithDelegate:self context:c];
-	[apicall retain];
+	_apicall = [OFFlickrAPICaller callerWithDelegate:self context:c];
+	[_apicall retain];
 	
 	[self setState:LSButtonLoginState];
 	[self buttonAction:self];
@@ -132,9 +143,13 @@ enum {
 	}
 	
 	NSDictionary *d = [(NSXMLDocument*)data flickrDictionaryFromDocument];
-	NSString *token = [[[d objectForKey:@"auth"] objectForKey:@"token"] objectForKey:@"$"];
-	[[NSApp delegate] setStoredAuthToken:token];
-	NSLog(@"logged in, token = %@, user name = %@", token, [[[d objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"@fullname"]);
+	NSString *t = [[[d objectForKey:@"auth"] objectForKey:@"token"] objectForKey:@"$"];
+	[[NSApp delegate] setStoredAuthToken:t];
+	NSLog(@"logged in, token = %@, user name = %@", t, [[[d objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"@fullname"]);
+	
+	_token = [NSDictionary dictionaryWithDictionary:d];
+	[_token retain];
+
 	[self closeSheet];
 }
 
@@ -167,7 +182,7 @@ enum {
 	// it's not a very decent thing we do, but we do it
 	[[NSApp delegate] setStoredAuthToken:frob];
 	
-	NSString *url = [[apicall context] prepareLoginURL:frob permission:@"read"];
+	NSString *url = [[_apicall context] prepareLoginURL:frob permission:@"read"];
 	[NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(handleOpenBrowser:) userInfo:url repeats:NO];
 	
 	[self setState:LSButtonContinueState];

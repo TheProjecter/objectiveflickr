@@ -5,6 +5,7 @@
 
 @interface ContactsBrowserApplication : NSObject
 {
+    IBOutlet id browserController;
     IBOutlet id browserWindow;
     IBOutlet id sheetController;
     IBOutlet id sheetWindow;
