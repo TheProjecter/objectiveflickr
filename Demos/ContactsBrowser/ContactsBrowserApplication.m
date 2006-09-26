@@ -37,8 +37,11 @@
 }
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	[NSApp beginSheet:sheetWindow modalForWindow:browserWindow modalDelegate:sheetController didEndSelector:nil contextInfo:nil];
-	[sheetController startLogin];
+	[NSApp beginSheet:sheetWindow modalForWindow:browserWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+	[sheetController startSheet];
+}
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
+{
 }
 - (OFFlickrApplicationContext*)context {
 	if (!_context) {

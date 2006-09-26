@@ -185,14 +185,14 @@
 
 	NSLog(@"demo: canceled! state=%@", userinfo);
 }
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errorCode errorInfo:(id)errinfo userInfo:(id)userinfo
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errcode errorInfo:(id)errinfo userInfo:(id)userinfo
 {
 	[progressIndicator stopAnimation:self];
 
-	NSLog(@"demo: error! code=%d, state=%@", errorCode, userinfo);
+	NSLog(@"demo: error! code=%d, state=%@", errcode, userinfo);
 
 	NSString *errmsg=[NSString stringWithFormat:@"%@ (error code %d)",
-		((errorCode < 0) ? @"Internal error" : @"Flickr API error"), errorCode];
+		((errcode < 0) ? @"Internal error" : @"Flickr API error"), errcode];
 	
 	NSString *informtext=nil;
 	
@@ -216,7 +216,7 @@ reauth:
 		goto reauth;
 	}
 
-	if (errorCode < 0) {
+	if (errcode < 0) {
 		informtext = @"Please check your network connection";
 	}
 	

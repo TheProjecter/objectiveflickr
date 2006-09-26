@@ -10,17 +10,9 @@
     IBOutlet id textMessage;
 	
 	OFFlickrAPICaller *apicall;
-	
 	int state;
 }
 - (IBAction)buttonAction:(id)sender;
-- (void)startLogin;
+- (void)startSheet;
 - (void)closeSheet;
 @end
-
-enum {
-	LSCheckPrevAuthToken = 0,
-	LSGetFrob = 1,
-	LSOpenBrowser = 2,
-	LSBackFromBrowser = 3
-};

@@ -85,7 +85,7 @@ enum {
 @interface NSObject(OFFlickrRESTReqestDelegate)
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didCancel:(id)userinfo;
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didFetchData:(NSXMLDocument*)xmldoc userInfo:(id)userinfo;
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errorCode errorInfo:(id)errinfo userInfo:(id)userinfo;
+- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errcode errorInfo:(id)errinfo userInfo:(id)userinfo;
 - (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo;
 @end;
 
@@ -106,6 +106,7 @@ enum {
 	SEL _selector;
 	NSTimeInterval _timeoutInterval;
 	
+	OFFlickrRESTRequest* _currentRequest;
 	id _userInfo;
 	OFFlickrApplicationContext *_context;
 }
@@ -115,14 +116,16 @@ enum {
 - (OFFlickrAPICaller*)initWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context;
 - (void)setUserInfo:(id)userinfo;
 - (id)userInfo;
+- (OFFlickrApplicationContext*)context;
 - (void)setSelector:(SEL)aSelector;
-- (BOOL)performMethod:(NSString*)method parametersAsArray:(NSArray*)parameter;
-// - (id)performBlockingCall:(NSString*)method parametersAsArray:(NSArray*)parameter;
+- (id)cancel;
+- (BOOL)callMethod:(NSString*)method arguments:(NSArray*)parameter;
+// - (id)performBlockingCall:(NSString*)method arguments:(NSArray*)parameter;
 @end
 
 @interface NSObject(OFFlickrAPICallerDelegate)
 - (void)flickrAPICaller:(OFFlickrAPICaller*)caller didFetchData:(NSXMLDocument*)xmldoc;
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller error:(int)errorCode errorInfo:(id)errInfo;
+- (void)flickrAPICaller:(OFFlickrAPICaller*)caller error:(int)errcode errorInfo:(id)errInfo;
 - (void)flickrAPICaller:(OFFlickrAPICaller*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total;
 @end;
 
@@ -171,7 +174,7 @@ enum {
 
 
 @interface NSXMLDocument(OFFlickrXMLExtension)
-- (BOOL)hasFlickrError:(int*)errorCode message:(NSString**)errorMsg;
+- (BOOL)hasFlickrError:(int*)errcode message:(NSString**)errorMsg;
 - (NSDictionary*)flickrDictionaryFromDocument;
 @end
 
