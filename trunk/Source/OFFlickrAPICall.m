@@ -239,6 +239,10 @@ NSArray *OFParseSelectorString(const char *selname)
 {
 	return _context;
 }
+- (BOOL)isClosed
+{
+	return [_currentRequest isClosed];
+}
 - (NSString*)combineStringWithComma:(NSArray*)array;
 {
 	NSMutableString *s=[NSMutableString string];
@@ -278,6 +282,8 @@ NSArray *OFParseSelectorString(const char *selname)
 }
 - (BOOL)callMethod:(NSString*)method arguments:(NSArray*)args
 {
+	if (![self isClosed]) return NO;
+
 	NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:
 		[self prepareParameterDictionary:args]];
 

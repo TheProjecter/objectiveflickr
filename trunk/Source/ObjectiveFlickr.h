@@ -119,6 +119,7 @@ enum {
 - (OFFlickrApplicationContext*)context;
 - (void)setSelector:(SEL)aSelector;
 - (id)cancel;
+- (BOOL)isClosed;
 - (BOOL)callMethod:(NSString*)method arguments:(NSArray*)parameter;
 // - (id)performBlockingCall:(NSString*)method arguments:(NSArray*)parameter;
 @end
