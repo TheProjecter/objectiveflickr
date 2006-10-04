@@ -1,4 +1,4 @@
-// ObjectiveFlickr
+// ObjectiveFlickr.h: The Framework
 // 
 // Copyright (c) 2004-2006 Lukhnos D. Liu (lukhnos {at} gmail.com)
 // All rights reserved.
@@ -30,152 +30,33 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface OFFlickrApplicationContext : NSObject
-{
-	NSString *_APIKey;
-	NSString *_sharedSecret;
-	NSString *_authToken;
-	NSDictionary *_endPoints;
-}
-+ (OFFlickrApplicationContext*)contextWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
-- (OFFlickrApplicationContext*)initWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
-- (void)setAuthToken:(NSString*)token;
-- (NSString*)authToken;
-- (void)setEndPoints:(NSDictionary*)newEndPoints;
-- (NSDictionary*)endPoints;
-- (NSString*)RESTAPIEndPoint;
-- (NSString*)prepareRESTGETURL:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign;
-- (NSString*)prepareLoginURL:(NSString*)frob permission:(NSString*)perm;
-- (NSData*)prepareRESTPOSTData:(NSDictionary*)parameters authentication:(BOOL)auth sign:(BOOL)sign;
-- (NSData*)prepareUploadData:(NSData*)data filename:(NSString*)filename information:(NSDictionary*)info;	 /* incl. title, description, tags, is_public, is_OFiend, is_family */
-- (NSString*)uploadURL;
-- (NSString*)uploadCallBackURLWithPhotos:(NSArray*)photo_ids;
-- (NSString*)uploadCallBackURLWithPhotoID:(NSString*)photo_id;
-- (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type;
-@end
-
-@interface OFFlickrRESTRequest : NSObject
-{
-	id _delegate;	
-	NSTimeInterval _timeoutInterval;
-
-	BOOL _closed;
-	NSURLConnection *_connection;
-	NSTimer *_timer;
-	id _userInfo;
-	size_t _expectedLength;
-	NSMutableData *_receivedData;
-}
-+ (OFFlickrRESTRequest*)requestWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
-- (OFFlickrRESTRequest*)initWithDelegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
-- (BOOL)isClosed;
-- (void)cancel;
-- (BOOL)GETRequest:(NSString*)url userInfo:(id)info;
-- (BOOL)POSTRequest:(NSString*)url data:(NSData*)data userInfo:(id)info;
-@end
-
-#define OFRequestDefaultTimeoutInterval  10.0			// 10 seconds
+// Shared constants and enums
+#define OFDefaultTimeoutInterval  15.0
 
 enum {
-	OFRequestConnectionError = -1,
-	OFRequestConnectionTimeout = -2,
-	OFRequestMalformedXMLDocument = -3
-};
-
-@interface NSObject(OFFlickrRESTReqestDelegate)
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didCancel:(id)userinfo;
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didFetchData:(NSXMLDocument*)xmldoc userInfo:(id)userinfo;
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errcode errorInfo:(id)errinfo userInfo:(id)userinfo;
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo;
-@end;
-
-// This is what we want to do. There are two flavors that you can choose for API
-// callbacks. One is to use the traditional "delegate" flavor, with which
-// you get the three states (fetched, error [cancel now counted as an error], progress).
-// Or you can choose the "selector" flavor. The selector must have the
-// signature caller:error:data:, which conforms to the following argument list
-//     - (void)APICaller:(OFFlickrAPICaller*)caller error:(int)errorNo data:(id)data
-// if no error occurs, errorNo is set to nil, data is the loaded XML payload
-// (from which you can get an NSDictionary object later by sending flickrDictionaryFromDocument: to it)
-// if any error occurs, data is set to the error message
-// NOTE: WE DO FLICKR ERROR MESSAGE BLOCK PARSING IN OFFlickrAPICaller
-
-@interface OFFlickrAPICaller : NSObject
-{
-	id _delegate;
-	SEL _selector;
-	NSTimeInterval _timeoutInterval;
-	
-	OFFlickrRESTRequest* _currentRequest;
-	id _userInfo;
-	OFFlickrApplicationContext *_context;
-}
-+ (OFFlickrAPICaller*)callerWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context timeoutInterval:(NSTimeInterval)interval;
-+ (OFFlickrAPICaller*)callerWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context;
-- (OFFlickrAPICaller*)initWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context timeoutInterval:(NSTimeInterval)interval;
-- (OFFlickrAPICaller*)initWithDelegate:(id)aDelegate context:(OFFlickrApplicationContext*)context;
-- (void)setUserInfo:(id)userinfo;
-- (id)userInfo;
-- (OFFlickrApplicationContext*)context;
-- (void)setSelector:(SEL)aSelector;
-- (id)cancel;
-- (BOOL)isClosed;
-- (BOOL)callMethod:(NSString*)method arguments:(NSArray*)parameter;
-// - (id)performBlockingCall:(NSString*)method arguments:(NSArray*)parameter;
-@end
-
-@interface NSObject(OFFlickrAPICallerDelegate)
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller didFetchData:(NSXMLDocument*)xmldoc;
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller error:(int)errcode errorInfo:(id)errInfo;
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total;
-@end;
-
-
-#define OFAPIDefaultTimeoutInterval		OFRequestDefaultTimeoutInterval
-
-enum {
-	OFAPIConnectionError = OFRequestConnectionError,
-	OFAPIConnectionTimeout = OFRequestConnectionTimeout,
-	OFAPIMalformedXMLDocument = OFRequestMalformedXMLDocument,
-	OFAPICallCanceled = -4
+	OFConnectionError = -1,
+	OFConnectionTimeout = -2,
+	OFConnectionCanceled = -3,
+	OFXMLDocumentMalformed = -4,
 };
 
 
-@interface OFFlickrUploader : NSObject
-{
-	id _delegate;
-	
-	id _userInfo;
-	size_t _uploadSize;
-	CFReadStreamRef _stream;
-	NSMutableData *_response;
-	NSTimer *_timer;
-}
-- (id)initWithDelegate:(id)aDelegate;
-- (BOOL)upload:(NSData*)data filename:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo;
-- (BOOL)uploadWithContentsOfFile:(NSString*)filename photoInformation:(NSDictionary*)photoinfo applicationContext:(OFFlickrApplicationContext*)context userInfo:(id)userinfo;
-- (BOOL)isClosed;
-- (void)cancel;
-@end
+// Class OFFlickrContext stores information such as API key, shared secret, 
+// auth token and handles REST URL generation, call signing, and POST/upload
+// data preparation
+#import <ObjectiveFlickr/OFFlickrContext.h>
 
-@interface NSObject(OFFlickrUploaderDelegate)
-- (void)flickrUploader:(OFFlickrUploader*)uploader didComplete:(NSXMLDocument*)response userInfo:(id)userinfo;
-- (void)flickrUploader:(OFFlickrUploader*)uploader error:(int)code errorInfo:(id)errinfo userInfo:(id)userinfo;
-- (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength userInfo:(id)userinfo;
-- (void)flickrUploader:(OFFlickrUploader*)uploader didCancel:(id)userinfo;
-@end
+// Class OFFlickrInvocation handles Flickr REST API calls
+#import <ObjectiveFlickr/OFFlickrInvocation.h>
 
-@interface NSXMLNode(OFFlickrXMLExtension)
-- (NSDictionary*)flickrDictionaryFromNode;
-@end
+// Class OFFlickrUploader handles uploading of pictures (file or NSData*)
+#import <ObjectiveFlickr/OFFlickrUploader.h>
 
-@interface NSXMLElement(OFFlickrXMLExtension)
-- (NSDictionary*)flickrDictionaryFromNode;
-@end
+// A few utility categories that extend NSXML* classes to make extraction of
+// Flickr response data easier.
+#import <ObjectiveFlickr/OFFlickrXMLExtension.h>
 
-
-@interface NSXMLDocument(OFFlickrXMLExtension)
-- (BOOL)hasFlickrError:(int*)errcode message:(NSString**)errorMsg;
-- (NSDictionary*)flickrDictionaryFromDocument;
-@end
+// Two HTTP utility classes that help you make HTTP GET/POST requests quickly
+#import <ObjectiveFlickr/OFHTTPRequest.h>
+// #import <ObjectiveFlickr/OFPOSTRequest.h>
 

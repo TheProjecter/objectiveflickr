@@ -4,8 +4,8 @@
 #ifndef __OFDemoAPIKey_h
 #define __OFDemoAPIKey_h
 
-// #define OFDemoAPIKey			@""
-// #define OFDemoSharedSecret		@""
+#define OFDemoAPIKey			@"cf732d5ea5a5568a50b50556e6cd0d50"
+#define OFDemoSharedSecret		@"07676a799c5593b2"
 
 #ifndef OFDemoAPIKey
 	#error Please define your OFDemoAPIKey in OFDemoAPIKey.h.

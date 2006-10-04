@@ -41,8 +41,8 @@
 
 	NSString *uploadFilename;
 
-	OFFlickrApplicationContext *appContext;
-	OFFlickrRESTRequest *request;
+	OFFlickrContext *context;
+	OFFlickrInvocation *invoc;
 
     IBOutlet id authenticateButton;	
     IBOutlet id authMsg;

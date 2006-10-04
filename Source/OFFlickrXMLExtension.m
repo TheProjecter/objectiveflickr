@@ -1,6 +1,18 @@
 #import "ObjectiveFlickr.h"
 
 @implementation NSXMLDocument(OFFlickrXMLExtension)
++ (NSString*)flickrXMLAttribute:(NSString*)attr
+{
+	return [NSString stringWithFormat:@"%@%@", [NSXMLDocument flickrXMLAttributePrefix], attr];
+}
++ (NSString*)flickrXMLAttributePrefix
+{
+	return @"_";
+}
++ (NSString*)flickrXMLTextNodeKey
+{
+	return @"$";
+}
 - (BOOL)hasFlickrError:(int*)errorCode message:(NSString**)errorMsg
 {
 	if (errorCode) *errorCode = 0;
@@ -23,13 +35,11 @@
 	
 	NSXMLNode *stat =[[self rootElement] attributeForName:@"stat"];
 	if ([[stat stringValue] isEqualToString:@"ok"])  {
-		[d removeObjectForKey:@"@stat"];
+		[d removeObjectForKey:[NSXMLDocument flickrXMLAttribute:@"stat"]];
 	}
 	return d;
 }
 @end
-
-
 
 @implementation NSXMLNode(OFFlickrXMLExtension)
 - (NSDictionary*)flickrDictionaryFromNode
@@ -62,7 +72,7 @@
 			}
 		}
 		else {
-			[d setObject:[n stringValue] forKey:@"$"];	// text node
+			[d setObject:[n stringValue] forKey:[NSXMLDocument flickrXMLTextNodeKey]];	// text node
 		}
 	}
 	return d;
@@ -81,7 +91,7 @@
 	for (i = 0; i < c; i++) {
 		NSXMLNode *n = [a objectAtIndex:i];
 		// NSLog(@"element attr @%@=%@", [n name], [n stringValue]);
-		[d setObject:[n stringValue] forKey:[NSString stringWithFormat:@"@%@", [n name]]];
+		[d setObject:[n stringValue] forKey:[NSXMLDocument flickrXMLAttribute:[n name]]];
 	}
 	return d;
 }
