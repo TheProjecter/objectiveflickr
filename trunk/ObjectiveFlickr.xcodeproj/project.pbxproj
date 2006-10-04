@@ -33,6 +33,9 @@
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
 		6A7D7CF40AC9C1B400E9FCA3 /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
+		6A7EA2470AD3E31100B1466C /* OFFlickrInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7EA2460AD3E31100B1466C /* OFFlickrInvocation.m */; };
+		6A7F66540AD3AB8900E3252F /* OFFlickrContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A7F66520AD3AB8900E3252F /* OFFlickrContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A7F66550AD3AB8900E3252F /* OFFlickrContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7F66530AD3AB8900E3252F /* OFFlickrContext.m */; };
 		6AA09E9A0AC6C15F003E682E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
 		6AA09F3D0AC6C165003E682E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
 		6AA0A0060AC6C66B003E682E /* OFDemoAPIKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */; };
@@ -40,9 +43,7 @@
 		6AB518360AC6B8580083374D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB518350AC6B8580083374D /* WebKit.framework */; };
 		6AB518660AC6B8FF0083374D /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6AC37C390AC7ECA6008B471C /* OFFlickrXMLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC37C380AC7ECA6008B471C /* OFFlickrXMLExtension.m */; };
-		6AC37C3D0AC7ECBF008B471C /* OFFlickrAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC37C3C0AC7ECBF008B471C /* OFFlickrAPICall.m */; };
 		6AD7B2C20AC6B62F004644DE /* ObjectiveFlickr.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AD7B2C00AC6B62F004644DE /* ObjectiveFlickr.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6AD7B2C30AC6B62F004644DE /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7B2C10AC6B62F004644DE /* ObjectiveFlickr.m */; };
 		6AD7B2C70AC6B658004644DE /* CocoaCryptoHashing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7B2C50AC6B658004644DE /* CocoaCryptoHashing.m */; };
 		6AD7B2CC0AC6B6A6004644DE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
 		6AD7B2CD0AC6B6A6004644DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
@@ -53,6 +54,11 @@
 		6AD7B2FC0AC6B7CF004644DE /* ObjectiveFlickr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6AD7B2FD0AC6B7D5004644DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
 		6AD7B3000AC6B7DB004644DE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
+		6AE497ED0AD3B3B3008AA97C /* OFFlickrInvocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE497EC0AD3B3B3008AA97C /* OFFlickrInvocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6AE4980E0AD3D4D8008AA97C /* OFFlickrUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE4980D0AD3D4D8008AA97C /* OFFlickrUploader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6AE498100AD3D583008AA97C /* OFFlickrXMLExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE4980F0AD3D583008AA97C /* OFFlickrXMLExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6AE498340AD3D60F008AA97C /* OFHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE498320AD3D60F008AA97C /* OFHTTPRequest.m */; };
+		6AE4983F0AD3D9B7008AA97C /* OFHTTPRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE4983E0AD3D9B7008AA97C /* OFHTTPRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,15 +135,16 @@
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
 		6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowser_Prefix.pch; path = Demos/ContactsBrowser/ContactsBrowser_Prefix.pch; sourceTree = "<group>"; };
 		6A31EB030AC6C08C0084DA74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/ContactsBrowser/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6A7EA2460AD3E31100B1466C /* OFFlickrInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrInvocation.m; path = Source/OFFlickrInvocation.m; sourceTree = "<group>"; };
+		6A7F66520AD3AB8900E3252F /* OFFlickrContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrContext.h; path = Source/OFFlickrContext.h; sourceTree = "<group>"; };
+		6A7F66530AD3AB8900E3252F /* OFFlickrContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrContext.m; path = Source/OFFlickrContext.m; sourceTree = "<group>"; };
 		6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFDemoAPIKey.h; path = Demos/OFDemoAPIKey.h; sourceTree = "<group>"; };
 		6AB518350AC6B8580083374D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FlickrBasics-Info.plist"; sourceTree = "<group>"; };
 		6AC37C380AC7ECA6008B471C /* OFFlickrXMLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrXMLExtension.m; path = Source/OFFlickrXMLExtension.m; sourceTree = "<group>"; };
-		6AC37C3C0AC7ECBF008B471C /* OFFlickrAPICall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrAPICall.m; path = Source/OFFlickrAPICall.m; sourceTree = "<group>"; };
 		6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveFlickr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ObjectiveFlickr-Info.plist"; sourceTree = "<group>"; };
 		6AD7B2C00AC6B62F004644DE /* ObjectiveFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr.h; path = Source/ObjectiveFlickr.h; sourceTree = "<group>"; };
-		6AD7B2C10AC6B62F004644DE /* ObjectiveFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickr.m; path = Source/ObjectiveFlickr.m; sourceTree = "<group>"; };
 		6AD7B2C40AC6B658004644DE /* CocoaCryptoHashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CocoaCryptoHashing.h; path = Source/CocoaCryptoHashing/CocoaCryptoHashing.h; sourceTree = "<group>"; };
 		6AD7B2C50AC6B658004644DE /* CocoaCryptoHashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CocoaCryptoHashing.m; path = Source/CocoaCryptoHashing/CocoaCryptoHashing.m; sourceTree = "<group>"; };
 		6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -149,6 +156,12 @@
 		6AD7B2F40AC6B7BF004644DE /* ObjectiveFlickr_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr_Prefix.pch; path = Demos/Basics/ObjectiveFlickr_Prefix.pch; sourceTree = "<group>"; };
 		6AD7B2F50AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickrDemoDelegate.h; path = Demos/Basics/ObjectiveFlickrDemoDelegate.h; sourceTree = "<group>"; };
 		6AD7B2F60AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickrDemoDelegate.m; path = Demos/Basics/ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
+		6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.txt; sourceTree = "<group>"; };
+		6AE497EC0AD3B3B3008AA97C /* OFFlickrInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrInvocation.h; path = Source/OFFlickrInvocation.h; sourceTree = "<group>"; };
+		6AE4980D0AD3D4D8008AA97C /* OFFlickrUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrUploader.h; path = Source/OFFlickrUploader.h; sourceTree = "<group>"; };
+		6AE4980F0AD3D583008AA97C /* OFFlickrXMLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrXMLExtension.h; path = Source/OFFlickrXMLExtension.h; sourceTree = "<group>"; };
+		6AE498320AD3D60F008AA97C /* OFHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFHTTPRequest.m; path = Source/OFHTTPRequest.m; sourceTree = "<group>"; };
+		6AE4983E0AD3D9B7008AA97C /* OFHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFHTTPRequest.h; path = Source/OFHTTPRequest.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,15 +235,22 @@
 				6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */,
 				6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */,
 				6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */,
+				6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */,
 			);
 			sourceTree = "<group>";
 		};
 		6AD7B2AD0AC6B556004644DE /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6A7F66520AD3AB8900E3252F /* OFFlickrContext.h */,
+				6A7F66530AD3AB8900E3252F /* OFFlickrContext.m */,
 				6AD7B2C00AC6B62F004644DE /* ObjectiveFlickr.h */,
-				6AD7B2C10AC6B62F004644DE /* ObjectiveFlickr.m */,
-				6AC37C3C0AC7ECBF008B471C /* OFFlickrAPICall.m */,
+				6AE497EC0AD3B3B3008AA97C /* OFFlickrInvocation.h */,
+				6A7EA2460AD3E31100B1466C /* OFFlickrInvocation.m */,
+				6AE4980D0AD3D4D8008AA97C /* OFFlickrUploader.h */,
+				6AE4983E0AD3D9B7008AA97C /* OFHTTPRequest.h */,
+				6AE498320AD3D60F008AA97C /* OFHTTPRequest.m */,
+				6AE4980F0AD3D583008AA97C /* OFFlickrXMLExtension.h */,
 				6AC37C380AC7ECA6008B471C /* OFFlickrXMLExtension.m */,
 				6AD7B2C80AC6B65B004644DE /* CocoaCryptoHashing */,
 			);
@@ -315,6 +335,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AD7B2C20AC6B62F004644DE /* ObjectiveFlickr.h in Headers */,
+				6A7F66540AD3AB8900E3252F /* OFFlickrContext.h in Headers */,
+				6AE497ED0AD3B3B3008AA97C /* OFFlickrInvocation.h in Headers */,
+				6AE4980E0AD3D4D8008AA97C /* OFFlickrUploader.h in Headers */,
+				6AE498100AD3D583008AA97C /* OFFlickrXMLExtension.h in Headers */,
+				6AE4983F0AD3D9B7008AA97C /* OFHTTPRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,10 +409,13 @@
 		6AD7B2A20AC6B550004644DE /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 6AD7B2A30AC6B550004644DE /* Build configuration list for PBXProject "ObjectiveFlickr" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 6AD7B2A00AC6B550004644DE;
 			productRefGroup = 6AD7B2B40AC6B57C004644DE /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
+			shouldCheckCompatibility = 1;
 			targets = (
 				6AA0A03D0AC6C79D003E682E /* All */,
 				6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */,
@@ -440,10 +468,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AD7B2C30AC6B62F004644DE /* ObjectiveFlickr.m in Sources */,
 				6AD7B2C70AC6B658004644DE /* CocoaCryptoHashing.m in Sources */,
 				6AC37C390AC7ECA6008B471C /* OFFlickrXMLExtension.m in Sources */,
-				6AC37C3D0AC7ECBF008B471C /* OFFlickrAPICall.m in Sources */,
+				6A7F66550AD3AB8900E3252F /* OFFlickrContext.m in Sources */,
+				6AE498340AD3D60F008AA97C /* OFHTTPRequest.m in Sources */,
+				6A7EA2470AD3E31100B1466C /* OFFlickrInvocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

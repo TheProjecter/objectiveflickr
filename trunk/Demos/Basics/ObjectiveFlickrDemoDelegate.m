@@ -36,8 +36,9 @@
 @implementation ObjectiveFlickrDemoDelegate
 - (void)awakeFromNib 
 {	
-	appContext = [[OFFlickrApplicationContext alloc] initWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret];
-	request = [[OFFlickrRESTRequest alloc] initWithDelegate:self timeoutInterval:OFRequestDefaultTimeoutInterval];
+	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
+	invoc = [[OFFlickrInvocation invocationWithContext:context timeoutInterval:10.0] retain];
+	[invoc setDelegate:self];
 	
 	frob = nil;
 	token = nil;
@@ -55,18 +56,16 @@
 	if (token) [token release];
 	if (photos) [photos release];
 	if (uploadFilename) [uploadFilename release];
-	[appContext release];
-	[request release];
+	[context release];
+	[invoc release];
 	[super dealloc];
 }
 - (IBAction)getFrob:(id)sender
 {
 	[progressIndicator startAnimation:self];
 
-	NSDictionary *param=[NSDictionary dictionaryWithObjectsAndKeys:
-		@"flickr.auth.getFrob", @"method", nil];
-	NSString *urlstr=[appContext prepareRESTGETURL:param authentication:NO sign:YES];
-	[request GETRequest:urlstr userInfo:@"getFrob"];
+	[invoc setUserInfo:@"getFrob"];
+	[invoc callMethod:@"flickr.auth.getFrob" arguments:nil];
 }
 - (IBAction)authenticate:(id)sender
 {
@@ -80,18 +79,14 @@
 	}
 	
 	[getTokenButton setEnabled:YES];
-	NSString *authurl=[appContext prepareLoginURL:frob permission:@"write"];
+	NSString *authurl=[context prepareLoginURL:frob permission:@"write"];
 	system([[NSString stringWithFormat:@"open '%@'", authurl] UTF8String]);
 	[authenticateButton setEnabled:NO];
 }
 - (IBAction)getToken:(id)sender
 {
-	NSDictionary *param=[NSDictionary dictionaryWithObjectsAndKeys:
-		@"flickr.auth.getToken", @"method",
-		frob, @"frob", nil];
-		
-	NSString *urlstr=[appContext prepareRESTGETURL:param authentication:NO sign:YES];
-	[request GETRequest:urlstr userInfo:@"getToken"];
+	[invoc setUserInfo:@"getToken"];
+	[invoc callMethod:@"flickr.auth.getToken" arguments:[NSArray arrayWithObjects:@"frob", frob, nil]];
 }
 - (BOOL)hasFlickrError:(NSXMLDocument*)doc receiveCode:(int*)code receiveMessage:(NSString**)message 
 {
@@ -113,73 +108,18 @@
 	*message = [NSString stringWithString:[msg stringValue]];
 	return YES;
 }
-
-- (NSString*)extractToken:(NSXMLDocument*)doc
+- (void)flickrInvocation:(OFFlickrInvocation*)invocation errorCode:(int)errcode errorInfo:(id)errinfo
 {
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/auth/token" error:nil] objectAtIndex:0];
-	return [NSString stringWithString:[e stringValue]];
-}
-- (NSDictionary*)extractTokenDictionary:(NSXMLDocument*)doc
-{
-	NSMutableDictionary *d=[NSMutableDictionary dictionary];
+	NSString *userinfo = [invoc userInfo];
 
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/auth/token" error:nil] objectAtIndex:0];
-	[d setObject:[e stringValue] forKey:@"token"];
-	e = [[doc nodesForXPath:@"/rsp/auth/perms" error:nil] objectAtIndex:0];
-	[d setObject:[e stringValue] forKey:@"perms"];
-	e = [[doc nodesForXPath:@"/rsp/auth/user" error:nil] objectAtIndex:0];
-	[d setObject:[[e attributeForName:@"nsid"] stringValue] forKey:@"nsid"];
-	[d setObject:[[e attributeForName:@"username"] stringValue] forKey:@"username"];
-	[d setObject:[[e attributeForName:@"fullname"] stringValue] forKey:@"fullname"];
+	[progressIndicator stopAnimation:self];
 
-	return d;
-}
-- (NSString*)extractFrob:(NSXMLDocument*)doc
-{
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/frob" error:nil] objectAtIndex:0];
-	return [NSString stringWithString:[e stringValue]];
-}
-- (NSDictionary*)extractPhotos:(NSXMLDocument*)doc
-{
-	NSMutableDictionary *d=[NSMutableDictionary dictionary];
-
-	NSXMLElement *e = [[doc nodesForXPath:@"/rsp/photos" error:nil] objectAtIndex:0];
-	[d setObject:[[e attributeForName:@"page"] stringValue] forKey:@"page"];
-	[d setObject:[[e attributeForName:@"pages"] stringValue] forKey:@"pages"];
-	[d setObject:[[e attributeForName:@"perpage"] stringValue] forKey:@"perpage"];
-	[d setObject:[[e attributeForName:@"total"] stringValue] forKey:@"total"];
-	
-	NSMutableArray *a=[NSMutableArray array];
-	size_t i, c=[e childCount];
-	for (i=0; i<c; i++) {
-		NSXMLElement *f = (NSXMLElement*)[e childAtIndex:i];
-		
-		NSMutableDictionary *p=[NSMutableDictionary dictionary];
-		[p setObject:[[f attributeForName:@"id"] stringValue] forKey:@"id"];
-		[p setObject:[[f attributeForName:@"owner"] stringValue] forKey:@"owner"];
-		[p setObject:[[f attributeForName:@"secret"] stringValue] forKey:@"secret"];
-		[p setObject:[[f attributeForName:@"server"] stringValue] forKey:@"server"];
-		[p setObject:[[f attributeForName:@"title"] stringValue] forKey:@"title"];
-		[p setObject:[[f attributeForName:@"ispublic"] stringValue] forKey:@"ispublic"];
-		[p setObject:[[f attributeForName:@"isfriend"] stringValue] forKey:@"isfriend"];
-		[p setObject:[[f attributeForName:@"isfamily"] stringValue] forKey:@"isfamily"];
-		[a addObject:p];
+	if (errcode == OFConnectionCanceled) {
+		NSLog(@"demo: canceled! state=%@", userinfo);
+		return;
 	}
-
-	[d setObject:a forKey:@"photos"];
-	return d;
-}
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request didCancel:(id)userinfo 
-{
-	[progressIndicator stopAnimation:self];
-
-	NSLog(@"demo: canceled! state=%@", userinfo);
-}
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request error:(int)errcode errorInfo:(id)errinfo userInfo:(id)userinfo
-{
-	[progressIndicator stopAnimation:self];
-
-	NSLog(@"demo: error! code=%d, state=%@", errcode, userinfo);
+	
+	NSLog(@"demo: error! code=%d, errinfo=%@, state=%@", errcode, errinfo, userinfo);
 
 	NSString *errmsg=[NSString stringWithFormat:@"%@ (error code %d)",
 		((errcode < 0) ? @"Internal error" : @"Flickr API error"), errcode];
@@ -217,28 +157,24 @@ reauth:
 		informativeTextWithFormat:informtext
 	] runModal];	
 }
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)request progress:(size_t)receivedBytes expectedTotal:(size_t)total userInfo:(id)userinfo
+
+- (void)flickrInvocation:(OFFlickrInvocation*)invocation progress:(size_t)receivedBytes expectedTotal:(size_t)total;
 {
+	id userinfo = [invocation userInfo];
 	NSLog(@"demo: reading data (%ld bytes of %ld), state=%@", receivedBytes, total, userinfo);
 }
-- (void)flickrRESTRequest:(OFFlickrRESTRequest*)req didFetchData:(NSXMLDocument*)xmldoc userInfo:(id)userinfo
+- (void)flickrInvocation:(OFFlickrInvocation*)invocation didFetchData:(NSXMLDocument*)xmldoc
 {
 	[progressIndicator stopAnimation:self];
-
-	NSLog(@"demo: data fetched! state=%@, data=%@", userinfo, [xmldoc description]);
-
-	NSLog(@"Data received! state=%@", userinfo);
 	
-	int errcode;
-	NSString *errmsg;
-	if ([self hasFlickrError:xmldoc receiveCode:&errcode receiveMessage:&errmsg]) {
-		[self flickrRESTRequest:req error:errcode errorInfo:errmsg userInfo:userinfo];
-		return;
-	}
+	NSDictionary *payload = [xmldoc flickrDictionaryFromDocument];
+	NSLog(@"data received, payload = %@", [payload description]);
+	
+	id userinfo = [invocation userInfo];
 
 	if ([userinfo isEqualToString:@"getFrob"]) {
 		if (frob) [frob release];
-		frob = [[NSString stringWithString: [self extractFrob:xmldoc]] retain];
+		frob = [[NSString stringWithString: [payload valueForKeyPath:@"frob.$"]] retain];
 		
 		[frobMsg setStringValue: [NSString stringWithFormat:@"obtained frob=%@", frob]];
 		
@@ -248,13 +184,12 @@ reauth:
 		[authenticateButton setEnabled:YES];
 	}
 	else if ([userinfo isEqualToString:@"getToken"]) {
-		token = [NSDictionary dictionaryWithDictionary:[self extractTokenDictionary:xmldoc]];
-		NSLog([token description]);
-		[token retain];
-		[appContext setAuthToken:[token objectForKey:@"token"]];
+		token = [[NSDictionary dictionaryWithDictionary:payload] retain];
+		// NSLog(@"auth token=%@", [token valueForKeyPath:@"auth.token.$"]);
+		[context setAuthToken:[token valueForKeyPath:@"auth.token.$"]];
 
 		[authMsg setStringValue:@"authentication process completed"];		
-		[tokenMsg setStringValue:[NSString stringWithFormat:@"token obtained, logged in as %@", [token objectForKey:@"username"]]];
+		[tokenMsg setStringValue:[NSString stringWithFormat:@"token obtained, logged in as %@", [token valueForKeyPath:@"auth.user._fullname"]]];
 		[authenticateButton setEnabled:NO];
 		[getTokenButton setEnabled:NO];
 		
@@ -263,21 +198,12 @@ reauth:
 		[browserBox setTitle:@"Getting my recent photos..."];
 		[progressIndicator startAnimation:self];
 	
-		NSDictionary *calldict = [NSDictionary dictionaryWithObjectsAndKeys:
-			@"flickr.people.getPublicPhotos", @"method",
-			[token objectForKey:@"nsid"], @"user_id", nil];
-
-		NSString *callurl = [appContext prepareRESTGETURL:calldict authentication:NO sign:NO];
-
-		NSLog(@"calling %@", callurl);
-		[request GETRequest:callurl userInfo:@"getPhotoList"];
-
+		[invoc setUserInfo:@"getPhotoList"];
+		[invoc callMethod:@"flickr.people.getPublicPhotos" arguments:[NSArray arrayWithObjects:@"user_id", [token valueForKeyPath:@"auth.user._nsid"], nil]];
 	}
 	else if ([userinfo isEqualToString:@"getPhotoList"]) {
-		NSDictionary *d=[self extractPhotos:xmldoc];
-		
 		if (photos) [photos release];
-		photos=[[NSArray arrayWithArray:[d objectForKey:@"photos"]] retain];
+		photos=[[NSArray arrayWithArray:[payload valueForKeyPath:@"photos.photo"]] retain];
 
 		[photoList reloadData];
 		[browserBox setTitle:@"My recent photos"];
@@ -286,10 +212,10 @@ reauth:
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex {
 	NSDictionary *o=[photos objectAtIndex:rowIndex];
 			
-	NSString *u=[appContext photoURLFromID:[o objectForKey:@"id"]
-		serverID:[o objectForKey:@"server"]
-		secret:[o objectForKey:@"secret"]
-		size:@"t"
+	NSString *u = [context photoURLFromID:[o objectForKey:@"_id"]
+		serverID:[o objectForKey:@"_server"]
+		secret:[o objectForKey:@"_secret"]
+		size:@"t" 
 		type:nil];
 
 	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:u]]];
@@ -303,10 +229,10 @@ reauth:
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
 	NSDictionary *o=[photos objectAtIndex:rowIndex];
 	if ([[aTableColumn identifier] isEqualToString:@"id"]) {
-		return [o objectForKey:@"id"];
+		return [o objectForKey:@"_id"];
 	}
 	else if ([[aTableColumn identifier] isEqualToString:@"title"]) {
-		return [o objectForKey:@"title"];
+		return [o objectForKey:@"_title"];
 	}
 	return @"";
 }
@@ -318,6 +244,11 @@ reauth:
 {
 	[progressIndicator stopAnimation:self];
 }
+- (IBAction)upload:(id)sender
+{
+}
+
+/*
 - (IBAction)upload:(id)sender
 {
 	NSOpenPanel *op=[NSOpenPanel openPanel];
@@ -374,6 +305,6 @@ reauth:
 	[uploadMsg setStringValue:@"upload canceled"];
 	[uploader release];
 }
-
+*/
 @end
 

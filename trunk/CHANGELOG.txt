@@ -1,0 +1,5 @@
+2006-10-04: 
+
+Migration notes:
+
+* OFFlickrApplicationContext is changed to OFFlickrContext
