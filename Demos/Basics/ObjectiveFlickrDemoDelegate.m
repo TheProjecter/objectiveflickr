@@ -37,8 +37,8 @@
 - (void)awakeFromNib 
 {	
 	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
-	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self timeoutInterval:10.0] retain];
-	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self] retain];
+	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self] retain];
+	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self timeoutInterval:0.3] retain];
 	
 	frob = nil;
 	token = nil;
@@ -259,6 +259,7 @@ reauth:
 }
 - (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)bytesSent total:(size_t)totalLength userInfo:(id)userinfo
 {
+	NSLog(@"%ld bytes uploaded (of %ld bytes)", bytesSent, totalLength);
 	if (bytesSent != totalLength) {
 		[uploadMsg setStringValue:[NSString stringWithFormat:@"%ld bytes uploaded (of %ld bytes)", bytesSent, totalLength]];
 	}

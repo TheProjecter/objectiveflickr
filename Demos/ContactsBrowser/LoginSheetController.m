@@ -83,8 +83,10 @@ enum {
 			
 			// if not, get a frob
 			[textMessage setStringValue:MSG(@"Connecting to Flickr...")];
-			[_apicall setSelector:@selector(handleGetFrob:error:data:)];
-			[_apicall callMethod:@"flickr.auth.getFrob" arguments:nil];
+			// [_apicall setSelector:@selector(handleGetFrob:error:data:)];
+			// [_apicall callMethod:@"flickr.auth.getFrob" arguments:nil];
+			// [_apicall callMethod:@"flickr.auth.getFrob" arguments:nil selector:@selector(handleGetFrob:error:data:)];
+			[_apicall flickr_auth_getFrob:nil selector:@selector(handleGetFrob:error:data:)];
 			break;
 		case LSButtonContinueState:	
 			[self setState:LSButtonCancelState];
@@ -109,20 +111,20 @@ enum {
 {
 	NSLog(@"sheet start");
 	_token = nil;
-	OFFlickrApplicationContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
-	_apicall = [OFFlickrAPICaller callerWithDelegate:self context:c];
+	OFFlickrContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
+	_apicall = [OFFlickrInvocation invocationWithContext:c delegate:self];
 	[_apicall retain];
 	
 	[self setState:LSButtonLoginState];
 	[self buttonAction:self];
 }
 
-- (void)handleCheckAuth:(OFFlickrAPICaller*)caller error:(int)errorNo data:(id)data
+- (void)handleCheckAuth:(OFFlickrInvocation*)caller error:(int)errorNo data:(id)data
 {
 	NSLog(@"handle check auth / get token");
 	[progressIndicator stopAnimation:self];
 	if (errorNo) {
-		if (errorNo == OFAPICallCanceled) {
+		if (errorNo == OFConnectionCanceled) {
 			NSLog(@"check auth canceled");
 			return;
 		}
@@ -161,12 +163,12 @@ enum {
 	[progressIndicator stopAnimation:self];
 	system([[NSString stringWithFormat:@"open '%@'", [timer userInfo]] UTF8String]);
 }
-- (void)handleGetFrob:(OFFlickrAPICaller*)caller error:(int)errorNo data:(id)data
+- (void)handleGetFrob:(OFFlickrInvocation*)caller error:(int)errorNo data:(id)data
 {
 	NSLog(@"handle get frob");
 	[progressIndicator stopAnimation:self];
 	if (errorNo) {
-		if (errorNo == OFAPICallCanceled) {
+		if (errorNo == OFConnectionCanceled) {
 			NSLog(@"get frob canceled");
 			return;
 		}
@@ -189,16 +191,16 @@ enum {
 	[self setState:LSButtonContinueState];
 }
 
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller didFetchData:(NSXMLDocument*)xmldoc
+- (void)flickrInvocation:(OFFlickrInvocation*)caller didFetchData:(NSXMLDocument*)xmldoc
 {
 	NSLog(@"api: data fetched (we shouldn't reach here though)");
 	NSLog([[xmldoc flickrDictionaryFromDocument] description]);
 }
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller error:(int)errcode errorInfo:(id)errInfo
+- (void)flickrInvocation:(OFFlickrInvocation*)caller errorCode:(int)errcode errorInfo:(id)errInfo
 {
 	NSLog(@"api: error (we shouldn't reach here though), code=%d, message=%@", errcode, errInfo);
 }
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total
+- (void)flickrInvocation:(OFFlickrInvocation*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total
 {
 	NSLog(@"api: progress %ld of %ld", receivedBytes, total);
 }

@@ -1,4 +1,4 @@
-ObjectiveFlickr
+ObjectiveFlickr is released under New BSD License
 
 Copyright (c) 2004-2006 Lukhnos D. Liu (lukhnos {at} gmail.com)
 All rights reserved.

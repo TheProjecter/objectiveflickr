@@ -1,3 +1,4 @@
+#import "ContactsBrowserApplication.h"
 #import "ContactsBrowserController.h"
 #import "LoginSheetController.h"
 
@@ -7,7 +8,7 @@
 	if (_apicall) [_apicall release];
 	[super dealloc];
 }
-- (void)obtainContacts:(OFFlickrAPICaller*)caller errorCode:(int)errcode data:(id)data
+- (void)obtainContacts:(OFFlickrInvocation*)caller errorCode:(int)errcode data:(id)data
 {
 	[progressIndicator stopAnimation:self];
 
@@ -34,7 +35,7 @@
 	NSLog(@"contacts obtained! data=%@", [_contacts description]);
 	[contactsList reloadData];
 }
-- (void)flickrAPICaller:(OFFlickrAPICaller*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total
+- (void)flickrInvocation:(OFFlickrInvocation*)caller progress:(size_t)receivedBytes expectedTotal:(size_t)total
 {
 	NSLog(@"contactsBrowser, progress %ld of %ld", receivedBytes, total);
 }
@@ -50,13 +51,14 @@
 	[[self window] setTitle:[NSString stringWithFormat:@"Contacts of %@", 
 		[[[token objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"@fullname"]
 		]];
-		
-	_apicall = [OFFlickrAPICaller callerWithDelegate:self context:[[NSApp delegate] context]];
+	
+	OFFlickrContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
+	_apicall = [OFFlickrInvocation invocationWithContext:c delegate:self];
 	[_apicall retain];
 	
 	[progressIndicator startAnimation:self];
-	[_apicall setSelector:@selector(obtainContacts:errorCode:data:)];
-	[_apicall flickr_contacts_getList];
+	// [_apicall setSelector:@selector(obtainContacts:errorCode:data:)];
+	[_apicall flickr_contacts_getList:self selector:@selector(obtainContacts:errorCode:data:)];
 }
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -64,18 +66,18 @@
 }
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
 {
-	NSString *realname = [[_contacts objectAtIndex:rowIndex] objectForKey:@"@realname"];
-	if (![realname length]) realname = [[_contacts objectAtIndex:rowIndex] objectForKey:@"@username"];
+	NSString *realname = [[_contacts objectAtIndex:rowIndex] objectForKey:@"_realname"];
+	if (![realname length]) realname = [[_contacts objectAtIndex:rowIndex] objectForKey:@"_username"];
 	return realname;
 }
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
 	NSDictionary *d = [_contacts objectAtIndex:rowIndex];
 
-	NSString *un = [d objectForKey:@"@username"];
-	NSString *rn = [d objectForKey:@"@realname"];
-	NSString *fr = [d objectForKey:@"@friend"];
-	NSString *fa = [d objectForKey:@"@family"];
+	NSString *un = [d objectForKey:@"_username"];
+	NSString *rn = [d objectForKey:@"_realname"];
+	NSString *fr = [d objectForKey:@"_friend"];
+	NSString *fa = [d objectForKey:@"_family"];
 
 	[labelUserName setStringValue:un];
 	[labelRealName setStringValue:rn];

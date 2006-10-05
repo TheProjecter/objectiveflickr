@@ -1,4 +1,40 @@
+// OFFlickrInvocation.m
+// 
+// Copyright (c) 2004-2006 Lukhnos D. Liu (lukhnos {at} gmail.com)
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of ObjectiveFlickr nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
+
+// this stops compiler from giving us a warning when we call this
+// undocumented method
+@interface NSMethodSignature (OFFlickrInvocationHack)
++ (NSMethodSignature*)signatureWithObjCTypes:(const char*)type;
+@end
 
 @interface OFFlickrInvocation (OFFlickrInvocationInternals)
 - (void)dealloc;
@@ -116,7 +152,7 @@
 		sign ? @"YES" : @"NO",
 		post ? @"YES" : @"NO");
 	
-	if ([d objectForKey:@"auth"]) {
+	if ([d objectForKey:@"auth"]) {			// force to use authentication
 		auth = YES;
 		[d removeObjectForKey:@"auth"];
 	}
@@ -134,6 +170,11 @@
 		return [_request GET:[_context prepareRESTGETURL:d authentication:auth sign:sign] userInfo:nil];
 	}
 
+}
+- (BOOL)callMethod:(NSString*)method arguments:(NSArray*)parameter selector:(SEL)aSelector
+{
+	[self setSelector:aSelector];
+	return [self callMethod:method arguments:parameter];
 }
 - (BOOL)callMethod:(NSString*)method arguments:(NSArray*)parameter delegate:(id)aDelegate selector:(SEL)aSelector
 {
@@ -364,9 +405,19 @@
 	methodname = [NSString stringWithUTF8String:repstr];
 	
 	for (i = 1; i < c; i++) {
-		[param addObject:[selarray objectAtIndex:i]];		
+		NSString *paramname = [selarray objectAtIndex:i];
 		[inv getArgument:&arg atIndex:2+i];
-		[param addObject:arg];
+
+		if ([paramname isEqualToString:@"selector"]) {
+			[self setSelector:(SEL)arg];
+		}
+		else if ([paramname isEqualToString:@"delegate"]) {
+			[self setDelegate:arg];
+		}
+		else {
+			[param addObject:paramname];
+			[param addObject:arg];
+		}
 	}
 	
 	NSLog(@"finished prepared, method = %@, argument = %@", methodname, [param description]);

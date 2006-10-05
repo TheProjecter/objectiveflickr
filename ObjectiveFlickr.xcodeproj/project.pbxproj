@@ -145,6 +145,9 @@
 		6A7F66520AD3AB8900E3252F /* OFFlickrContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrContext.h; path = Source/OFFlickrContext.h; sourceTree = "<group>"; };
 		6A7F66530AD3AB8900E3252F /* OFFlickrContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrContext.m; path = Source/OFFlickrContext.m; sourceTree = "<group>"; };
 		6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFDemoAPIKey.h; path = Demos/OFDemoAPIKey.h; sourceTree = "<group>"; };
+		6AAA6DA80AD551E60093515C /* ACKNOWLEDGMENTS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ACKNOWLEDGMENTS.txt; sourceTree = "<group>"; };
+		6AAA6DA90AD551E60093515C /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		6AAA6DAA0AD551E60093515C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		6AB518350AC6B8580083374D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FlickrBasics-Info.plist"; sourceTree = "<group>"; };
 		6AC37C380AC7ECA6008B471C /* OFFlickrXMLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrXMLExtension.m; path = Source/OFFlickrXMLExtension.m; sourceTree = "<group>"; };
@@ -210,13 +213,13 @@
 			children = (
 				6A4639640AC6DCC20015C3E9 /* Resources */,
 				6A31EAEE0AC6BFBD0084DA74 /* main.m */,
-				6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */,
 				6A0792D80AC70AD30004DA47 /* LoginSheetController.h */,
 				6A0792D90AC70AD30004DA47 /* LoginSheetController.m */,
 				6A0792DC0AC70AD80004DA47 /* ContactsBrowserController.h */,
 				6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */,
 				6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */,
 				6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */,
+				6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */,
 			);
 			name = ContactsBrowser;
 			sourceTree = "<group>";
@@ -233,6 +236,10 @@
 		6AD7B2A00AC6B550004644DE = {
 			isa = PBXGroup;
 			children = (
+				6AAA6DAA0AD551E60093515C /* README.txt */,
+				6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */,
+				6AAA6DA90AD551E60093515C /* LICENSE.txt */,
+				6AAA6DA80AD551E60093515C /* ACKNOWLEDGMENTS.txt */,
 				6AD7B2AD0AC6B556004644DE /* Framework */,
 				6AD7B2BC0AC6B5E1004644DE /* Demos */,
 				6AD7B2C90AC6B674004644DE /* Linked Frameworks */,
@@ -241,7 +248,6 @@
 				6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */,
 				6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */,
 				6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */,
-				6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */,
 			);
 			sourceTree = "<group>";
 		};
