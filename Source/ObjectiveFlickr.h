@@ -58,5 +58,5 @@ enum {
 
 // Two HTTP utility classes that help you make HTTP GET/POST requests quickly
 #import <ObjectiveFlickr/OFHTTPRequest.h>
-// #import <ObjectiveFlickr/OFPOSTRequest.h>
+#import <ObjectiveFlickr/OFPOSTRequest.h>
 

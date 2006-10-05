@@ -10,9 +10,11 @@
 	OFFlickrContext *_context;
 }
 + (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context;
-+ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context timeoutInterval:(NSTimeInterval)interval;
++ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context delegate:(id)aDelegate;
++ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context delegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
 - (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context;
-- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context timeoutInterval:(NSTimeInterval)interval;
+- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context delegate:(id)aDelegate;
+- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context delegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval;
 - (id)delegate;
 - (void)setDelegate:(id)aDelegate;
 - (void)setSelector:(SEL)aSelector;
