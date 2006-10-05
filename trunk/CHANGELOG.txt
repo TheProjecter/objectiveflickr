@@ -1,5 +1,10 @@
+ObjectiveFlickr: Change Log
+
 2006-10-04: 
 
 Migration notes:
 
 * OFFlickrApplicationContext is changed to OFFlickrContext
+* OFFlickrRESTRequest is gone
+* OFFlickrAPICaller is renamed to OFFlickrInvocation
+* Many method names are renamed to reflect design changes

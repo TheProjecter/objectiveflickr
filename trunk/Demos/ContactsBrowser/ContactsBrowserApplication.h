@@ -10,10 +10,10 @@
     IBOutlet id sheetController;
     IBOutlet id sheetWindow;
 	
-	OFFlickrApplicationContext* _context;
+	OFFlickrContext* _context;
 }
 - (IBAction)terminate:(id)sender;
-- (OFFlickrApplicationContext*)context;
+- (OFFlickrContext*)context;
 - (NSString*)storedAuthToken;
 - (void)setStoredAuthToken:(NSString*)token;
 @end

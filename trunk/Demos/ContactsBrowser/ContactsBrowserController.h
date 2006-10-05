@@ -13,7 +13,7 @@
     IBOutlet id progressIndicator;
     IBOutlet id sheetController;
 	
-	OFFlickrAPICaller *_apicall;
+	OFFlickrInvocation *_apicall;
 	NSArray *_contacts;
 }
 - (void)startBrowser;

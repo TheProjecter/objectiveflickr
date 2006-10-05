@@ -40,9 +40,9 @@
 		[browserController startBrowser];
 	}
 }
-- (OFFlickrApplicationContext*)context {
+- (OFFlickrContext*)context {
 	if (!_context) {
-		_context = [[OFFlickrApplicationContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
+		_context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
 	}
 	return _context;
 }

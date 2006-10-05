@@ -10,7 +10,7 @@
     IBOutlet id textMessage;
 	
 	NSDictionary *_token;
-	OFFlickrAPICaller *_apicall;
+	OFFlickrInvocation *_apicall;
 	int _state;
 }
 - (IBAction)buttonAction:(id)sender;
