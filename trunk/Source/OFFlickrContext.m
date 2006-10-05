@@ -213,6 +213,8 @@
 @implementation OFFlickrContext (OFFlickrUploadHelper)
 - (NSData*)prepareUploadData:(NSData*)data filename:(NSString*)filename information:(NSDictionary*)info
 {
+	// TO-DO: Quote processing of filename
+
 	NSMutableData *cooked=[self internalPreparePOSTData:(info ? info : [NSDictionary dictionary]) authentication:YES sign:YES endMark:NO];
 
 	NSString *lastpart = [filename lastPathComponent];

@@ -22,7 +22,7 @@
 
 #define OFHTTPDefaultTimeoutInterval  10.0			// 10 seconds
 
-@interface NSObject(OFHTTPReqestDelegate)
+@interface NSObject (OFHTTPReqestDelegate)
 - (void)HTTPRequest:(OFHTTPRequest*)request didCancel:(id)userinfo;
 - (void)HTTPRequest:(OFHTTPRequest*)request didFetchData:(NSData*)data userInfo:(id)userinfo;
 - (void)HTTPRequest:(OFHTTPRequest*)request didTimeout:(id)userinfo;

@@ -31,22 +31,29 @@
 {
 	return [[[OFFlickrInvocation alloc] initWithContext:context] autorelease];
 }
-+ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context timeoutInterval:(NSTimeInterval)interval
++ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context delegate:(id)aDelegate
 {
-	return [[[OFFlickrInvocation alloc] initWithContext:context timeoutInterval:interval] autorelease];
-
+	return [[[OFFlickrInvocation alloc] initWithContext:context delegate:aDelegate] autorelease];
+}
++ (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context delegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval
+{
+	return [[[OFFlickrInvocation alloc] initWithContext:context delegate:aDelegate timeoutInterval:interval] autorelease];
 }
 - (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context
 {
-	return [self initWithContext:context timeoutInterval:OFDefaultTimeoutInterval];
+	return [self initWithContext:context delegate:nil timeoutInterval:OFDefaultTimeoutInterval];
 }
-- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context timeoutInterval:(NSTimeInterval)interval
+- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context delegate:(id)aDelegate
+{
+	return [self initWithContext:context delegate:aDelegate timeoutInterval:OFDefaultTimeoutInterval];
+}
+- (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context delegate:(id)aDelegate timeoutInterval:(NSTimeInterval)interval
 {
 	if ((self = [super init])) {
 		_context = [context retain];
 		_request = [[OFHTTPRequest requestWithDelegate:self timeoutInterval:interval] retain];
 		_selector = nil;
-		_delegate = nil;
+		if (aDelegate) _delegate = [aDelegate retain]; else _delegate = nil;
 		_userInfo = nil;
 	}
 	return self;

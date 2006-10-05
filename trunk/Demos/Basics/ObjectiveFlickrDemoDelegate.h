@@ -43,6 +43,7 @@
 
 	OFFlickrContext *context;
 	OFFlickrInvocation *invoc;
+	OFFlickrUploader *uploader;
 
     IBOutlet id authenticateButton;	
     IBOutlet id authMsg;

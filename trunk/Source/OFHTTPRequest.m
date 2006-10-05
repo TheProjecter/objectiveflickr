@@ -1,4 +1,4 @@
-#import <ObjectiveFlickr/OFHTTPRequest.h>
+#import "OFHTTPRequest.h"
 
 @interface OFHTTPRequest(OFHTTPRequestInternals)
 - (void)dealloc;
@@ -93,6 +93,8 @@
 
 @implementation OFHTTPRequest(OFHTTPRequestInternals)
 - (void)dealloc {
+	if (!_closed) [self internalCancel];
+	
 	if (_delegate) [_delegate release];
 	if (_connection) [_connection release];
 	if (_timer) [_timer release];
@@ -138,7 +140,7 @@
 		[_delegate HTTPRequest:self didTimeout:_userInfo];
 	}
 	
-	[_connection internalCancel];
+	[self internalCancel];
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -166,8 +168,8 @@
 	if (_timer) [_timer invalidate];
 	_closed = YES;
 
-	if ([_delegate respondsToSelector:@selector(HTTPRequest:error:errorInfo:userInfo:)]) {
-		[_delegate HTTPRequest:self error:error errorInfo:error userInfo:_userInfo];
+	if ([_delegate respondsToSelector:@selector(HTTPRequest:error:userInfo:)]) {
+		[_delegate HTTPRequest:self error:error userInfo:_userInfo];
 	}
 }
 @end

@@ -37,8 +37,8 @@
 - (void)awakeFromNib 
 {	
 	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
-	invoc = [[OFFlickrInvocation invocationWithContext:context timeoutInterval:10.0] retain];
-	[invoc setDelegate:self];
+	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self timeoutInterval:10.0] retain];
+	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self] retain];
 	
 	frob = nil;
 	token = nil;
@@ -87,26 +87,6 @@
 {
 	[invoc setUserInfo:@"getToken"];
 	[invoc callMethod:@"flickr.auth.getToken" arguments:[NSArray arrayWithObjects:@"frob", frob, nil]];
-}
-- (BOOL)hasFlickrError:(NSXMLDocument*)doc receiveCode:(int*)code receiveMessage:(NSString**)message 
-{
-	NSXMLElement *r = [doc rootElement];
-
-	NSXMLNode *stat =[r attributeForName:@"stat"];
-	
-	if ([[stat stringValue] isEqualToString:@"ok"]) {
-		*code = 0;
-		*message = nil;
-		return NO;
-	}
-	
-	NSXMLNode *e = [r childAtIndex:0];
-	NSXMLNode *codestr = [(NSXMLElement*)e attributeForName:@"code"];
-	NSXMLNode *msg = [(NSXMLElement*)e attributeForName:@"msg"];
-	
-	*code = [[codestr stringValue] intValue];
-	*message = [NSString stringWithString:[msg stringValue]];
-	return YES;
 }
 - (void)flickrInvocation:(OFFlickrInvocation*)invocation errorCode:(int)errcode errorInfo:(id)errinfo
 {
@@ -246,55 +226,41 @@ reauth:
 }
 - (IBAction)upload:(id)sender
 {
-}
-
-/*
-- (IBAction)upload:(id)sender
-{
 	NSOpenPanel *op=[NSOpenPanel openPanel];
 	[op setAllowsMultipleSelection:FALSE];
-	if ([op runModalForDirectory:nil file:nil]==NSFileHandlingPanelOKButton) {
-		NSString *f=[[op filenames] objectAtIndex:0];
+	if ([op runModalForDirectory:nil file:nil] != NSFileHandlingPanelOKButton) return;
+	
+	NSString *f=[[op filenames] objectAtIndex:0];
 
-		uploadFilename=[[f lastPathComponent] retain];
+	uploadFilename=[[f lastPathComponent] retain];
+	[uploader cancel];
 
-		OFFlickrUploader *up = [[OFFlickrUploader alloc] initWithDelegate:self];
+	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+		[NSString stringWithFormat:@"test title %@", [uploadFilename lastPathComponent]], @"title",
+		@"test flickr upload", @"description", nil];
 		
-		
-		NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:@"test title %@", [uploadFilename lastPathComponent]], @"title",
-			@"test flickr upload", @"description", nil];
-		if ([up uploadWithContentsOfFile:f photoInformation:dict applicationContext:appContext userInfo:nil])
-		{
-			[uploadMsg setStringValue:[NSString stringWithFormat:@"uploading %@", uploadFilename]];
-		}
-		else {
-			[uploadMsg setStringValue:[NSString stringWithFormat:@"cannot upload %@", uploadFilename]];
-		}
+	if ([uploader uploadWithContentsOfFile:f photoInformation:dict userInfo:nil])
+	{
+		[uploadMsg setStringValue:[NSString stringWithFormat:@"uploading %@", uploadFilename]];
+	}
+	else {
+		[uploadMsg setStringValue:[NSString stringWithFormat:@"cannot upload %@", uploadFilename]];
 	}
 }
-- (void)flickrUploader:(OFFlickrUploader*)uploader didComplete:(NSXMLDocument*)response userInfo:(id)userinfo
+- (void)flickrUploader:(OFFlickrUploader*)uploader didComplete:(NSString*)callbackID userInfo:(id)userinfo
 {
-	NSLog(@"received data = %@", [response description]);
 	[uploadMsg setStringValue:@"browser opened to finish the upload process"];
-
-	NSXMLElement *e = [[response nodesForXPath:@"/rsp/photoid" error:nil] objectAtIndex:0];
-	NSString *pid = [e stringValue];
-	
-	NSString *callback = [appContext uploadCallBackURLWithPhotoID:pid];
+	NSString *callback = [context uploadCallBackURLWithPhotoID:callbackID];
 	system([[NSString stringWithFormat:@"open %@", callback] UTF8String]);
-	
-	[uploader release];
 }
-- (void)flickrUploader:(OFFlickrUploader*)uploader error:(int)code errorInfo:(id)errinfo userInfo:(id)userinfo
+- (void)flickrUploader:(OFFlickrUploader*)uploader errorCode:(int)code errorInfo:(id)errinfo userInfo:(id)userinfo
 {
 	[uploadMsg setStringValue:[NSString stringWithFormat:@"upload error, code=%d", code]];
-	[uploader release];
 }
-- (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)length total:(size_t)totalLength userInfo:(id)userinfo
+- (void)flickrUploader:(OFFlickrUploader*)uploader progress:(size_t)bytesSent total:(size_t)totalLength userInfo:(id)userinfo
 {
-	if (length != totalLength) {
-		[uploadMsg setStringValue:[NSString stringWithFormat:@"%ld bytes uploaded (of %ld bytes)", length, totalLength]];
+	if (bytesSent != totalLength) {
+		[uploadMsg setStringValue:[NSString stringWithFormat:@"%ld bytes uploaded (of %ld bytes)", bytesSent, totalLength]];
 	}
 	else {
 		[uploadMsg setStringValue:@"upload complete, waiting Flickr response..."];
@@ -303,8 +269,6 @@ reauth:
 - (void)flickrUploader:(OFFlickrUploader*)uploader didCancel:(id)userinfo
 {
 	[uploadMsg setStringValue:@"upload canceled"];
-	[uploader release];
 }
-*/
 @end
 
