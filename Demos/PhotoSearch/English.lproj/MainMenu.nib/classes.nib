@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {startSearch = id; }; 
+            CLASS = PhotoSearchController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {progressIndicator = id; searchField = id; webView = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
