@@ -100,6 +100,14 @@
  	[r appendString:[NSString stringWithFormat:@".%@", (type ? ([type length] ? type : @"jpg") : @"jpg")]];
 	return r;
 }
+- (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size type:(NSString*)type
+{
+	return [self photoURLFromID:[photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"id"]]
+		serverID:[photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"server"]]
+		secret:[photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"secret"]]
+		size:size
+		type:type];
+}
 @end
 
 @implementation OFFlickrContext (OFFlickrContextInternals)

@@ -16,6 +16,7 @@
 				6AA0A03F0AC6C7A2003E682E /* PBXTargetDependency */,
 				6AA0A0410AC6C7A5003E682E /* PBXTargetDependency */,
 				6AA0A0430AC6C7A7003E682E /* PBXTargetDependency */,
+				6A18EC580AD8237B007CED62 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -30,6 +31,26 @@
 		6A0792DF0AC70AD80004DA47 /* ContactsBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */; };
 		6A0792E20AC70AE00004DA47 /* ContactsBrowserApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */; };
 		6A0792E30AC70AE00004DA47 /* ContactsBrowserApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */; };
+		6A18EAAA0AD8199A007CED62 /* PhotoSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A18EAA80AD8199A007CED62 /* PhotoSearchController.m */; };
+		6A18EAB90AD819ED007CED62 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A18EAB80AD819ED007CED62 /* InfoPlist.strings */; };
+		6A18EABF0AD81A0A007CED62 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6A18EABE0AD81A0A007CED62 /* MainMenu.nib */; };
+		6A18EAC20AD81A2F007CED62 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A18EAC00AD81A2F007CED62 /* main.m */; };
+		6A18EAD30AD81A54007CED62 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 6A18EAD10AD81A54007CED62 /* index.html */; };
+		6A18EAD40AD81A54007CED62 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A18EAD20AD81A54007CED62 /* style.css */; };
+		6A18EAE00AD81A81007CED62 /* builder.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EAD70AD81A79007CED62 /* builder.js */; };
+		6A18EAE10AD81A81007CED62 /* controls.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EAD80AD81A79007CED62 /* controls.js */; };
+		6A18EAE20AD81A81007CED62 /* dragdrop.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EAD90AD81A79007CED62 /* dragdrop.js */; };
+		6A18EAE30AD81A81007CED62 /* effects.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EADA0AD81A79007CED62 /* effects.js */; };
+		6A18EAE40AD81A81007CED62 /* prototype.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EADB0AD81A79007CED62 /* prototype.js */; };
+		6A18EAE50AD81A81007CED62 /* scriptaculous.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EADC0AD81A79007CED62 /* scriptaculous.js */; };
+		6A18EAE60AD81A81007CED62 /* slider.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EADD0AD81A79007CED62 /* slider.js */; };
+		6A18EAE70AD81A81007CED62 /* unittest.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A18EADE0AD81A79007CED62 /* unittest.js */; };
+		6A18EAEC0AD81AA6007CED62 /* ObjectiveFlickr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
+		6A18EAED0AD81AAC007CED62 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB518350AC6B8580083374D /* WebKit.framework */; };
+		6A18EB1B0AD81AAF007CED62 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
+		6A18EBCB0AD81AB1007CED62 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
+		6A18EBCF0AD81AFD007CED62 /* OFDemoAPIKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */; };
+		6A18EBD00AD81AFD007CED62 /* PhotoSearchController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A18EAA90AD8199A007CED62 /* PhotoSearchController.h */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
 		6A78BA750AD4DFC50021EB1C /* OFPOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A78BA740AD4DFC50021EB1C /* OFPOSTRequest.m */; };
@@ -65,6 +86,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6A18EC570AD8237B007CED62 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A18EA9C0AD816AD007CED62 /* PhotoSearch */;
+			remoteInfo = PhotoSearch;
+		};
 		6AA0A03E0AC6C7A2003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
@@ -103,6 +131,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6A18EADF0AD81A79007CED62 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = javascripts;
+			dstSubfolderSpec = 7;
+			files = (
+				6A18EAE00AD81A81007CED62 /* builder.js in CopyFiles */,
+				6A18EAE10AD81A81007CED62 /* controls.js in CopyFiles */,
+				6A18EAE20AD81A81007CED62 /* dragdrop.js in CopyFiles */,
+				6A18EAE30AD81A81007CED62 /* effects.js in CopyFiles */,
+				6A18EAE40AD81A81007CED62 /* prototype.js in CopyFiles */,
+				6A18EAE50AD81A81007CED62 /* scriptaculous.js in CopyFiles */,
+				6A18EAE60AD81A81007CED62 /* slider.js in CopyFiles */,
+				6A18EAE70AD81A81007CED62 /* unittest.js in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A7D7CF00AC9C1A400E9FCA3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,6 +178,24 @@
 		6A0792DD0AC70AD80004DA47 /* ContactsBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserController.m; path = Demos/ContactsBrowser/ContactsBrowserController.m; sourceTree = "<group>"; };
 		6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserApplication.h; path = Demos/ContactsBrowser/ContactsBrowserApplication.h; sourceTree = "<group>"; };
 		6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserApplication.m; path = Demos/ContactsBrowser/ContactsBrowserApplication.m; sourceTree = "<group>"; };
+		6A18EA9D0AD816AD007CED62 /* PhotoSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A18EA9F0AD816AD007CED62 /* PhotoSearch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "PhotoSearch-Info.plist"; sourceTree = "<group>"; };
+		6A18EAA60AD8198B007CED62 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Demos/PhotoSearch/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		6A18EAA80AD8199A007CED62 /* PhotoSearchController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = PhotoSearchController.m; path = Demos/PhotoSearch/PhotoSearchController.m; sourceTree = "<group>"; };
+		6A18EAA90AD8199A007CED62 /* PhotoSearchController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PhotoSearchController.h; path = Demos/PhotoSearch/PhotoSearchController.h; sourceTree = "<group>"; };
+		6A18EAAF0AD819BE007CED62 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/PhotoSearch/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6A18EAC00AD81A2F007CED62 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/PhotoSearch/main.m; sourceTree = "<group>"; };
+		6A18EAC10AD81A2F007CED62 /* PhotoSearch_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoSearch_Prefix.pch; path = Demos/PhotoSearch/PhotoSearch_Prefix.pch; sourceTree = "<group>"; };
+		6A18EAD10AD81A54007CED62 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = Demos/PhotoSearch/index.html; sourceTree = "<group>"; };
+		6A18EAD20AD81A54007CED62 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = style.css; path = Demos/PhotoSearch/style.css; sourceTree = "<group>"; };
+		6A18EAD70AD81A79007CED62 /* builder.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = builder.js; sourceTree = "<group>"; };
+		6A18EAD80AD81A79007CED62 /* controls.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = controls.js; sourceTree = "<group>"; };
+		6A18EAD90AD81A79007CED62 /* dragdrop.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = dragdrop.js; sourceTree = "<group>"; };
+		6A18EADA0AD81A79007CED62 /* effects.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = effects.js; sourceTree = "<group>"; };
+		6A18EADB0AD81A79007CED62 /* prototype.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = prototype.js; sourceTree = "<group>"; };
+		6A18EADC0AD81A79007CED62 /* scriptaculous.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = scriptaculous.js; sourceTree = "<group>"; };
+		6A18EADD0AD81A79007CED62 /* slider.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = slider.js; sourceTree = "<group>"; };
+		6A18EADE0AD81A79007CED62 /* unittest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = unittest.js; sourceTree = "<group>"; };
 		6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
@@ -174,6 +237,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6A18EA9B0AD816AD007CED62 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A18EBCB0AD81AB1007CED62 /* Cocoa.framework in Frameworks */,
+				6A18EB1B0AD81AAF007CED62 /* AppKit.framework in Frameworks */,
+				6A18EAED0AD81AAC007CED62 /* WebKit.framework in Frameworks */,
+				6A18EAEC0AD81AA6007CED62 /* ObjectiveFlickr.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A31EAE50AC6BF2D0084DA74 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -208,6 +282,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A18EA8F0AD81675007CED62 /* PhotoSearch */ = {
+			isa = PBXGroup;
+			children = (
+				6A18EAD10AD81A54007CED62 /* index.html */,
+				6A18EAD20AD81A54007CED62 /* style.css */,
+				6A18EAC00AD81A2F007CED62 /* main.m */,
+				6A18EAC10AD81A2F007CED62 /* PhotoSearch_Prefix.pch */,
+				6A18EAA80AD8199A007CED62 /* PhotoSearchController.m */,
+				6A18EAA90AD8199A007CED62 /* PhotoSearchController.h */,
+				6A18EA900AD81693007CED62 /* Resources */,
+			);
+			name = PhotoSearch;
+			sourceTree = "<group>";
+		};
+		6A18EA900AD81693007CED62 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6A18EAD60AD81A79007CED62 /* javascripts */,
+				6A18EAB80AD819ED007CED62 /* InfoPlist.strings */,
+				6A18EABE0AD81A0A007CED62 /* MainMenu.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		6A18EAD60AD81A79007CED62 /* javascripts */ = {
+			isa = PBXGroup;
+			children = (
+				6A18EAD70AD81A79007CED62 /* builder.js */,
+				6A18EAD80AD81A79007CED62 /* controls.js */,
+				6A18EAD90AD81A79007CED62 /* dragdrop.js */,
+				6A18EADA0AD81A79007CED62 /* effects.js */,
+				6A18EADB0AD81A79007CED62 /* prototype.js */,
+				6A18EADC0AD81A79007CED62 /* scriptaculous.js */,
+				6A18EADD0AD81A79007CED62 /* slider.js */,
+				6A18EADE0AD81A79007CED62 /* unittest.js */,
+			);
+			name = javascripts;
+			path = Demos/PhotoSearch/javascripts;
+			sourceTree = "<group>";
+		};
 		6A31EAED0AC6BF480084DA74 /* ContactsBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +362,7 @@
 				6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */,
 				6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */,
 				6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */,
+				6A18EA9F0AD816AD007CED62 /* PhotoSearch-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -278,6 +393,7 @@
 				6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */,
 				6AD7B2E40AC6B778004644DE /* FlickrBasics.app */,
 				6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */,
+				6A18EA9D0AD816AD007CED62 /* PhotoSearch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -288,6 +404,7 @@
 				6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */,
 				6AD7B2EE0AC6B79C004644DE /* Basics */,
 				6A31EAED0AC6BF480084DA74 /* ContactsBrowser */,
+				6A18EA8F0AD81675007CED62 /* PhotoSearch */,
 			);
 			name = Demos;
 			sourceTree = "<group>";
@@ -334,6 +451,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		6A18EBD10AD81B20007CED62 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A18EBCF0AD81AFD007CED62 /* OFDemoAPIKey.h in Headers */,
+				6A18EBD00AD81AFD007CED62 /* PhotoSearchController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AA09FEF0AC6C5CB003E682E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,6 +488,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		6A18EA9C0AD816AD007CED62 /* PhotoSearch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A18EAA00AD816AE007CED62 /* Build configuration list for PBXNativeTarget "PhotoSearch" */;
+			buildPhases = (
+				6A18EBD10AD81B20007CED62 /* Headers */,
+				6A18EA990AD816AD007CED62 /* Resources */,
+				6A18EA9A0AD816AD007CED62 /* Sources */,
+				6A18EA9B0AD816AD007CED62 /* Frameworks */,
+				6A18EADF0AD81A79007CED62 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotoSearch;
+			productName = PhotoSearch;
+			productReference = 6A18EA9D0AD816AD007CED62 /* PhotoSearch.app */;
+			productType = "com.apple.product-type.application";
+		};
 		6A31EAE60AC6BF2D0084DA74 /* ContactsBrowser */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A31EAEA0AC6BF2D0084DA74 /* Build configuration list for PBXNativeTarget "ContactsBrowser" */;
@@ -437,11 +582,23 @@
 				6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */,
 				6AD7B2E30AC6B778004644DE /* FlickrBasics */,
 				6A31EAE60AC6BF2D0084DA74 /* ContactsBrowser */,
+				6A18EA9C0AD816AD007CED62 /* PhotoSearch */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6A18EA990AD816AD007CED62 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A18EABF0AD81A0A007CED62 /* MainMenu.nib in Resources */,
+				6A18EAB90AD819ED007CED62 /* InfoPlist.strings in Resources */,
+				6A18EAD30AD81A54007CED62 /* index.html in Resources */,
+				6A18EAD40AD81A54007CED62 /* style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A31EAE30AC6BF2D0084DA74 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -469,6 +626,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6A18EA9A0AD816AD007CED62 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A18EAAA0AD8199A007CED62 /* PhotoSearchController.m in Sources */,
+				6A18EAC20AD81A2F007CED62 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A31EAE40AC6BF2D0084DA74 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -506,6 +672,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6A18EC580AD8237B007CED62 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A18EA9C0AD816AD007CED62 /* PhotoSearch */;
+			targetProxy = 6A18EC570AD8237B007CED62 /* PBXContainerItemProxy */;
+		};
 		6AA0A03F0AC6C7A2003E682E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */;
@@ -542,6 +713,22 @@
 			name = MainMenu.nib;
 			sourceTree = "<group>";
 		};
+		6A18EAB80AD819ED007CED62 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A18EAAF0AD819BE007CED62 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6A18EABE0AD81A0A007CED62 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A18EAA60AD8198B007CED62 /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
 		6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -553,6 +740,58 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6A18EAA10AD816AE007CED62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PhotoSearch-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = PhotoSearch;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		6A18EAA20AD816AE007CED62 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PhotoSearch-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = PhotoSearch;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		6A31EAEB0AC6BF2D0084DA74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -772,6 +1011,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6A18EAA00AD816AE007CED62 /* Build configuration list for PBXNativeTarget "PhotoSearch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A18EAA10AD816AE007CED62 /* Debug */,
+				6A18EAA20AD816AE007CED62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6A31EAEA0AC6BF2D0084DA74 /* Build configuration list for PBXNativeTarget "ContactsBrowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

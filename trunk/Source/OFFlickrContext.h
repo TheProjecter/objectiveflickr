@@ -51,6 +51,7 @@
 - (NSDictionary*)endPoints;
 - (NSString*)RESTAPIEndPoint;
 - (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type;
+- (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size type:(NSString*)type;
 @end
 
 @interface OFFlickrContext (OFFlickrDataPreparer)
