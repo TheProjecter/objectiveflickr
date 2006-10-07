@@ -51,6 +51,7 @@
 		6A18EBCB0AD81AB1007CED62 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
 		6A18EBCF0AD81AFD007CED62 /* OFDemoAPIKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AA0A0050AC6C66B003E682E /* OFDemoAPIKey.h */; };
 		6A18EBD00AD81AFD007CED62 /* PhotoSearchController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A18EAA90AD8199A007CED62 /* PhotoSearchController.h */; };
+		6A18EC820AD82647007CED62 /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
 		6A78BA750AD4DFC50021EB1C /* OFPOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A78BA740AD4DFC50021EB1C /* OFPOSTRequest.m */; };
@@ -145,6 +146,16 @@
 				6A18EAE50AD81A81007CED62 /* scriptaculous.js in CopyFiles */,
 				6A18EAE60AD81A81007CED62 /* slider.js in CopyFiles */,
 				6A18EAE70AD81A81007CED62 /* unittest.js in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A18EC880AD8264D007CED62 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6A18EC820AD82647007CED62 /* ObjectiveFlickr.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +508,7 @@
 				6A18EA9A0AD816AD007CED62 /* Sources */,
 				6A18EA9B0AD816AD007CED62 /* Frameworks */,
 				6A18EADF0AD81A79007CED62 /* CopyFiles */,
+				6A18EC880AD8264D007CED62 /* CopyFiles */,
 			);
 			buildRules = (
 			);
