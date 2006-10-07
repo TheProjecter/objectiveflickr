@@ -38,7 +38,7 @@
 {	
 	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
 	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self] retain];
-	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self timeoutInterval:0.3] retain];
+	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self] retain];
 	
 	frob = nil;
 	token = nil;
