@@ -21,6 +21,17 @@
 			name = All;
 			productName = All;
 		};
+		6ADA2A9A0AE8015E0069AC5E /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6ADA2A9F0AE8017C0069AC5E /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				6ADA2A990AE8015E0069AC5E /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -91,7 +102,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6A18EA9C0AD816AD007CED62 /* PhotoSearch */;
+			remoteGlobalIDString = 6A18EA9C0AD816AD007CED62;
 			remoteInfo = PhotoSearch;
 		};
 		6AA0A03E0AC6C7A2003E682E /* PBXContainerItemProxy */ = {
@@ -239,6 +250,7 @@
 		6AD7B2F40AC6B7BF004644DE /* ObjectiveFlickr_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr_Prefix.pch; path = Demos/Basics/ObjectiveFlickr_Prefix.pch; sourceTree = "<group>"; };
 		6AD7B2F50AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickrDemoDelegate.h; path = Demos/Basics/ObjectiveFlickrDemoDelegate.h; sourceTree = "<group>"; };
 		6AD7B2F60AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickrDemoDelegate.m; path = Demos/Basics/ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
+		6ADA2B2E0AE807E10069AC5E /* Framework.hdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Framework.hdoc; sourceTree = "<group>"; };
 		6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.txt; sourceTree = "<group>"; };
 		6AE497EC0AD3B3B3008AA97C /* OFFlickrInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrInvocation.h; path = Source/OFFlickrInvocation.h; sourceTree = "<group>"; };
 		6AE4980D0AD3D4D8008AA97C /* OFFlickrUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrUploader.h; path = Source/OFFlickrUploader.h; sourceTree = "<group>"; };
@@ -366,6 +378,7 @@
 				6AAA6DA90AD551E60093515C /* LICENSE.txt */,
 				6AAA6DA80AD551E60093515C /* ACKNOWLEDGMENTS.txt */,
 				6AD7B2AD0AC6B556004644DE /* Framework */,
+				6ADA2B2D0AE807CC0069AC5E /* Documentation */,
 				6AD7B2BC0AC6B5E1004644DE /* Demos */,
 				6AD7B2C90AC6B674004644DE /* Linked Frameworks */,
 				6AD7B2D20AC6B6AD004644DE /* Linked Libraries */,
@@ -457,6 +470,14 @@
 				6AD7B2F60AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.m */,
 			);
 			name = Basics;
+			sourceTree = "<group>";
+		};
+		6ADA2B2D0AE807CC0069AC5E /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				6ADA2B2E0AE807E10069AC5E /* Framework.hdoc */,
+			);
+			name = Documentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -582,19 +603,18 @@
 		6AD7B2A20AC6B550004644DE /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 6AD7B2A30AC6B550004644DE /* Build configuration list for PBXProject "ObjectiveFlickr" */;
-			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 6AD7B2A00AC6B550004644DE;
 			productRefGroup = 6AD7B2B40AC6B57C004644DE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			shouldCheckCompatibility = 1;
 			targets = (
 				6AA0A03D0AC6C79D003E682E /* All */,
 				6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */,
 				6AD7B2E30AC6B778004644DE /* FlickrBasics */,
 				6A31EAE60AC6BF2D0084DA74 /* ContactsBrowser */,
 				6A18EA9C0AD816AD007CED62 /* PhotoSearch */,
+				6ADA2A9A0AE8015E0069AC5E /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -636,6 +656,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6ADA2A990AE8015E0069AC5E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/Documentation/index.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\nmkdir -p $BUILT_PRODUCTS_DIR/Documentation\n# headerdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/Source/*.h\nheaderdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/ObjectiveFlickr.hdoc\n# gatherheaderdoc $BUILT_PRODUCTS_DIR/Documentation index.html\nexit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6A18EA9A0AD816AD007CED62 /* Sources */ = {
@@ -755,6 +792,10 @@
 		6A18EAA10AD816AE007CED62 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -782,6 +823,10 @@
 		6A18EAA20AD816AE007CED62 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -887,6 +932,10 @@
 		6AD7B2A40AC6B550004644DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				COPY_PHASE_STRIP = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -895,6 +944,10 @@
 		6AD7B2A50AC6B550004644DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				COPY_PHASE_STRIP = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -1020,6 +1073,28 @@
 			};
 			name = Release;
 		};
+		6ADA2AA00AE8017C0069AC5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Documentation;
+			};
+			name = Debug;
+		};
+		6ADA2AA10AE8017C0069AC5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = Documentation;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1073,6 +1148,15 @@
 			buildConfigurations = (
 				6AD7B2E80AC6B778004644DE /* Debug */,
 				6AD7B2E90AC6B778004644DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6ADA2A9F0AE8017C0069AC5E /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ADA2AA00AE8017C0069AC5E /* Debug */,
+				6ADA2AA10AE8017C0069AC5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

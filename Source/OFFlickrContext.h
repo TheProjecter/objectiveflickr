@@ -28,14 +28,87 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+/*!
+ @header OFFlickrContext.h
+ @abstract Declares OFFlickrContext class.
+ @discussion This is the first class you'll need to use before making any
+  Flickr API call. Please refer to the class definition of OFFlickrContext
+  for details.
+*/  
+
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
 
+/*!
+ @define OFRESTAPIEndPointKey
+ @discussion The key for Flickr REST API end point.
+*/
 #define OFRESTAPIEndPointKey			@"RESTAPIEndPoint"
+
+/*! 
+ @define OFAuthenticationEndPointKey
+ @discussion The key for Flickr's authentication service end point. You have
+  to open the user's default browser and points it to the URL associated
+  with this key (i.e. the key-value of the API end point dictionary) to
+  complete the Flickr authentication.
+*/
 #define OFAuthenticationEndPointKey		@"authEndPoint"
+
+/*!  
+ @define OFPhotoURLPrefixKey
+ @discussion The prefix of Flickr's static photo URL.
+*/
 #define OFPhotoURLPrefixKey				@"photoURLPrefix"
+
+/*! 
+ @define OFUploadEndPointKey
+ @discussion The key of the end point of Flickr's upload service.
+*/
 #define OFUploadEndPointKey				@"uploadEndPoint"
+
+/*! 
+ @define OFUploadCallBackEndPointKey
+ @discussion The callback URL to which you can point your browser after a
+  picture is successfully uploaded.
+*/
 #define OFUploadCallBackEndPointKey		@"uploadCallBackEndPoint"
 
+/*!
+ @class OFFlickrContext
+ @abstract An OFFlickrContext object encapsulates API key and other
+  information required to make an Flickr API request. API endpoints
+  are also stored in the object. It also prepares URLs (such as getting
+  the photo URL from the photo information) for both ObjectiveFlickr
+  request objects and your own application.
+ @discussion Flickr API requires that applications pass at least an API key
+  when making any API call. Some Flickr methods require authentication,
+  which in turn requires two items of information, "shared secret" and
+  authentication token to be passed.
+  
+  Creating an OFFlickrContext object is the very first thing that any
+  ObjectiveFlickr application should do. You will at least need to pass
+  the API key when creating the object. If you want to use methods that
+  require authentication, you'll also need to pass the "shared secret."
+  Later after you have obtained the authentication token, you can store
+  it in the object by invoking <tt>setAuthToken:</tt> method.
+  
+  If you always use "high-level" ObjectiveFlickr request objects (i.e.
+  those of classes OFFlickrInvocation and OFFlickrUploader), creating
+  the OFFlickrContext object is perhaps one of the only two steps 
+  you need for the context creation. The other thing you'll need is
+  when later you have fetched a photo information block, you'll want
+  to call <tt>photoURLFromID:serverID:secret:size:type:</tt> or
+  <tt>photoURLFromDictionary:size:type:</tt> to get the photo's real
+  URL.
+  
+  There are other URL preparation methods that are more "low-level"
+  but may still be of interest if you want to play with Flickr API
+  in depth.
+  
+  To use a photo service that uses Flickr-compatible API endpoints,
+  simply call <tt>setEndPoints:</tt> and pass an NSDictionary object
+  with end point key-values stored within.
+*/  
+  
 @interface OFFlickrContext : NSObject
 {
 	NSString *_APIKey;
@@ -43,14 +116,105 @@
 	NSString *_authToken;
 	NSDictionary *_endPoints;
 }
+/*!
+ @method contextWithAPIKey:sharedSecret:
+ @abstract Creates an autorelease Flickr context object.
+ @param key The Flickr API key assigned to you.
+ @param secret The "shared secret" that Flickr assigned to you for authenticated
+  method calls. Pass nil or an empty string if you only want to make public
+  API calls.
+*/
 + (OFFlickrContext*)contextWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
+
+/*!
+ @method initWithAPIKey:sharedSecret:
+ @abstract Initiates the context object.
+ @param key The Flickr API key assigned to you.
+ @param secret The "shared secret" that Flickr assigned to you for authenticated
+  method calls. Pass nil or an empty string if you only want to make public
+  API calls.
+ */
 - (OFFlickrContext*)initWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret;
+
+/*!
+ @method setAuthToken:
+ @abstract Sets the authentication token.
+ @param token The authentication token returned by <tt>flickr.auth.getToken</tt>.
+ */
 - (void)setAuthToken:(NSString*)token;
+
+/*!
+ @method authToken
+ @abstract Retrieves the authentication token stored in the context object.
+*/
 - (NSString*)authToken;
+
+/*!
+ @method setEndPoints:
+ @abstract Sets the end points stored in the context object.
+ @param newEndPoints An NSDictionary object with the end point key-value pairs.
+*/
 - (void)setEndPoints:(NSDictionary*)newEndPoints;
+
+/*!
+ @method endPoints
+ @abstract Retrieves the end point dictionary. Usually you don't need this.
+*/
 - (NSDictionary*)endPoints;
+
+/*!
+ @method RESTAPIEndPoint
+ @abstract Retrieves the Flickr REST API end point. Usually you don't need
+  this information unless you want to make an explicit GET/POST request
+  on your own.
+*/
 - (NSString*)RESTAPIEndPoint;
+
+/*!
+ @method photoURLFromID:serverID:secret:size:type:
+ @abstract Prepares the photo URL from photo ID and other information
+  you extracted from an Flickr API return block (i.e. the <tt>&lt;photo&gt;</tt>
+  XML tag).
+ @param photo_id The photo ID in the tag.
+ @param server_id The server ID in the tag.
+ @param secret The "secret" server ID in the tag.
+ @param size An NSString specifying the size. For example, <tt>\@"s"</tt> means
+  a 75x75 small square photo. For more information on this parameter,
+  please refer to the Flickr API documentation at
+  <a href="http://flickr.com/services/api/misc.urls.html">http://flickr.com/services/api/misc.urls.html</a>.
+  By default, if you pass an empty string or nil, the default is a medium-sized
+  picture (500 px on logest side). Please note that not all sizes are
+  always available. You may need to call <tt>flickr.photos.getSizes</tt> to
+  check what sizes are available first.
+ @param type An NSString specifying the type of the photo. By default (i.e.
+  if you pass an empty string or nil) it's <tt>\@"jpg"</tt>. Please note that if you
+  want to get the URL of the original picture, there is no guarantee that
+  the file type is always .jpg; you'll need to call
+  <tt>flickr.photos.getSizes</tt> to find out what the type of the original
+  file is. Note: dot (".") is <em>not</em> used in specifying the file type.
+*/
 - (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type;
+
+/*!
+ @method photoURLFromDictionary:size:type:
+ @abstract Prepares the photo URL from an NSDictionary that is converted
+  from the <tt>&lt;photo&gt;</tt> data block.
+ @param photoDict an NSDictionary that has the keys _id, _secret and _server
+ @param size An NSString specifying the size. For example, <tt>\@"s"</tt> means
+  a 75x75 small square photo. For more information on this parameter,
+  please refer to the Flickr API documentation at
+  <a href="http://flickr.com/services/api/misc.urls.html">http://flickr.com/services/api/misc.urls.html</a>.
+  By default, if you pass an empty string or nil, the default is a medium-sized
+  picture (500 px on logest side). Please note that not all sizes are
+  always available. You may need to call <tt>flickr.photos.getSizes</tt> to
+  check what sizes are available first.
+ @param type An NSString specifying the type of the photo. By default (i.e.
+  if you pass an empty string or nil) it's <tt>\@"jpg"</tt>. Please note that if you
+  want to get the URL of the original picture, there is no guarantee that
+  the file type is always .jpg; you'll need to call
+  <tt>flickr.photos.getSizes</tt> to find out what the type of the original
+  file is. Note: dot (".") is <em>not</em> used in specifying the file type.
+*/
 - (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size type:(NSString*)type;
 @end
 
