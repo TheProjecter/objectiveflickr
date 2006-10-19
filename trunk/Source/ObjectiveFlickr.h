@@ -30,9 +30,37 @@
 
 #import <Cocoa/Cocoa.h>
 
-// Shared constants and enums
+
+/*!
+ @header ObjectiveFlickr.h
+ @abstract ObjectiveFlickr.h is the cover-all header file of the framework.
+ @discussion Simply #import this framework with 
+ <tt>#import &lt;ObjectiveFlickr/ObjectiveFlicr.h&gt;</tt> and you're done.
+ */
+
+/*!
+ @define OFDefaultTimeoutInterval
+ @discussion Default timeout interval (15 seconds). This default value is used
+  in any ObjectiveFlickr object your create if a timeout interval is not
+  explicited specified.
+*/
 #define OFDefaultTimeoutInterval  15.0
 
+
+/*!
+ @enum Shared Error Codes
+ @discussion There are the error codes used framework-wide by ObjectiveFlickr
+  objects
+ @constant OFConnectionError Indicates a system-wide connection error has
+  occured. Check the errorInfo/errorCode object passed to your delegate
+  or callback method for detailed diagnosis.
+ @constant OFConnectionTimeout The request has timed out. The timeout interval
+  is usually set when you create an ObjectiveFlickr request object.
+ @constant OFConnectionCanceled The request has been explicitly canceled.
+ @constant OFXMLDocumentMalformed The request is completed, but the received
+  data may be corrupt or malformed that it cannot be converted to an XML
+  document object.
+*/
 enum {
 	OFConnectionError = -1,
 	OFConnectionTimeout = -2,
