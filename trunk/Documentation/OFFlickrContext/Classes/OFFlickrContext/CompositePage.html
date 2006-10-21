@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
+<html>
+<head>
+<title>OFFlickrContext</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="HeaderDoc">
+<style type="text/css"><!--a:link {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #0000ff;}a:visited {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #0000ff;}a:visited:hover {text-decoration: underline; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}a:active {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}a:hover {text-decoration: underline; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}h4 {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: tiny; font-weight: bold;}body {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: 10pt;}--></style>
+</head>
+<body bgcolor="#ffffff">
+<h1><font face="Geneva,Arial,Helvtica">OFFlickrContext</font></h1>
+<br><a name="//apple_ref/doc/class/OFFlickrContext" title="OFFlickrContext"></a><h2>Abstract</h2>
+<p>
+ An OFFlickrContext object encapsulates API key and other
+information required to make an Flickr API request. API endpoints
+are also stored in the object. It also prepares URLs (such as getting
+the photo URL from the photo information) for both ObjectiveFlickr
+request objects and your own application.
+</p>
+<h2>Discussion</h2>
+<p>
+ Flickr API requires that applications pass at least an API key
+when making any API call. Some Flickr methods require authentication,
+which in turn requires two items of information, "shared secret" and
+authentication token to be passed.
+<br><br>
+Creating an OFFlickrContext object is the very first thing that any
+ObjectiveFlickr application should do. You will at least need to pass
+the API key when creating the object. If you want to use methods that
+require authentication, you'll also need to pass the "shared secret."
+Later after you have obtained the authentication token, you can store
+it in the object by invoking <tt>setAuthToken:</tt> method.
+<br><br>
+If you always use "high-level" ObjectiveFlickr request objects (i.e.
+those of classes OFFlickrInvocation and OFFlickrUploader), creating
+the OFFlickrContext object is perhaps one of the only two steps 
+you need for the context creation. The other thing you'll need is
+when later you have fetched a photo information block, you'll want
+to call <tt>photoURLFromID:serverID:secret:size:type:</tt> or
+<tt>photoURLFromDictionary:size:type:</tt> to get the photo's real
+URL.
+<br><br>
+There are other URL preparation methods that are more "low-level"
+but may still be of interest if you want to play with Flickr API
+in depth.
+<br><br>
+To use a photo service that uses Flickr-compatible API endpoints,
+simply call <tt>setEndPoints:</tt> and pass an NSDictionary object
+with end point key-values stored within.
+</p>
+<hr>
+<br><h2>Methods</h2>
+<a name="HeaderDoc_methods"></a><dl>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/authToken" target="_top">-authToken</a></tt></dt>
+<dd>Retrieves the authentication token stored in the context object.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/clm/OFFlickrContext/contextWithAPIKey:sharedSecret:" target="_top">+contextWithAPIKey:sharedSecret:</a></tt></dt>
+<dd>Creates an autorelease Flickr context object.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/endPoints" target="_top">-endPoints</a></tt></dt>
+<dd>Retrieves the end point dictionary. Usually you don't need this.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/initWithAPIKey:sharedSecret:" target="_top">-initWithAPIKey:sharedSecret:</a></tt></dt>
+<dd>Initiates the context object.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromDictionary:size:type:" target="_top">-photoURLFromDictionary:size:type:</a></tt></dt>
+<dd>Prepares the photo URL from an NSDictionary that is converted
+from the <tt>&lt;photo&gt;</tt> data block.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromID:serverID:secret:size:type:" target="_top">-photoURLFromID:serverID:secret:size:type:</a></tt></dt>
+<dd>Prepares the photo URL from photo ID and other information
+you extracted from an Flickr API return block (i.e. the <tt>&lt;photo&gt;</tt>
+XML tag).
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/RESTAPIEndPoint" target="_top">-RESTAPIEndPoint</a></tt></dt>
+<dd>Retrieves the Flickr REST API end point. Usually you don't need
+this information unless you want to make an explicit GET/POST request
+on your own.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setAuthToken:" target="_top">-setAuthToken:</a></tt></dt>
+<dd>Sets the authentication token.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setEndPoints:" target="_top">-setEndPoints:</a></tt></dt>
+<dd>Sets the end points stored in the context object.
+</dd>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/authToken;  name=OFFlickrContext::authToken --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/authToken"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="authToken">authToken</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Retrieves the authentication token stored in the context object.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">authToken</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=clm;  uid=//apple_ref/doc/compositePage/occ/clm/OFFlickrContext/contextWithAPIKey:sharedSecret:;  name=OFFlickrContext::contextWithAPIKey:sharedSecret: --><a name="//apple_ref/doc/compositePage/occ/clm/OFFlickrContext/contextWithAPIKey:sharedSecret:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="contextWithAPIKey:sharedSecret:">contextWithAPIKey:sharedSecret:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Creates an autorelease Flickr context object.
+</p>
+<blockquote><pre>+ (<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/contextWithAPIKey //apple_ref/occ/clm/contextWithAPIKey //apple_ref/occ/intfcm/contextWithAPIKey //apple_ref/occ/func/contextWithAPIKey //apple_ref/occ/ftmplt/contextWithAPIKey //apple_ref/occ/defn/contextWithAPIKey //apple_ref/occ/macro/contextWithAPIKey" --><font class="function">contextWithAPIKey</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">key</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/sharedSecret //apple_ref/occ/clm/sharedSecret //apple_ref/occ/intfcm/sharedSecret //apple_ref/occ/func/sharedSecret //apple_ref/occ/ftmplt/sharedSecret //apple_ref/occ/defn/sharedSecret //apple_ref/occ/macro/sharedSecret" --><font class="function">sharedSecret</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">secret</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>key</i></code></dt>
+<dd>The Flickr API key assigned to you.</dd>
+<dt><code><i>secret</i></code></dt>
+<dd>The "shared secret" that Flickr assigned to you for authenticated
+method calls. Pass nil or an empty string if you only want to make public
+API calls.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/endPoints;  name=OFFlickrContext::endPoints --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/endPoints"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="endPoints">endPoints</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Retrieves the end point dictionary. Usually you don't need this.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/NSDictionary //apple_ref/occ/cl/NSDictionary //apple_ref/occ/tdef/NSDictionary //apple_ref/occ/tag/NSDictionary //apple_ref/occ/econst/NSDictionary //apple_ref/occ/struct/NSDictionary //apple_ref/occ/clconst/NSDictionary" --><font class="type">NSDictionary</font><!-- /a --><font class="type">*</font>)<font class="param">endPoints</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/initWithAPIKey:sharedSecret:;  name=OFFlickrContext::initWithAPIKey:sharedSecret: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/initWithAPIKey:sharedSecret:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="initWithAPIKey:sharedSecret:">initWithAPIKey:sharedSecret:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Initiates the context object.
+</p>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/initWithAPIKey //apple_ref/occ/clm/initWithAPIKey //apple_ref/occ/intfcm/initWithAPIKey //apple_ref/occ/func/initWithAPIKey //apple_ref/occ/ftmplt/initWithAPIKey //apple_ref/occ/defn/initWithAPIKey //apple_ref/occ/macro/initWithAPIKey" --><font class="function">initWithAPIKey</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">key</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/sharedSecret //apple_ref/occ/clm/sharedSecret //apple_ref/occ/intfcm/sharedSecret //apple_ref/occ/func/sharedSecret //apple_ref/occ/ftmplt/sharedSecret //apple_ref/occ/defn/sharedSecret //apple_ref/occ/macro/sharedSecret" --><font class="function">sharedSecret</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">secret</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>key</i></code></dt>
+<dd>The Flickr API key assigned to you.</dd>
+<dt><code><i>secret</i></code></dt>
+<dd>The "shared secret" that Flickr assigned to you for authenticated
+method calls. Pass nil or an empty string if you only want to make public
+API calls.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromDictionary:size:type:;  name=OFFlickrContext::photoURLFromDictionary:size:type: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromDictionary:size:type:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="photoURLFromDictionary:size:type:">photoURLFromDictionary:size:type:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Prepares the photo URL from an NSDictionary that is converted
+from the <tt>&lt;photo&gt;</tt> data block.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/photoURLFromDictionary //apple_ref/occ/clm/photoURLFromDictionary //apple_ref/occ/intfcm/photoURLFromDictionary //apple_ref/occ/func/photoURLFromDictionary //apple_ref/occ/ftmplt/photoURLFromDictionary //apple_ref/occ/defn/photoURLFromDictionary //apple_ref/occ/macro/photoURLFromDictionary" --><font class="function">photoURLFromDictionary</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSDictionary //apple_ref/occ/cl/NSDictionary //apple_ref/occ/tdef/NSDictionary //apple_ref/occ/tag/NSDictionary //apple_ref/occ/econst/NSDictionary //apple_ref/occ/struct/NSDictionary //apple_ref/occ/clconst/NSDictionary" --><font class="type">NSDictionary</font><!-- /a --><font class="type">*</font>)<font class="param">photoDict</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/size //apple_ref/occ/clm/size //apple_ref/occ/intfcm/size //apple_ref/occ/func/size //apple_ref/occ/ftmplt/size //apple_ref/occ/defn/size //apple_ref/occ/macro/size" --><font class="function">size</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">size</font> <!-- a logicalPath="//apple_ref/occ/instm/type //apple_ref/occ/clm/type //apple_ref/occ/intfcm/type //apple_ref/occ/func/type //apple_ref/occ/ftmplt/type //apple_ref/occ/defn/type //apple_ref/occ/macro/type" --><font class="function">type</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">type</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>photoDict</i></code></dt>
+<dd>an NSDictionary that has the keys _id, _secret and _server</dd>
+<dt><code><i>size</i></code></dt>
+<dd>An NSString specifying the size. For example, <tt>@"s"</tt> means
+a 75x75 small square photo. For more information on this parameter,
+please refer to the Flickr API documentation at
+<a href="http://flickr.com/services/api/misc.urls.html" target="_top">http://flickr.com/services/api/misc.urls.html</a>.
+By default, if you pass an empty string or nil, the default is a medium-sized
+picture (500 px on logest side). Please note that not all sizes are
+always available. You may need to call <tt>flickr.photos.getSizes</tt> to
+check what sizes are available first.</dd>
+<dt><code><i>type</i></code></dt>
+<dd>An NSString specifying the type of the photo. By default (i.e.
+if you pass an empty string or nil) it's <tt>@"jpg"</tt>. Please note that if you
+want to get the URL of the original picture, there is no guarantee that
+the file type is always .jpg; you'll need to call
+<tt>flickr.photos.getSizes</tt> to find out what the type of the original
+file is. Note: dot (".") is <em>not</em> used in specifying the file type.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromID:serverID:secret:size:type:;  name=OFFlickrContext::photoURLFromID:serverID:secret:size:type: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/photoURLFromID:serverID:secret:size:type:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="photoURLFromID:serverID:secret:size:type:">photoURLFromID:serverID:secret:size:type:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Prepares the photo URL from photo ID and other information
+you extracted from an Flickr API return block (i.e. the <tt>&lt;photo&gt;</tt>
+XML tag).
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/photoURLFromID //apple_ref/occ/clm/photoURLFromID //apple_ref/occ/intfcm/photoURLFromID //apple_ref/occ/func/photoURLFromID //apple_ref/occ/ftmplt/photoURLFromID //apple_ref/occ/defn/photoURLFromID //apple_ref/occ/macro/photoURLFromID" --><font class="function">photoURLFromID</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">photo_id</font> <!-- a logicalPath="//apple_ref/occ/instm/serverID //apple_ref/occ/clm/serverID //apple_ref/occ/intfcm/serverID //apple_ref/occ/func/serverID //apple_ref/occ/ftmplt/serverID //apple_ref/occ/defn/serverID //apple_ref/occ/macro/serverID" --><font class="function">serverID</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">server_id</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/secret //apple_ref/occ/clm/secret //apple_ref/occ/intfcm/secret //apple_ref/occ/func/secret //apple_ref/occ/ftmplt/secret //apple_ref/occ/defn/secret //apple_ref/occ/macro/secret" --><font class="function">secret</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">secret</font> <!-- a logicalPath="//apple_ref/occ/instm/size //apple_ref/occ/clm/size //apple_ref/occ/intfcm/size //apple_ref/occ/func/size //apple_ref/occ/ftmplt/size //apple_ref/occ/defn/size //apple_ref/occ/macro/size" --><font class="function">size</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">size</font> <!-- a logicalPath="//apple_ref/occ/instm/type //apple_ref/occ/clm/type //apple_ref/occ/intfcm/type //apple_ref/occ/func/type //apple_ref/occ/ftmplt/type //apple_ref/occ/defn/type //apple_ref/occ/macro/type" --><font class="function">type</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">type</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>photo_id</i></code></dt>
+<dd>The photo ID in the tag.</dd>
+<dt><code><i>server_id</i></code></dt>
+<dd>The server ID in the tag.</dd>
+<dt><code><i>secret</i></code></dt>
+<dd>The "secret" server ID in the tag.</dd>
+<dt><code><i>size</i></code></dt>
+<dd>An NSString specifying the size. For example, <tt>@"s"</tt> means
+a 75x75 small square photo. For more information on this parameter,
+please refer to the Flickr API documentation at
+<a href="http://flickr.com/services/api/misc.urls.html" target="_top">http://flickr.com/services/api/misc.urls.html</a>.
+By default, if you pass an empty string or nil, the default is a medium-sized
+picture (500 px on logest side). Please note that not all sizes are
+always available. You may need to call <tt>flickr.photos.getSizes</tt> to
+check what sizes are available first.</dd>
+<dt><code><i>type</i></code></dt>
+<dd>An NSString specifying the type of the photo. By default (i.e.
+if you pass an empty string or nil) it's <tt>@"jpg"</tt>. Please note that if you
+want to get the URL of the original picture, there is no guarantee that
+the file type is always .jpg; you'll need to call
+<tt>flickr.photos.getSizes</tt> to find out what the type of the original
+file is. Note: dot (".") is <em>not</em> used in specifying the file type.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/RESTAPIEndPoint;  name=OFFlickrContext::RESTAPIEndPoint --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/RESTAPIEndPoint"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="RESTAPIEndPoint">RESTAPIEndPoint</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Retrieves the Flickr REST API end point. Usually you don't need
+this information unless you want to make an explicit GET/POST request
+on your own.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">RESTAPIEndPoint</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setAuthToken:;  name=OFFlickrContext::setAuthToken: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setAuthToken:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="setAuthToken:">setAuthToken:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Sets the authentication token.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/setAuthToken //apple_ref/occ/clm/setAuthToken //apple_ref/occ/intfcm/setAuthToken //apple_ref/occ/func/setAuthToken //apple_ref/occ/ftmplt/setAuthToken //apple_ref/occ/defn/setAuthToken //apple_ref/occ/macro/setAuthToken" --><font class="function">setAuthToken</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">token</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>token</i></code></dt>
+<dd>The authentication token returned by <tt>flickr.auth.getToken</tt>.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setEndPoints:;  name=OFFlickrContext::setEndPoints: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrContext/setEndPoints:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="setEndPoints:">setEndPoints:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Sets the end points stored in the context object.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/setEndPoints //apple_ref/occ/clm/setEndPoints //apple_ref/occ/intfcm/setEndPoints //apple_ref/occ/func/setEndPoints //apple_ref/occ/ftmplt/setEndPoints //apple_ref/occ/defn/setEndPoints //apple_ref/occ/macro/setEndPoints" --><font class="function">setEndPoints</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSDictionary //apple_ref/occ/cl/NSDictionary //apple_ref/occ/tdef/NSDictionary //apple_ref/occ/tag/NSDictionary //apple_ref/occ/econst/NSDictionary //apple_ref/occ/struct/NSDictionary //apple_ref/occ/clconst/NSDictionary" --><font class="type">NSDictionary</font><!-- /a --><font class="type">*</font>)<font class="param">newEndPoints</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>newEndPoints</i></code></dt>
+<dd>An NSDictionary object with the end point key-value pairs.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<p>(Last Updated October 21, 2006)
+</p>
+</body>
+</html>

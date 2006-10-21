@@ -1,0 +1,519 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
+<html>
+<head>
+<title>OFFlickrInvocation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="HeaderDoc">
+<style type="text/css"><!--a:link {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #0000ff;}a:visited {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #0000ff;}a:visited:hover {text-decoration: underline; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}a:active {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}a:hover {text-decoration: underline; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: small; color: #ff6600;}h4 {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: tiny; font-weight: bold;}body {text-decoration: none; font-family: lucida grande, geneva, helvetica, arial, sans-serif; font-size: 10pt;}--></style>
+</head>
+<body bgcolor="#ffffff">
+<h1><font face="Geneva,Arial,Helvtica">OFFlickrInvocation</font></h1>
+<br><a name="//apple_ref/doc/class/OFFlickrInvocation" title="OFFlickrInvocation"></a><h2>Abstract</h2>
+<p>
+ An OFFlickrInvocation object makes Flickr API request.
+</p>
+<h2>Discussion</h2>
+<p>
+ This is the class that does all the work and has all the fun.
+If you want to make quick Flickr API calls, simply create an
+OFFlickrInvocation object by supplying the context information
+(encapsulated in an OFFlickrContext object), then make the
+API call. This class is named OFFlickrInvocation as invocation is
+the ObjC-speak for the action of sending a message / calling a method.
+<br><br>
+This being simply said, actually there are two "flavors" with 
+which you can use OFFlickrInvocation. The two flavors differ in how 
+API call returns are handled. Both flavors are often-found patterns in
+Cocoa.
+<br><br>
+The first flavor is to handle API returns by the delegate. The delegate
+should implement some or all of the informal protocol (specified in
+OFFlickrInvocationDelegate). The drawback of this flavor is that you have
+to rely on the user information, provided and retrived with 
+<tt>setUserInfo:</tt> and <tt>userInfo</tt>, to tell which API call you 
+have just called, and to which API the returned data block (or error code)
+belongs--in short, you have to use the extra user information to tell
+which state you are in.
+<br><br>
+The second flavor--the preferred way--is to use the callback selector.
+You can set the selector by calling <tt>setSelector:</tt>, and the method
+of the delegate will ba called. The method must have the following
+signature:
+<br><br></p>
+<blockquote>
+<tt>- (void)handleMethod:(OFFlickrInvocation*)caller errorCode:(int)error data:(id)data</tt>
+</blockquote>
+<br><br><p>
+The name of the method doesn't matter. It can be called e.g.
+<tt>processReturn:error:data:</tt> so long as it has the above signature
+and parameter types. If the error code is zero, the data will always be
+an NSXMLDocument object that is the returned data block. If not, data will
+be an NSString if it's a Flickr error (with error code &gt; 0), or an NSError
+or nil if it's an internal error (pleaser refer to ObjectiveFlickr.h for
+shared error codes).
+<br><br>
+If you opt for the second flavor, two of the delegate's informal protocol
+methods, <tt>flickrInvocation:didFetchData:</tt> and
+<tt>flickrInvocation:errorCode:errorInfo:</tt> will be "routed" away. But
+<tt>flickrInvocation:progress:expectedTotal:</tt> messages will still be
+sent to the delegate.
+<br><br>
+As for calling Flickr methods, OFFlickrInvocation has another perk that is
+not found in its interface declaration. In addition to
+<tt>callMethods:arguments:</tt> or 
+<tt>callMethods:arguments:delegate:selector:</tt>, you can actually 
+call a Flickr method <em>as if it were an OFFlickrInvocation-natie
+method</em>. For example:
+<br><br></p>
+<blockquote>  
+<tt>[invoc flickr_photos_search:nil tags:@"flowers" text:@"flowers" selector:@selector(handleSearch:errorCode:data:)]</tt>
+</blockquote>
+<br><br><p>
+Note the naming convention of flickr_photos_search. This is actually the
+equilvalent of:
+<br><br></p>
+<blockquote>
+<tt>
+[invoc setUserInfo:nil];<br>
+[invoc callMethod:@"flickr.photos.search" arguments:[NSArray arrayWithObjects:@"tags", @"flowers", @"text", @"flowers", nil] selector:@selector(handleSearch:errorCode:data:)]</tt>
+</blockquote>
+<br><br><p>
+The translation is automatically done using an Objective-C hack. The only
+problem being the compiler may warn you that
+<tt>flickr_photos_search:tags:text:selector:</tt> may not exist. It's true
+that it doesn't exist (it's translated on the fly), but you can have your
+own informal protocol declaration (by adding a category to <tt>NSObject</tt>)
+to stop the compiler from whining.
+</p>
+<hr>
+<br><h2>Methods</h2>
+<a name="HeaderDoc_methods"></a><dl>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:" target="_top">-callMethod:arguments:((NSString*), (NSArray*), (NSString*), (NSArray*), (SEL), (NSString*), (NSArray*), (id), (SEL))</a></tt></dt>
+<dd>Calls a Flickr method
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:" target="_top">-callMethod:arguments:((NSString*), (NSArray*), (SEL), (NSString*), (NSArray*), (id), (SEL))</a></tt></dt>
+<dd>Short hand for <tt>callMethod:arguments:</tt> with selector setters.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:delegate:selector:" target="_top">-callMethod:arguments:delegate:selector:</a></tt></dt>
+<dd>Short hand for <tt>callMethod:arguments:</tt> with delegate and 
+selector setters.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:" target="_top">-callMethod:arguments:selector:</a></tt></dt>
+<dd>Short hand for <tt>callMethod:arguments:</tt> with selector setters.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/cancel" target="_top">-cancel</a></tt></dt>
+<dd>Cancels the current invocation.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/context" target="_top">-context</a></tt></dt>
+<dd>Returns the context object.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/delegate" target="_top">-delegate</a></tt></dt>
+<dd>Retrieves the current delegate object
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/inintWithContext:" target="_top">-inintWithContext:</a></tt></dt>
+<dd>Initiates an invocation object with context information.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:" target="_top">-initWithContext:</a></tt></dt>
+<dd>Initiates an invocation object with context information.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:" target="_top">-initWithContext:delegate:</a></tt></dt>
+<dd>Initiates an auto-released invocation object with context 
+and delegate information.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:timeoutInterval:" target="_top">-initWithContext:delegate:timeoutInterval:</a></tt></dt>
+<dd>Initiates an auto-released invocation object with context,
+delegate and timeout interval.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:" target="_top">+invocationWithContext:</a></tt></dt>
+<dd>Creates an auto-released invocation object with context information.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:" target="_top">+invocationWithContext:delegate:</a></tt></dt>
+<dd>Creates an auto-released invocation object with context 
+and delegate information.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:timeoutInterval:" target="_top">+invocationWithContext:delegate:timeoutInterval:</a></tt></dt>
+<dd>Creates an auto-released invocation object with context,
+delegate and timeout interval.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/isClosed" target="_top">-isClosed</a></tt></dt>
+<dd>Returns YES if the connection is not open or already closed.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setDelegate:" target="_top">-setDelegate:</a></tt></dt>
+<dd>Sets a new delegate.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setSelector:" target="_top">-setSelector:</a></tt></dt>
+<dd>Sets the callback selector if you want to use the callback flavor.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setUserInfo:" target="_top">-setUserInfo:</a></tt></dt>
+<dd>Sets the user information object.
+</dd>
+<dt><tt><a href="CompositePage.html#//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/userInfo" target="_top">-userInfo</a></tt></dt>
+<dd>Retrieves the user information set with <tt>setUserInfo</tt>.
+</dd>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:;  name=OFFlickrInvocation::callMethod:arguments: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="callMethod:arguments:((NSString*),%32(NSArray*),%32(NSString*),%32(NSArray*),%32(SEL),%32(NSString*),%32(NSArray*),%32(id),%32(SEL))">callMethod:arguments:((NSString*), (NSArray*), (NSString*), (NSArray*), (SEL), (NSString*), (NSArray*), (id), (SEL))</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Calls a Flickr method
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/econst/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/clconst/BOOL" --><font class="type">BOOL</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/callMethod //apple_ref/occ/clm/callMethod //apple_ref/occ/intfcm/callMethod //apple_ref/occ/func/callMethod //apple_ref/occ/ftmplt/callMethod //apple_ref/occ/defn/callMethod //apple_ref/occ/macro/callMethod" --><font class="function">callMethod</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">method</font> <!-- a logicalPath="//apple_ref/occ/instm/arguments //apple_ref/occ/clm/arguments //apple_ref/occ/intfcm/arguments //apple_ref/occ/func/arguments //apple_ref/occ/ftmplt/arguments //apple_ref/occ/defn/arguments //apple_ref/occ/macro/arguments" --><font class="function">arguments</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSArray //apple_ref/occ/cl/NSArray //apple_ref/occ/tdef/NSArray //apple_ref/occ/tag/NSArray //apple_ref/occ/econst/NSArray //apple_ref/occ/struct/NSArray //apple_ref/occ/clconst/NSArray" --><font class="type">NSArray</font><!-- /a --><font class="type">*</font>)<font class="param">parameter</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>method</i></code></dt>
+<dd>The Flickr method name</dd>
+<dt><code><i>arguments</i></code></dt>
+<dd>An NSArray object holding the key-value pair(s) that
+is/are the argument(s) of the method. The arugment(s) will always be
+NSString objects. If one of the argument value is an NSArray holding
+e.g. NSString objects of photo ids, it will be joined first with commas
+(",") then passed as an string.</dd>
+</dl>
+</blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>The method returns YES if a network connection is opened,
+NO is no connection can be made. Authentication information is 
+automatically supplied if it's required. Some Flickr methods have
+different behaviors when authenticated. If you need to "force
+authentication", pass an <tt>@"auth", nil</tt> arugment pair in 
+the <tt>arguments</tt> parameter.<br>
+Any error or received XML data block will be handled either by 
+the delegate's informal protocol implementation or the callback
+method set with a previous <tt>setSelector:</tt>.
+</p>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:;  name=OFFlickrInvocation::callMethod:arguments: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="callMethod:arguments:((NSString*),%32(NSArray*),%32(SEL),%32(NSString*),%32(NSArray*),%32(id),%32(SEL))">callMethod:arguments:((NSString*), (NSArray*), (SEL), (NSString*), (NSArray*), (id), (SEL))</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Short hand for <tt>callMethod:arguments:</tt> with selector setters.
+</p>
+<b>See Also:</b><br><blockquote><dl>
+<dt>
+<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html?Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:" logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:" target="_top">callMethod:arguments:selector:</a>
+</dt>
+<dd></dd>
+</dl></blockquote>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/econst/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/clconst/BOOL" --><font class="type">BOOL</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/callMethod //apple_ref/occ/clm/callMethod //apple_ref/occ/intfcm/callMethod //apple_ref/occ/func/callMethod //apple_ref/occ/ftmplt/callMethod //apple_ref/occ/defn/callMethod //apple_ref/occ/macro/callMethod" --><font class="function">callMethod</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">method</font> <!-- a logicalPath="//apple_ref/occ/instm/arguments //apple_ref/occ/clm/arguments //apple_ref/occ/intfcm/arguments //apple_ref/occ/func/arguments //apple_ref/occ/ftmplt/arguments //apple_ref/occ/defn/arguments //apple_ref/occ/macro/arguments" --><font class="function">arguments</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSArray //apple_ref/occ/cl/NSArray //apple_ref/occ/tdef/NSArray //apple_ref/occ/tag/NSArray //apple_ref/occ/econst/NSArray //apple_ref/occ/struct/NSArray //apple_ref/occ/clconst/NSArray" --><font class="type">NSArray</font><!-- /a --><font class="type">*</font>)<font class="param">parameter</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/selector //apple_ref/occ/clm/selector //apple_ref/occ/intfcm/selector //apple_ref/occ/func/selector //apple_ref/occ/ftmplt/selector //apple_ref/occ/defn/selector //apple_ref/occ/macro/selector" --><font class="function">selector</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/SEL //apple_ref/occ/cl/SEL //apple_ref/occ/tdef/SEL //apple_ref/occ/tag/SEL //apple_ref/occ/econst/SEL //apple_ref/occ/struct/SEL //apple_ref/occ/clconst/SEL" --><font class="type">SEL</font><!-- /a -->)<font class="param">aSelector</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:delegate:selector:;  name=OFFlickrInvocation::callMethod:arguments:delegate:selector: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:delegate:selector:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="callMethod:arguments:delegate:selector:">callMethod:arguments:delegate:selector:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Short hand for <tt>callMethod:arguments:</tt> with delegate and 
+selector setters.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/econst/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/clconst/BOOL" --><font class="type">BOOL</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/callMethod //apple_ref/occ/clm/callMethod //apple_ref/occ/intfcm/callMethod //apple_ref/occ/func/callMethod //apple_ref/occ/ftmplt/callMethod //apple_ref/occ/defn/callMethod //apple_ref/occ/macro/callMethod" --><font class="function">callMethod</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">method</font> <!-- a logicalPath="//apple_ref/occ/instm/arguments //apple_ref/occ/clm/arguments //apple_ref/occ/intfcm/arguments //apple_ref/occ/func/arguments //apple_ref/occ/ftmplt/arguments //apple_ref/occ/defn/arguments //apple_ref/occ/macro/arguments" --><font class="function">arguments</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSArray //apple_ref/occ/cl/NSArray //apple_ref/occ/tdef/NSArray //apple_ref/occ/tag/NSArray //apple_ref/occ/econst/NSArray //apple_ref/occ/struct/NSArray //apple_ref/occ/clconst/NSArray" --><font class="type">NSArray</font><!-- /a --><font class="type">*</font>)<font class="param">parameter</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/delegate //apple_ref/occ/clm/delegate //apple_ref/occ/intfcm/delegate //apple_ref/occ/func/delegate //apple_ref/occ/ftmplt/delegate //apple_ref/occ/defn/delegate //apple_ref/occ/macro/delegate" --><font class="function">delegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font> <!-- a logicalPath="//apple_ref/occ/instm/selector //apple_ref/occ/clm/selector //apple_ref/occ/intfcm/selector //apple_ref/occ/func/selector //apple_ref/occ/ftmplt/selector //apple_ref/occ/defn/selector //apple_ref/occ/macro/selector" --><font class="function">selector</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/SEL //apple_ref/occ/cl/SEL //apple_ref/occ/tdef/SEL //apple_ref/occ/tag/SEL //apple_ref/occ/econst/SEL //apple_ref/occ/struct/SEL //apple_ref/occ/clconst/SEL" --><font class="type">SEL</font><!-- /a -->)<font class="param">aSelector</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:;  name=OFFlickrInvocation::callMethod:arguments:selector: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="callMethod:arguments:selector:">callMethod:arguments:selector:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Short hand for <tt>callMethod:arguments:</tt> with selector setters.
+</p>
+<b>See Also:</b><br><blockquote><dl>
+<dt>
+<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html?Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" target="_top">callMethod:arguments:</a>
+</dt>
+<dd></dd>
+</dl></blockquote>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/econst/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/clconst/BOOL" --><font class="type">BOOL</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/callMethod //apple_ref/occ/clm/callMethod //apple_ref/occ/intfcm/callMethod //apple_ref/occ/func/callMethod //apple_ref/occ/ftmplt/callMethod //apple_ref/occ/defn/callMethod //apple_ref/occ/macro/callMethod" --><font class="function">callMethod</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/econst/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/clconst/NSString" --><font class="type">NSString</font><!-- /a --><font class="type">*</font>)<font class="param">method</font> <!-- a logicalPath="//apple_ref/occ/instm/arguments //apple_ref/occ/clm/arguments //apple_ref/occ/intfcm/arguments //apple_ref/occ/func/arguments //apple_ref/occ/ftmplt/arguments //apple_ref/occ/defn/arguments //apple_ref/occ/macro/arguments" --><font class="function">arguments</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSArray //apple_ref/occ/cl/NSArray //apple_ref/occ/tdef/NSArray //apple_ref/occ/tag/NSArray //apple_ref/occ/econst/NSArray //apple_ref/occ/struct/NSArray //apple_ref/occ/clconst/NSArray" --><font class="type">NSArray</font><!-- /a --><font class="type">*</font>)<font class="param">parameter</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/selector //apple_ref/occ/clm/selector //apple_ref/occ/intfcm/selector //apple_ref/occ/func/selector //apple_ref/occ/ftmplt/selector //apple_ref/occ/defn/selector //apple_ref/occ/macro/selector" --><font class="function">selector</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/SEL //apple_ref/occ/cl/SEL //apple_ref/occ/tdef/SEL //apple_ref/occ/tag/SEL //apple_ref/occ/econst/SEL //apple_ref/occ/struct/SEL //apple_ref/occ/clconst/SEL" --><font class="type">SEL</font><!-- /a -->)<font class="param">aSelector</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/cancel;  name=OFFlickrInvocation::cancel --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/cancel"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="cancel">cancel</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Cancels the current invocation.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<font class="param">cancel</font>;</pre></blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>If the invocation's connection is still open, it will be
+closed, and an <tt>OFConnectionCanceled</tt> error code will be sent
+to the delegate's error handler (or callback method if you use that
+flavor). Nothing happens if the connection is already closed.
+</p>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/context;  name=OFFlickrInvocation::context --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/context"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="context">context</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Returns the context object.
+</p>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font>;</pre></blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>This method is useful for callback methods, since they can
+in turn retrieve e.g. photo URLs by passing photo information to the
+context object.
+</p>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/delegate;  name=OFFlickrInvocation::delegate --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/delegate"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="delegate">delegate</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Retrieves the current delegate object
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">delegate</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/inintWithContext:;  name=OFFlickrInvocation::inintWithContext: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/inintWithContext:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="inintWithContext:">inintWithContext:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Initiates an invocation object with context information.
+</p>
+<b>See Also:</b><br><blockquote><dl>
+<dt>
+<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html?Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:" logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:" target="_top">initWithContext:</a>
+</dt>
+<dd></dd>
+</dl></blockquote>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/initWithContext //apple_ref/occ/clm/initWithContext //apple_ref/occ/intfcm/initWithContext //apple_ref/occ/func/initWithContext //apple_ref/occ/ftmplt/initWithContext //apple_ref/occ/defn/initWithContext //apple_ref/occ/macro/initWithContext" --><font class="function">initWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:;  name=OFFlickrInvocation::initWithContext: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="initWithContext:">initWithContext:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Initiates an invocation object with context information.
+</p>
+<b>See Also:</b><br><blockquote><dl>
+<dt>
+<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html?Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/inintWithContext:" logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/inintWithContext:" target="_top">inintWithContext:</a>
+</dt>
+<dd></dd>
+</dl></blockquote>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/initWithContext //apple_ref/occ/clm/initWithContext //apple_ref/occ/intfcm/initWithContext //apple_ref/occ/func/initWithContext //apple_ref/occ/ftmplt/initWithContext //apple_ref/occ/defn/initWithContext //apple_ref/occ/macro/initWithContext" --><font class="function">initWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:;  name=OFFlickrInvocation::initWithContext:delegate: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="initWithContext:delegate:">initWithContext:delegate:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Initiates an auto-released invocation object with context 
+and delegate information.
+</p>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/initWithContext //apple_ref/occ/clm/initWithContext //apple_ref/occ/intfcm/initWithContext //apple_ref/occ/func/initWithContext //apple_ref/occ/ftmplt/initWithContext //apple_ref/occ/defn/initWithContext //apple_ref/occ/macro/initWithContext" --><font class="function">initWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/delegate //apple_ref/occ/clm/delegate //apple_ref/occ/intfcm/delegate //apple_ref/occ/func/delegate //apple_ref/occ/ftmplt/delegate //apple_ref/occ/defn/delegate //apple_ref/occ/macro/delegate" --><font class="function">delegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object.</dd>
+<dt><code><i>aDelegate</i></code></dt>
+<dd>A delegate object that will receive callback messages
+upon a Flickr method's completion (or error).</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:timeoutInterval:;  name=OFFlickrInvocation::initWithContext:delegate:timeoutInterval: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/initWithContext:delegate:timeoutInterval:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="initWithContext:delegate:timeoutInterval:">initWithContext:delegate:timeoutInterval:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Initiates an auto-released invocation object with context,
+delegate and timeout interval.
+</p>
+<blockquote><pre>- (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/initWithContext //apple_ref/occ/clm/initWithContext //apple_ref/occ/intfcm/initWithContext //apple_ref/occ/func/initWithContext //apple_ref/occ/ftmplt/initWithContext //apple_ref/occ/defn/initWithContext //apple_ref/occ/macro/initWithContext" --><font class="function">initWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/delegate //apple_ref/occ/clm/delegate //apple_ref/occ/intfcm/delegate //apple_ref/occ/func/delegate //apple_ref/occ/ftmplt/delegate //apple_ref/occ/defn/delegate //apple_ref/occ/macro/delegate" --><font class="function">delegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font> <!-- a logicalPath="//apple_ref/occ/instm/timeoutInterval //apple_ref/occ/clm/timeoutInterval //apple_ref/occ/intfcm/timeoutInterval //apple_ref/occ/func/timeoutInterval //apple_ref/occ/ftmplt/timeoutInterval //apple_ref/occ/defn/timeoutInterval //apple_ref/occ/macro/timeoutInterval" --><font class="function">timeoutInterval</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSTimeInterval //apple_ref/occ/cl/NSTimeInterval //apple_ref/occ/tdef/NSTimeInterval //apple_ref/occ/tag/NSTimeInterval //apple_ref/occ/econst/NSTimeInterval //apple_ref/occ/struct/NSTimeInterval //apple_ref/occ/clconst/NSTimeInterval" --><font class="type">NSTimeInterval</font><!-- /a -->)<font class="param">interval</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object.</dd>
+<dt><code><i>aDelegate</i></code></dt>
+<dd>A delegate object that will receive callback messages
+upon a Flickr method's completion (or error).</dd>
+<dt><code><i>timeoutInterval</i></code></dt>
+<dd>The timeout interval. If an invocation is timed out,
+the error handler of the delegate will be called.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=clm;  uid=//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:;  name=OFFlickrInvocation::invocationWithContext: --><a name="//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="invocationWithContext:">invocationWithContext:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Creates an auto-released invocation object with context information.
+</p>
+<blockquote><pre>+ (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/invocationWithContext //apple_ref/occ/clm/invocationWithContext //apple_ref/occ/intfcm/invocationWithContext //apple_ref/occ/func/invocationWithContext //apple_ref/occ/ftmplt/invocationWithContext //apple_ref/occ/defn/invocationWithContext //apple_ref/occ/macro/invocationWithContext" --><font class="function">invocationWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=clm;  uid=//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:;  name=OFFlickrInvocation::invocationWithContext:delegate: --><a name="//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="invocationWithContext:delegate:">invocationWithContext:delegate:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Creates an auto-released invocation object with context 
+and delegate information.
+</p>
+<blockquote><pre>+ (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/invocationWithContext //apple_ref/occ/clm/invocationWithContext //apple_ref/occ/intfcm/invocationWithContext //apple_ref/occ/func/invocationWithContext //apple_ref/occ/ftmplt/invocationWithContext //apple_ref/occ/defn/invocationWithContext //apple_ref/occ/macro/invocationWithContext" --><font class="function">invocationWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/delegate //apple_ref/occ/clm/delegate //apple_ref/occ/intfcm/delegate //apple_ref/occ/func/delegate //apple_ref/occ/ftmplt/delegate //apple_ref/occ/defn/delegate //apple_ref/occ/macro/delegate" --><font class="function">delegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object.</dd>
+<dt><code><i>aDelegate</i></code></dt>
+<dd>A delegate object that will receive callback messages
+upon a Flickr method's completion (or error).</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=clm;  uid=//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:timeoutInterval:;  name=OFFlickrInvocation::invocationWithContext:delegate:timeoutInterval: --><a name="//apple_ref/doc/compositePage/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:timeoutInterval:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="invocationWithContext:delegate:timeoutInterval:">invocationWithContext:delegate:timeoutInterval:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Creates an auto-released invocation object with context,
+delegate and timeout interval.
+</p>
+<blockquote><pre>+ (<a href="../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<!-- a logicalPath="//apple_ref/occ/instm/invocationWithContext //apple_ref/occ/clm/invocationWithContext //apple_ref/occ/intfcm/invocationWithContext //apple_ref/occ/func/invocationWithContext //apple_ref/occ/ftmplt/invocationWithContext //apple_ref/occ/defn/invocationWithContext //apple_ref/occ/macro/invocationWithContext" --><font class="function">invocationWithContext</font><!-- /a -->:(<a href="../../../../Documentation/OFFlickrContext/Classes/OFFlickrContext/index.html#//apple_ref/occ/cl/OFFlickrContext" logicalPath="//apple_ref/occ/cl/OFFlickrContext" target="_top"><font class="type">OFFlickrContext</font></a><font class="type">*</font>)<font class="param">context</font> 
+        <!-- a logicalPath="//apple_ref/occ/instm/delegate //apple_ref/occ/clm/delegate //apple_ref/occ/intfcm/delegate //apple_ref/occ/func/delegate //apple_ref/occ/ftmplt/delegate //apple_ref/occ/defn/delegate //apple_ref/occ/macro/delegate" --><font class="function">delegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font> <!-- a logicalPath="//apple_ref/occ/instm/timeoutInterval //apple_ref/occ/clm/timeoutInterval //apple_ref/occ/intfcm/timeoutInterval //apple_ref/occ/func/timeoutInterval //apple_ref/occ/ftmplt/timeoutInterval //apple_ref/occ/defn/timeoutInterval //apple_ref/occ/macro/timeoutInterval" --><font class="function">timeoutInterval</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSTimeInterval //apple_ref/occ/cl/NSTimeInterval //apple_ref/occ/tdef/NSTimeInterval //apple_ref/occ/tag/NSTimeInterval //apple_ref/occ/econst/NSTimeInterval //apple_ref/occ/struct/NSTimeInterval //apple_ref/occ/clconst/NSTimeInterval" --><font class="type">NSTimeInterval</font><!-- /a -->)<font class="param">interval</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>context</i></code></dt>
+<dd>An OFFlickrContext object.</dd>
+<dt><code><i>aDelegate</i></code></dt>
+<dd>A delegate object that will receive callback messages
+upon a Flickr method's completion (or error).</dd>
+<dt><code><i>timeoutInterval</i></code></dt>
+<dd>The timeout interval. If an invocation is timed out,
+the error handler of the delegate will be called.</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/isClosed;  name=OFFlickrInvocation::isClosed --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/isClosed"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="isClosed">isClosed</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Returns YES if the connection is not open or already closed.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/econst/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/clconst/BOOL" --><font class="type">BOOL</font><!-- /a -->)<font class="param">isClosed</font>;</pre></blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setDelegate:;  name=OFFlickrInvocation::setDelegate: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setDelegate:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="setDelegate:">setDelegate:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Sets a new delegate.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/setDelegate //apple_ref/occ/clm/setDelegate //apple_ref/occ/intfcm/setDelegate //apple_ref/occ/func/setDelegate //apple_ref/occ/ftmplt/setDelegate //apple_ref/occ/defn/setDelegate //apple_ref/occ/macro/setDelegate" --><font class="function">setDelegate</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">aDelegate</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>aDelegate</i></code></dt>
+<dd>A new delegate object;</dd>
+</dl>
+</blockquote>
+<dl></dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setSelector:;  name=OFFlickrInvocation::setSelector: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setSelector:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="setSelector:">setSelector:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Sets the callback selector if you want to use the callback flavor.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/setSelector //apple_ref/occ/clm/setSelector //apple_ref/occ/intfcm/setSelector //apple_ref/occ/func/setSelector //apple_ref/occ/ftmplt/setSelector //apple_ref/occ/defn/setSelector //apple_ref/occ/macro/setSelector" --><font class="function">setSelector</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/SEL //apple_ref/occ/cl/SEL //apple_ref/occ/tdef/SEL //apple_ref/occ/tag/SEL //apple_ref/occ/econst/SEL //apple_ref/occ/struct/SEL //apple_ref/occ/clconst/SEL" --><font class="type">SEL</font><!-- /a -->)<font class="param">aSelector</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>aSelector</i></code></dt>
+<dd>The selector of the delegate's callback handler method.</dd>
+</dl>
+</blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>Please refer to OFFlickrInvocation's class description for 
+details on the selector's signature and parameter type requirements.
+OFFlickrInvocation will check if the delegate can handle such a selector.
+If not, the selector will be reset to nil.
+</p>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setUserInfo:;  name=OFFlickrInvocation::setUserInfo: --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/setUserInfo:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="setUserInfo:">setUserInfo:</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Sets the user information object.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/setUserInfo //apple_ref/occ/clm/setUserInfo //apple_ref/occ/intfcm/setUserInfo //apple_ref/occ/func/setUserInfo //apple_ref/occ/ftmplt/setUserInfo //apple_ref/occ/defn/setUserInfo //apple_ref/occ/macro/setUserInfo" --><font class="function">setUserInfo</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">userinfo</font>;</pre></blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>The object will be retained by the invocation object. The
+previously (if any) held one will be released.
+</p>
+</dl>
+<hr>
+<!-- headerDoc=instm;  uid=//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/userInfo;  name=OFFlickrInvocation::userInfo --><a name="//apple_ref/doc/compositePage/occ/instm/OFFlickrInvocation/userInfo"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
+<h3><a name="userInfo">userInfo</a></h3>
+</td></tr></table>
+<hr>
+<dl></dl>
+<p>Retrieves the user information set with <tt>setUserInfo</tt>.
+</p>
+<blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/id //apple_ref/occ/cl/id //apple_ref/occ/tdef/id //apple_ref/occ/tag/id //apple_ref/occ/econst/id //apple_ref/occ/struct/id //apple_ref/occ/clconst/id" --><font class="type">id</font><!-- /a -->)<font class="param">userInfo</font>;</pre></blockquote>
+<dl>
+<h5><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<p>The object is retained by OFFlickrInvocation. You have to
+retain it if you want to keep it.
+</p>
+</dl>
+<p>(Last Updated October 21, 2006)
+</p>
+</body>
+</html>
