@@ -7,6 +7,7 @@ The class OFPOSTRequest is inspired by Andreas Meingast's code snippet which use
 CFReadStream instead of NSURLConnection to perform better HTTP POST
 requests.
 
+
 During the early stage of its development, Mathieu Tozer has given me many 
 suggestions and shared great ideas. Thanks Mathieu!
 
