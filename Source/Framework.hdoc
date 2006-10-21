@@ -4,5 +4,5 @@
  @abstract A collection of Objective-C categories, classes or Objective-C/C++ fa
 cilitating functions that extend Cocoa's functionalities
 
- @discussion This framework is in the public domain.
+ @discussion A collection of Objective-C categories, classes or Objective-C/C++ facilitating functions that extend Cocoa's functionalities
 */
