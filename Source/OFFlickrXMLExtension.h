@@ -30,6 +30,16 @@
 
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
 
+/*!
+ @header OFFlickrXMLExtension.h
+ @abstract Declares OFFlickrXMLExtension category.
+ @discussion Thie category extends Cocoa's NSXML* classes so that XML
+  document objects can be converted into NSDictionary objects for easier
+  information extraction.
+*/  
+
+
+
 @interface NSXMLNode(OFFlickrXMLExtension)
 - (NSDictionary*)flickrDictionaryFromNode;
 @end
@@ -38,8 +48,37 @@
 - (NSDictionary*)flickrDictionaryFromNode;
 @end
 
+/*!
+ @class NSXMLDocument(OFFlickrXMLExtension)
+ @abstract Extends Cocoa's NSXMLDocument to simplify XML data access.
+ @discussion The method that does the magic, <tt>flickrDictionaryFromDocument</tt>,
+  effectively converts a XML document into an NSDictionary object. Now among
+  the discussions of JSON-XML conversion, there is no really an agreed way
+  of how this should be done. Here I follow 
+  <a href="http://ajaxian.com/archives/badgerfish-translating-xml-to-json">BadgerFish</a>'s
+  convention with one twist: attribute tags do not begun with the at symbol 
+  ('\@') but instead the underline ('_'). This is because Apple's Key-Value 
+  Observation convention has used the at symbol the mean other things, so
+  we can't really use it here.
+  
+  Otherwise, it gives you a nice NSDictionary object. Text nodes are translated
+  into a key-value pair with the key '$'. No namespace handling is done since
+  we're dealing with plain-and-good Flickr data blocks.
+*/
 @interface NSXMLDocument(OFFlickrXMLExtension)
+
+/*!
+ @method hasFlickrError:message:
+ @abstract Determines if the data block contains a Flickr error message
+ @param errorcode A pointer to an integer that stores the error code
+ @param errorMsg A poionter to an NSString object that stores the error message
+*/
 - (BOOL)hasFlickrError:(int*)errcode message:(NSString**)errorMsg;
+
+/*!
+ @method flickrDictionaryFromDocument
+ @abstract Converts the present NSXMLDocument into an NSDictionary object
+*/
 - (NSDictionary*)flickrDictionaryFromDocument;
 + (NSString*)flickrXMLAttribute:(NSString*)attr;
 + (NSString*)flickrXMLAttributePrefix;

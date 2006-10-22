@@ -1,8 +1,26 @@
 /*!
  @framework ObjectiveFlickr Framework
 
- @abstract A collection of Objective-C categories, classes or Objective-C/C++ fa
-cilitating functions that extend Cocoa's functionalities
+ @abstract A Flickr API framework written in Objective-C.
 
- @discussion A collection of Objective-C categories, classes or Objective-C/C++ facilitating functions that extend Cocoa's functionalities
+ @discussion ObjectiveFlickr is a 
+ <a href="http://flickr.com/services/api/">Flickr API framework</a>.
+ It simplifies the work required for writing a Flickr desktop application. All 
+ you need to do is to create a context object (OFFlickrContext) that 
+ encapsulates your Flickr API key and "shared secret", then use
+ OFFlickrInvocation objects to make API calls. Unlike most Flickr API wrappers
+ or frameworks, ObjectiveFlickr is designed for desktop GUI applications. That
+ is, every API call is done asynchronously--API invocations do not block your
+ running thread. Calls made using OFFlickrInvocation's 
+ <tt>callMethod:arguments:</tt> return immediately after a connection is made. 
+ The returned data block or error code will be passed to a delegate's callback 
+ handler.
+ 
+ A good place to start with ObjectiveFlickr is by looking at its examples. 
+ PhotoSearch.app is a simply but effective example of how to use Flickr's 
+ public API methods. It also integrates WebKit for displaying pictures with 
+ almost no extra effot.
+ 
+ ObjectiveFlickr is released under the New BSD License and is hosted 
+ at <a href="http://code.google.com/p/objectiveflickr/">Google Code</a>.
 */

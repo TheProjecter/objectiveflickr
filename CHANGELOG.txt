@@ -1,9 +1,12 @@
 ObjectiveFlickr: Change Log
 
+2006-10-23:
+
+We'll say this is a 1.0 release, with all the documentation work completed!
+
 2006-10-04: 
 
 Migration notes:
-
 * OFFlickrApplicationContext is changed to OFFlickrContext
 * OFFlickrRESTRequest is gone
 * OFFlickrAPICaller is renamed to OFFlickrInvocation

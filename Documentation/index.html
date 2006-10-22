@@ -1,59 +1,144 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
-<html>
-<head>
-<title>ObjectiveFlickr Framework Documentation</title>
-<meta name="generator" content="HeaderDoc">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>ObjectiveFlickr Reference</title> 
+
+
+<style type="text/css">
+    body {
+        font-family: Lucida Grande, Geneva, Helvetica, Arial, Sans-serif;    
+        font-size: 10pt;
+    }
+    h1 {
+        font-weight: bold;
+        font-size: 24pt;
+    }
+    h2 {
+        font-weight: bold;
+        font-size: 16pt; 
+    } 
+        
+    td {
+        font-size: 90%;
+    }
+    a:link { 
+        text-decoration: none; 
+        color: #0000ff;
+    }
+    a:visited {
+        text-decoration: none; 
+        color: #0000ff;
+    }
+    a:visited:hover {
+        text-decoration: underline; 
+        color: #ff6600;
+    }
+    a:active {
+        text-decoration: none; 
+        color: #ff6600;
+    }
+    a:hover {
+        text-decoration: underline; 
+        color: #ff6600;
+    } 
+</style> 
 </head>
-<body bgcolor="#ffffff">
-<h1>ObjectiveFlickr Framework Documentation</h1>
-<hr>
-<br><p>
-A collection of Objective-C categories, classes or Objective-C/C++ facilitating functions that extend Cocoa's functionalities
+<body>
+
+
+<h1>ObjectiveFlickr Framework</h1>
+<p><em>
+A Flickr API framework written in Objective-C.
+</em></p>
+<p>
+ObjectiveFlickr is a Flickr API framework. It simplifies the work required for writing a Flickr desktop application. All you need to do is to create a context object (OFFlickrContext) that encapsulates your Flickr API key and "shared secret", then use OFFlickrInvocation objects to make API calls. Unlike most Flickr API wrappers or frameworks, ObjectiveFlickr is designed for desktop GUI applications. That is, every API call is done asynchronously--API invocations do not block your running thread. Calls made using OFFlickrInvocation's <tt>callMethod:arguments:</tt> return immediately after a connection is made. The returned data block or error code will be passed to a delegate's callback handler.
+<br><br>
+A good place to start with ObjectiveFlickr is by looking at its examples. PhotoSearch.app is a simply but effective example of how to use Flickr's public API methods. It also integrates WebKit for displaying pictures with almost no extra effot.
+<br><br>
+ObjectiveFlickr is released under the New BSD License and is hosted at <a href="http://code.google.com/p/objectiveflickr/" target="_top">Google Code</a>.
 
 </p>
+<hr/>
+
 <h2>Headers</h2>
 <blockquote>
-<blockquote>
-<table border="0" width="100%">
-<tr>
-<td>
-<a href="ObjectiveFlickr/index.html" target="_top">ObjectiveFlickr.h</a><br>
-</td>
-<td>
-<a href="OFFlickrInvocation/index.html" target="_top">OFFlickrInvocation.h</a><br>
-</td>
-</tr>
-<tr>
-<td>
-<a href="OFFlickrContext/index.html" target="_top">OFFlickrContext.h</a><br>
-</td>
-<td></td>
-</tr>
-</table>
+<a href="ObjectiveFlickr/index.html" target ="_top">ObjectiveFlickr.h</a><br>
+<a href="OFFlickrContext/index.html" target ="_top">OFFlickrContext.h</a><br>
+<a href="OFFlickrInvocation/index.html" target ="_top">OFFlickrInvocation.h</a><br>
+<a href="OFFlickrUploader/index.html" target ="_top">OFFlickrUploader.h</a><br>
+<a href="OFFlickrXMLExtension/index.html" target ="_top">OFFlickrXMLExtension.h</a><br>
 </blockquote>
 
-</blockquote>
+
 <h2>Classes</h2>
 <blockquote>
-<blockquote>
-<table border="0" width="100%">
-<tr>
-<td>
-<a href="OFFlickrInvocation/Classes/NSObject_OFFlickrInvocationDelegate_/index.html" target="_top">NSObject(OFFlickrInvocationDelegate)</a><br>
-</td>
-<td>
-<a href="OFFlickrInvocation/Classes/OFFlickrInvocation/index.html" target="_top">OFFlickrInvocation</a><br>
-</td>
-</tr>
-<tr>
-<td>
-<a href="OFFlickrContext/Classes/OFFlickrContext/index.html" target="_top">OFFlickrContext</a><br>
-</td>
-<td></td>
-</tr>
-</table>
+<a href="OFFlickrInvocation/Classes/NSObject_OFFlickrInvocationDelegate_/index.html" target ="_top">NSObject(OFFlickrInvocationDelegate)</a><br>
+<a href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/index.html" target ="_top">NSObject(OFFlickrUploaderDelegate)</a><br>
+<a href="OFFlickrXMLExtension/Classes/NSXMLDocument_OFFlickrXMLExtension_/index.html" target ="_top">NSXMLDocument(OFFlickrXMLExtension)</a><br>
+<a href="OFFlickrContext/Classes/OFFlickrContext/index.html" target ="_top">OFFlickrContext</a><br>
+<a href="OFFlickrInvocation/Classes/OFFlickrInvocation/index.html" target ="_top">OFFlickrInvocation</a><br>
+<a href="OFFlickrUploader/Classes/OFFlickrUploader/index.html" target ="_top">OFFlickrUploader</a><br>
 </blockquote>
 
+
+<h2>Functions</h2>
+<blockquote>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:didFetchData:" href="OFFlickrInvocation/Classes/NSObject_OFFlickrInvocationDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:didFetchData:" retarget="yes" target ="_top">NSObject(OFFlickrInvocationDelegate)::flickrInvocation:didFetchData:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:errorCode:errorInfo:" href="OFFlickrInvocation/Classes/NSObject_OFFlickrInvocationDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:errorCode:errorInfo:" retarget="yes" target ="_top">NSObject(OFFlickrInvocationDelegate)::flickrInvocation:errorCode:errorInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:progress:expectedTotal:" href="OFFlickrInvocation/Classes/NSObject_OFFlickrInvocationDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:progress:expectedTotal:" retarget="yes" target ="_top">NSObject(OFFlickrInvocationDelegate)::flickrInvocation:progress:expectedTotal:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:didCancel:" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:didCancel:" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:didCancel:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:didComplete:userInfo:" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:didComplete:userInfo:" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:didComplete:userInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:errorCode:errorInfo:userInfo</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:errorCode:errorInfo:userInfo</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo:" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:errorCode:errorInfo:userInfo:" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:errorCode:errorInfo:userInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:progress:total:userInfo:" href="OFFlickrUploader/Classes/NSObject_OFFlickrUploaderDelegate_/Methods/Methods.html#//apple_ref/occ/instm/NSObject(OFFlickrUploaderDelegate)/flickrUploader:progress:total:userInfo:" retarget="yes" target ="_top">NSObject(OFFlickrUploaderDelegate)::flickrUploader:progress:total:userInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSXMLDocument(OFFlickrXMLExtension)/flickrDictionaryFromDocument" href="OFFlickrXMLExtension/Classes/NSXMLDocument_OFFlickrXMLExtension_/Methods/Methods.html#//apple_ref/occ/instm/NSXMLDocument(OFFlickrXMLExtension)/flickrDictionaryFromDocument" retarget="yes" target ="_top">NSXMLDocument(OFFlickrXMLExtension)::flickrDictionaryFromDocument</a><br>
+<a  logicalPath="//apple_ref/occ/instm/NSXMLDocument(OFFlickrXMLExtension)/hasFlickrError:message:" href="OFFlickrXMLExtension/Classes/NSXMLDocument_OFFlickrXMLExtension_/Methods/Methods.html#//apple_ref/occ/instm/NSXMLDocument(OFFlickrXMLExtension)/hasFlickrError:message:" retarget="yes" target ="_top">NSXMLDocument(OFFlickrXMLExtension)::hasFlickrError:message:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/authToken" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/authToken" retarget="yes" target ="_top">OFFlickrContext::authToken</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrContext/contextWithAPIKey:sharedSecret:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrContext/contextWithAPIKey:sharedSecret:" retarget="yes" target ="_top">OFFlickrContext::contextWithAPIKey:sharedSecret:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/endPoints" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/endPoints" retarget="yes" target ="_top">OFFlickrContext::endPoints</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/initWithAPIKey:sharedSecret:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/initWithAPIKey:sharedSecret:" retarget="yes" target ="_top">OFFlickrContext::initWithAPIKey:sharedSecret:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/photoURLFromDictionary:size:type:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/photoURLFromDictionary:size:type:" retarget="yes" target ="_top">OFFlickrContext::photoURLFromDictionary:size:type:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/photoURLFromID:serverID:secret:size:type:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/photoURLFromID:serverID:secret:size:type:" retarget="yes" target ="_top">OFFlickrContext::photoURLFromID:serverID:secret:size:type:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/RESTAPIEndPoint" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/RESTAPIEndPoint" retarget="yes" target ="_top">OFFlickrContext::RESTAPIEndPoint</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/setAuthToken:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/setAuthToken:" retarget="yes" target ="_top">OFFlickrContext::setAuthToken:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrContext/setEndPoints:" href="OFFlickrContext/Classes/OFFlickrContext/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrContext/setEndPoints:" retarget="yes" target ="_top">OFFlickrContext::setEndPoints:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" retarget="yes" target ="_top">OFFlickrInvocation::callMethod:arguments:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:" retarget="yes" target ="_top">OFFlickrInvocation::callMethod:arguments:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:delegate:selector:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:delegate:selector:" retarget="yes" target ="_top">OFFlickrInvocation::callMethod:arguments:delegate:selector:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/callMethod:arguments:selector:" retarget="yes" target ="_top">OFFlickrInvocation::callMethod:arguments:selector:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/cancel" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/cancel" retarget="yes" target ="_top">OFFlickrInvocation::cancel</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/context" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/context" retarget="yes" target ="_top">OFFlickrInvocation::context</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/delegate" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/delegate" retarget="yes" target ="_top">OFFlickrInvocation::delegate</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/inintWithContext:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/inintWithContext:" retarget="yes" target ="_top">OFFlickrInvocation::inintWithContext:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:" retarget="yes" target ="_top">OFFlickrInvocation::initWithContext:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:delegate:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:delegate:" retarget="yes" target ="_top">OFFlickrInvocation::initWithContext:delegate:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:delegate:timeoutInterval:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/initWithContext:delegate:timeoutInterval:" retarget="yes" target ="_top">OFFlickrInvocation::initWithContext:delegate:timeoutInterval:</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:" retarget="yes" target ="_top">OFFlickrInvocation::invocationWithContext:</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:" retarget="yes" target ="_top">OFFlickrInvocation::invocationWithContext:delegate:</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:timeoutInterval:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrInvocation/invocationWithContext:delegate:timeoutInterval:" retarget="yes" target ="_top">OFFlickrInvocation::invocationWithContext:delegate:timeoutInterval:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/isClosed" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/isClosed" retarget="yes" target ="_top">OFFlickrInvocation::isClosed</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/setDelegate:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/setDelegate:" retarget="yes" target ="_top">OFFlickrInvocation::setDelegate:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/setSelector:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/setSelector:" retarget="yes" target ="_top">OFFlickrInvocation::setSelector:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/setUserInfo:" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/setUserInfo:" retarget="yes" target ="_top">OFFlickrInvocation::setUserInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrInvocation/userInfo" href="OFFlickrInvocation/Classes/OFFlickrInvocation/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrInvocation/userInfo" retarget="yes" target ="_top">OFFlickrInvocation::userInfo</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/cancel" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/cancel" retarget="yes" target ="_top">OFFlickrUploader::cancel</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/context" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/context" retarget="yes" target ="_top">OFFlickrUploader::context</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/initWithContext:delegate:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/initWithContext:delegate:" retarget="yes" target ="_top">OFFlickrUploader::initWithContext:delegate:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/initWithContext:delegate:timeoutInterval:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/initWithContext:delegate:timeoutInterval:" retarget="yes" target ="_top">OFFlickrUploader::initWithContext:delegate:timeoutInterval:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/isClosed" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/isClosed" retarget="yes" target ="_top">OFFlickrUploader::isClosed</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrUploader/uploaderWithContext:delegate:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrUploader/uploaderWithContext:delegate:" retarget="yes" target ="_top">OFFlickrUploader::uploaderWithContext:delegate:</a><br>
+<a  logicalPath="//apple_ref/occ/clm/OFFlickrUploader/uploaderWithContext:delegate:timeoutInterval:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/clm/OFFlickrUploader/uploaderWithContext:delegate:timeoutInterval:" retarget="yes" target ="_top">OFFlickrUploader::uploaderWithContext:delegate:timeoutInterval:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/uploadWithContentsOfFile:filename:photoInformation:userInfo:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/uploadWithContentsOfFile:filename:photoInformation:userInfo:" retarget="yes" target ="_top">OFFlickrUploader::uploadWithContentsOfFile:filename:photoInformation:userInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/uploadWithContentsOfFile:photoInformation:userInfo:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/uploadWithContentsOfFile:photoInformation:userInfo:" retarget="yes" target ="_top">OFFlickrUploader::uploadWithContentsOfFile:photoInformation:userInfo:</a><br>
+<a  logicalPath="//apple_ref/occ/instm/OFFlickrUploader/uploadWithData:filename:photoInformation:userInfo:" href="OFFlickrUploader/Classes/OFFlickrUploader/Methods/Methods.html#//apple_ref/occ/instm/OFFlickrUploader/uploadWithData:filename:photoInformation:userInfo:" retarget="yes" target ="_top">OFFlickrUploader::uploadWithData:filename:photoInformation:userInfo:</a><br>
 </blockquote>
+
+
+<hr />
+
+Copyright © 2006 Lukhnos D. Liu. All rights reserved.<br>
+Last updated: 2006-10-23
+
 </body>
-</html>

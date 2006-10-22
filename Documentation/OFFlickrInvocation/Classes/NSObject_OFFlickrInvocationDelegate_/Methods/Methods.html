@@ -31,6 +31,14 @@ with valid XML data block.
 </p>
 <blockquote><pre>- (<!-- a logicalPath="//apple_ref/occ/cl/void //apple_ref/occ/cl/void //apple_ref/occ/tdef/void //apple_ref/occ/tag/void //apple_ref/occ/econst/void //apple_ref/occ/struct/void //apple_ref/occ/clconst/void" --><font class="type">void</font><!-- /a -->)<!-- a logicalPath="//apple_ref/occ/instm/flickrInvocation //apple_ref/occ/clm/flickrInvocation //apple_ref/occ/intfcm/flickrInvocation //apple_ref/occ/func/flickrInvocation //apple_ref/occ/ftmplt/flickrInvocation //apple_ref/occ/defn/flickrInvocation //apple_ref/occ/macro/flickrInvocation" --><font class="function">flickrInvocation</font><!-- /a -->:(<a href="../../../../../Documentation/OFFlickrInvocation/Classes/OFFlickrInvocation/index.html#//apple_ref/occ/cl/OFFlickrInvocation" logicalPath="//apple_ref/occ/cl/OFFlickrInvocation" target="_top"><font class="type">OFFlickrInvocation</font></a><font class="type">*</font>)<font class="param">invocation</font> 
         <!-- a logicalPath="//apple_ref/occ/instm/didFetchData //apple_ref/occ/clm/didFetchData //apple_ref/occ/intfcm/didFetchData //apple_ref/occ/func/didFetchData //apple_ref/occ/ftmplt/didFetchData //apple_ref/occ/defn/didFetchData //apple_ref/occ/macro/didFetchData" --><font class="function">didFetchData</font><!-- /a -->:(<!-- a logicalPath="//apple_ref/occ/cl/NSXMLDocument //apple_ref/occ/cl/NSXMLDocument //apple_ref/occ/tdef/NSXMLDocument //apple_ref/occ/tag/NSXMLDocument //apple_ref/occ/econst/NSXMLDocument //apple_ref/occ/struct/NSXMLDocument //apple_ref/occ/clconst/NSXMLDocument" --><font class="type">NSXMLDocument</font><!-- /a --><font class="type">*</font>)<font class="param">xmldoc</font>;</pre></blockquote>
+<h5><font face="Lucida Grande,Helvetica,Arial">Parameter Descriptions</font></h5>
+<blockquote>
+<dl>
+<dt><code><i>xmldoc</i></code></dt>
+<dd>The returned XML data block. You can then call <tt>flickrDictionaryFromDocument</tt>
+method to convert it into a JSON-style dictionary object.</dd>
+</dl>
+</blockquote>
 <dl></dl>
 <hr>
 <!-- headerDoc=instm;  uid=//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:errorCode:errorInfo:;  name=NSObject(OFFlickrInvocationDelegate)::flickrInvocation:errorCode:errorInfo: --><a name="//apple_ref/occ/instm/NSObject(OFFlickrInvocationDelegate)/flickrInvocation:errorCode:errorInfo:"></a><table border="0" cellpadding="2" cellspacing="2" width="300"><tr><td valign="top" height="12" colspan="5">
@@ -66,7 +74,7 @@ error message, or an NSError object if it's an internal connection error.
 that case, expectedTotal will be -1.
 </p>
 </dl>
-<p>(Last Updated October 21, 2006)
+<p>(Last Updated October 23, 2006)
 </p>
 </body>
 </html>

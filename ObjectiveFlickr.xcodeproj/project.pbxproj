@@ -17,6 +17,7 @@
 				6AA0A0410AC6C7A5003E682E /* PBXTargetDependency */,
 				6AA0A0430AC6C7A7003E682E /* PBXTargetDependency */,
 				6A18EC580AD8237B007CED62 /* PBXTargetDependency */,
+				6A22071E0AEBFCB500A65449 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -104,6 +105,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6A18EA9C0AD816AD007CED62;
 			remoteInfo = PhotoSearch;
+		};
+		6A22071D0AEBFCB500A65449 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6ADA2A9A0AE8015E0069AC5E /* Documentation */;
+			remoteInfo = Documentation;
 		};
 		6AA0A03E0AC6C7A2003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -201,7 +209,6 @@
 		6A0792E00AC70AE00004DA47 /* ContactsBrowserApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowserApplication.h; path = Demos/ContactsBrowser/ContactsBrowserApplication.h; sourceTree = "<group>"; };
 		6A0792E10AC70AE00004DA47 /* ContactsBrowserApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsBrowserApplication.m; path = Demos/ContactsBrowser/ContactsBrowserApplication.m; sourceTree = "<group>"; };
 		6A18EA9D0AD816AD007CED62 /* PhotoSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A18EA9F0AD816AD007CED62 /* PhotoSearch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "PhotoSearch-Info.plist"; sourceTree = "<group>"; };
 		6A18EAA60AD8198B007CED62 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Demos/PhotoSearch/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		6A18EAA80AD8199A007CED62 /* PhotoSearchController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = PhotoSearchController.m; path = Demos/PhotoSearch/PhotoSearchController.m; sourceTree = "<group>"; };
 		6A18EAA90AD8199A007CED62 /* PhotoSearchController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PhotoSearchController.h; path = Demos/PhotoSearch/PhotoSearchController.h; sourceTree = "<group>"; };
@@ -218,8 +225,14 @@
 		6A18EADC0AD81A79007CED62 /* scriptaculous.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = scriptaculous.js; sourceTree = "<group>"; };
 		6A18EADD0AD81A79007CED62 /* slider.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = slider.js; sourceTree = "<group>"; };
 		6A18EADE0AD81A79007CED62 /* unittest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = unittest.js; sourceTree = "<group>"; };
+		6A2206590AEBEC5700A65449 /* Framework.hdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Framework.hdoc; path = Source/Framework.hdoc; sourceTree = "<group>"; };
+		6A22065A0AEBEC6E00A65449 /* toctemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = toctemplate.html; path = Source/toctemplate.html; sourceTree = "<group>"; };
+		6A2206C00AEBF56100A65449 /* ObjectiveFlickr-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "ObjectiveFlickr-Info.plist"; path = "Source/ObjectiveFlickr-Info.plist"; sourceTree = "<group>"; };
+		6A2206C10AEBF57600A65449 /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "FlickrBasics-Info.plist"; path = "Demos/Basics/FlickrBasics-Info.plist"; sourceTree = "<group>"; };
+		6A2206C20AEBF58300A65449 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "ContactsBrowser-Info.plist"; path = "Demos/ContactsBrowser/ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
+		6A2206C30AEBF59000A65449 /* PhotoSearch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "PhotoSearch-Info.plist"; path = "Demos/PhotoSearch/PhotoSearch-Info.plist"; sourceTree = "<group>"; };
+		6A2206CF0AEBF5F800A65449 /* headerDoc2HTML.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = headerDoc2HTML.config; path = Source/headerDoc2HTML.config; sourceTree = "<group>"; };
 		6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
 		6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowser_Prefix.pch; path = Demos/ContactsBrowser/ContactsBrowser_Prefix.pch; sourceTree = "<group>"; };
 		6A31EB030AC6C08C0084DA74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/ContactsBrowser/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -234,10 +247,8 @@
 		6AAA6DA90AD551E60093515C /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		6AAA6DAA0AD551E60093515C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		6AB518350AC6B8580083374D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FlickrBasics-Info.plist"; sourceTree = "<group>"; };
 		6AC37C380AC7ECA6008B471C /* OFFlickrXMLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrXMLExtension.m; path = Source/OFFlickrXMLExtension.m; sourceTree = "<group>"; };
 		6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveFlickr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ObjectiveFlickr-Info.plist"; sourceTree = "<group>"; };
 		6AD7B2C00AC6B62F004644DE /* ObjectiveFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr.h; path = Source/ObjectiveFlickr.h; sourceTree = "<group>"; };
 		6AD7B2C40AC6B658004644DE /* CocoaCryptoHashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CocoaCryptoHashing.h; path = Source/CocoaCryptoHashing/CocoaCryptoHashing.h; sourceTree = "<group>"; };
 		6AD7B2C50AC6B658004644DE /* CocoaCryptoHashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CocoaCryptoHashing.m; path = Source/CocoaCryptoHashing/CocoaCryptoHashing.m; sourceTree = "<group>"; };
@@ -250,7 +261,6 @@
 		6AD7B2F40AC6B7BF004644DE /* ObjectiveFlickr_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr_Prefix.pch; path = Demos/Basics/ObjectiveFlickr_Prefix.pch; sourceTree = "<group>"; };
 		6AD7B2F50AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickrDemoDelegate.h; path = Demos/Basics/ObjectiveFlickrDemoDelegate.h; sourceTree = "<group>"; };
 		6AD7B2F60AC6B7BF004644DE /* ObjectiveFlickrDemoDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickrDemoDelegate.m; path = Demos/Basics/ObjectiveFlickrDemoDelegate.m; sourceTree = "<group>"; };
-		6ADA2B2E0AE807E10069AC5E /* Framework.hdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Framework.hdoc; sourceTree = "<group>"; };
 		6AE497E60AD3AEA5008AA97C /* CHANGELOG.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.txt; sourceTree = "<group>"; };
 		6AE497EC0AD3B3B3008AA97C /* OFFlickrInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrInvocation.h; path = Source/OFFlickrInvocation.h; sourceTree = "<group>"; };
 		6AE4980D0AD3D4D8008AA97C /* OFFlickrUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFFlickrUploader.h; path = Source/OFFlickrUploader.h; sourceTree = "<group>"; };
@@ -308,6 +318,7 @@
 		6A18EA8F0AD81675007CED62 /* PhotoSearch */ = {
 			isa = PBXGroup;
 			children = (
+				6A2206C30AEBF59000A65449 /* PhotoSearch-Info.plist */,
 				6A18EAD10AD81A54007CED62 /* index.html */,
 				6A18EAD20AD81A54007CED62 /* style.css */,
 				6A18EAC00AD81A2F007CED62 /* main.m */,
@@ -348,6 +359,7 @@
 		6A31EAED0AC6BF480084DA74 /* ContactsBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				6A2206C20AEBF58300A65449 /* ContactsBrowser-Info.plist */,
 				6A4639640AC6DCC20015C3E9 /* Resources */,
 				6A31EAEE0AC6BFBD0084DA74 /* main.m */,
 				6A0792D80AC70AD30004DA47 /* LoginSheetController.h */,
@@ -383,16 +395,13 @@
 				6AD7B2C90AC6B674004644DE /* Linked Frameworks */,
 				6AD7B2D20AC6B6AD004644DE /* Linked Libraries */,
 				6AD7B2B40AC6B57C004644DE /* Products */,
-				6AD7B2B50AC6B57C004644DE /* ObjectiveFlickr-Info.plist */,
-				6AB5E0310AC6BD6A002D3AFE /* FlickrBasics-Info.plist */,
-				6A31EAE90AC6BF2D0084DA74 /* ContactsBrowser-Info.plist */,
-				6A18EA9F0AD816AD007CED62 /* PhotoSearch-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		6AD7B2AD0AC6B556004644DE /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6A2206C00AEBF56100A65449 /* ObjectiveFlickr-Info.plist */,
 				6AD7B2C00AC6B62F004644DE /* ObjectiveFlickr.h */,
 				6A7F66520AD3AB8900E3252F /* OFFlickrContext.h */,
 				6A7F66530AD3AB8900E3252F /* OFFlickrContext.m */,
@@ -463,6 +472,7 @@
 		6AD7B2EE0AC6B79C004644DE /* Basics */ = {
 			isa = PBXGroup;
 			children = (
+				6A2206C10AEBF57600A65449 /* FlickrBasics-Info.plist */,
 				6AD7B2EF0AC6B7BF004644DE /* English.lproj */,
 				6AD7B2F30AC6B7BF004644DE /* main.m */,
 				6AD7B2F40AC6B7BF004644DE /* ObjectiveFlickr_Prefix.pch */,
@@ -475,7 +485,9 @@
 		6ADA2B2D0AE807CC0069AC5E /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				6ADA2B2E0AE807E10069AC5E /* Framework.hdoc */,
+				6A2206CF0AEBF5F800A65449 /* headerDoc2HTML.config */,
+				6A22065A0AEBEC6E00A65449 /* toctemplate.html */,
+				6A2206590AEBEC5700A65449 /* Framework.hdoc */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
@@ -666,11 +678,10 @@
 			inputPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/Documentation/index.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# shell script goes here\nmkdir -p $BUILT_PRODUCTS_DIR/Documentation\n# headerdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/Source/*.h\nheaderdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/ObjectiveFlickr.hdoc\n# gatherheaderdoc $BUILT_PRODUCTS_DIR/Documentation index.html\nexit 0\n";
+			shellScript = "# shell script goes here\nmkdir -p $BUILT_PRODUCTS_DIR/Documentation\ncd $SRCROOT/Source\nheaderdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/Source/*.h\nheaderdoc2html -o $BUILT_PRODUCTS_DIR/Documentation $SRCROOT/Source/Framework.hdoc\ngatherheaderdoc $BUILT_PRODUCTS_DIR/Documentation index.html\nexit 0\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -725,6 +736,11 @@
 			isa = PBXTargetDependency;
 			target = 6A18EA9C0AD816AD007CED62 /* PhotoSearch */;
 			targetProxy = 6A18EC570AD8237B007CED62 /* PBXContainerItemProxy */;
+		};
+		6A22071E0AEBFCB500A65449 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6ADA2A9A0AE8015E0069AC5E /* Documentation */;
+			targetProxy = 6A22071D0AEBFCB500A65449 /* PBXContainerItemProxy */;
 		};
 		6AA0A03F0AC6C7A2003E682E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -805,7 +821,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "PhotoSearch-Info.plist";
+				INFOPLIST_FILE = "Demos/PhotoSearch/PhotoSearch-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -834,7 +850,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "PhotoSearch-Info.plist";
+				INFOPLIST_FILE = "Demos/PhotoSearch/PhotoSearch-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -864,7 +880,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ContactsBrowser-Info.plist";
+				INFOPLIST_FILE = "Demos/ContactsBrowser/ContactsBrowser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -892,7 +908,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ContactsBrowser-Info.plist";
+				INFOPLIST_FILE = "Demos/ContactsBrowser/ContactsBrowser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -971,7 +987,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ObjectiveFlickr-Info.plist";
+				INFOPLIST_FILE = "Source/ObjectiveFlickr-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1001,7 +1017,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ObjectiveFlickr-Info.plist";
+				INFOPLIST_FILE = "Source/ObjectiveFlickr-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1030,7 +1046,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "FlickrBasics-Info.plist";
+				INFOPLIST_FILE = "Demos/Basics/FlickrBasics-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1058,7 +1074,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "FlickrBasics-Info.plist";
+				INFOPLIST_FILE = "Demos/Basics/FlickrBasics-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
