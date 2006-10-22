@@ -124,6 +124,8 @@
   @method invocationWithContext:
   @abstract Creates an auto-released invocation object with context information.
   @param context An OFFlickrContext object
+ @discussion The default timeout interval (OFDefaultTimeoutInterval, 
+  specified in ObjectiveFlickr.h) will be used.
 */
 + (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context;
 
@@ -134,6 +136,8 @@
   @param context An OFFlickrContext object.
   @param aDelegate A delegate object that will receive callback messages
    upon a Flickr method's completion (or error).
+ @discussion The default timeout interval (OFDefaultTimeoutInterval, 
+  specified in ObjectiveFlickr.h) will be used.
 */
 + (OFFlickrInvocation*)invocationWithContext:(OFFlickrContext*)context delegate:(id)aDelegate;
 
@@ -153,6 +157,8 @@
   @method inintWithContext:
   @abstract Initiates an invocation object with context information.
   @param context An OFFlickrContext object
+ @discussion The default timeout interval (OFDefaultTimeoutInterval, 
+  specified in ObjectiveFlickr.h) will be used.
 */
 - (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context;
 
@@ -163,6 +169,8 @@
   @param context An OFFlickrContext object.
   @param aDelegate A delegate object that will receive callback messages
    upon a Flickr method's completion (or error).
+ @discussion The default timeout interval (OFDefaultTimeoutInterval, 
+  specified in ObjectiveFlickr.h) will be used.
 */
 - (OFFlickrInvocation*)initWithContext:(OFFlickrContext*)context delegate:(id)aDelegate;
 
@@ -280,16 +288,18 @@
 @end
 
 /*!
- @protocol OFFlickrInvocationDelegate
+ @class NSObject(OFFlickrInvocationDelegate)
  @abstract Defines the informal protocol methods for a given OFFlickrInvocation's
   delegate
 */
- 
 @interface NSObject(OFFlickrInvocationDelegate)
+
 /*!
  @method flickrInvocation:didFetchData:
  @abstract This method is called when an invocation is successfuly returned
   with valid XML data block.
+ @param xmldoc The returned XML data block. You can then call <tt>flickrDictionaryFromDocument</tt>
+  method to convert it into a JSON-style dictionary object.
 */
 - (void)flickrInvocation:(OFFlickrInvocation*)invocation didFetchData:(NSXMLDocument*)xmldoc;
 
