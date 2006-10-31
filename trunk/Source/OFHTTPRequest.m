@@ -180,6 +180,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	[_receivedData appendData:data];
+	[_timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:_timeoutInterval]];	
 	if ([_delegate respondsToSelector:@selector(HTTPRequest:progress:expectedTotal:userInfo:)]) {
 		[_delegate HTTPRequest:self progress:[_receivedData length] expectedTotal:_expectedLength userInfo:_userInfo];
 	}
