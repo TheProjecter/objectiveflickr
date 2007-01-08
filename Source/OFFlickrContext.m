@@ -31,15 +31,14 @@
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
 #import "CocoaCryptoHashing.h"
 
-#define OFDefaultRESTAPIEndPoint			@"http://api.flickr.com/services/rest/"
-#define OFDefaultAuthenticationEndPoint		@"http://flickr.com/services/auth/"
-#define OFDefaultPhotoURLPrefix				@"http://static.flickr.com/"
-#define OFDefaultUploadEndPoint				@"http://api.flickr.com/services/upload/"
-#define OFDefaultUploadCallBackEndPoint		@"http://www.flickr.com/tools/uploader_edit.gne"
-
 #define OFSharedSeparator	@"---------------------------8f999edae883c6039b244c0d341f45f8"
 
+
+static NSDictionary *_OFPresetEndPoints = nil;
+static NSDictionary *_OFDefaultEndPoints = nil;
+
 @interface OFFlickrContext (OFFlickrContextInternals)
++ (void)initialize;
 - (void)dealloc;
 - (NSString*)description;
 - (NSString*)signatureForCall:(NSDictionary*)parameters;
@@ -47,6 +46,11 @@
 @end
 
 @implementation OFFlickrContext
++ (void)setDefaultEndPointsByName:(NSString*)name
+{
+	_OFDefaultEndPoints = [_OFPresetEndPoints objectForKey:name];
+	if (!_OFDefaultEndPoints) _OFDefaultEndPoints = [_OFPresetEndPoints objectForKey:OFFlickrEndPoints];
+}
 + (OFFlickrContext*)contextWithAPIKey:(NSString*)key sharedSecret:(NSString*)secret
 {
 	return [[[OFFlickrContext alloc] initWithAPIKey:key sharedSecret:secret] autorelease];
@@ -58,14 +62,7 @@
 		_sharedSecret = [[NSString alloc] initWithString:secret ? secret: @""];
 		_authToken = [[NSString alloc] init];
 	
-		// populate the default end points
-		NSMutableDictionary *ma = [[NSMutableDictionary alloc] init];
-		[ma setObject:OFDefaultRESTAPIEndPoint forKey:OFRESTAPIEndPointKey];
-		[ma setObject:OFDefaultAuthenticationEndPoint forKey:OFAuthenticationEndPointKey];
-		[ma setObject:OFDefaultPhotoURLPrefix forKey:OFPhotoURLPrefixKey];
-		[ma setObject:OFDefaultUploadEndPoint forKey:OFUploadEndPointKey];
-		[ma setObject:OFDefaultUploadCallBackEndPoint forKey:OFUploadCallBackEndPointKey];
-		_endPoints = ma;
+		_endPoints = [[NSDictionary dictionaryWithDictionary:_OFDefaultEndPoints] retain];
 	}
 	return self;
 }
@@ -111,6 +108,37 @@
 @end
 
 @implementation OFFlickrContext (OFFlickrContextInternals)
++ (void)initialize
+{
+    if ( self == [OFFlickrContext class] ) {
+		_OFPresetEndPoints = [[NSDictionary alloc] initWithObjectsAndKeys:
+			[NSDictionary dictionaryWithObjectsAndKeys:
+				@"http://api.flickr.com/services/rest/", OFRESTAPIEndPointKey,
+				@"http://flickr.com/services/auth/", OFAuthenticationEndPointKey, 
+				@"http://static.flickr.com/", OFPhotoURLPrefixKey, 
+				@"http://api.flickr.com/services/upload/", OFUploadEndPointKey,
+				@"http://www.flickr.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
+			OFFlickrEndPoints,
+				
+			[NSDictionary dictionaryWithObjectsAndKeys:
+				@"http://beta.zooomr.com/bluenote/api/rest/", OFRESTAPIEndPointKey,
+				@"http://beta.zooomr.com/auth/", OFAuthenticationEndPointKey, 
+				@"http://static.zooomr.com/images/", OFPhotoURLPrefixKey, 
+				@"http://beta.zooomr.com/bluenote/api/upload/", OFUploadEndPointKey,
+				@"http://beta.zooomr.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
+			OFZooomrEndPoints,
+
+			[NSDictionary dictionaryWithObjectsAndKeys:
+				@"http://www.23hq.com/services/rest/", OFRESTAPIEndPointKey,
+				@"http://www.23hq.com/services/auth/", OFAuthenticationEndPointKey, 
+				@"http://www.23hq.com/", OFPhotoURLPrefixKey, 
+				@"http://www.23hq.com/services/upload/", OFUploadEndPointKey,
+				@"http://www.23hq.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
+			OF23HQEndPoints, nil];
+			
+		_OFDefaultEndPoints = [_OFPresetEndPoints objectForKey:OFFlickrEndPoints];
+    }
+}
 - (void)dealloc {
 	if (_APIKey) [_APIKey release];
 	if (_sharedSecret) [_sharedSecret release];

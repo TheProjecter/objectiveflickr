@@ -39,7 +39,29 @@
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
 
 /*!
- @define OFRESTAPIEndPointKey
+ @const OFFlickrEndPoint
+ @discussion The key to the NSDictionary that contains the default set of 
+  Flickr API endpoints
+*/
+#define OFFlickrEndPoints	@"OFFlickrEndPoints"
+
+/*!
+ @const OF23HQEndPoint
+ @discussion The key to the NSDictionary that contains the default set of Flickr 
+  API endpoints
+*/
+#define OF23HQEndPoints		@"OF23HQEndPoints"
+
+
+/*!
+ @const OFZooomrEndPoint
+ @discussion The NSDictionary that contains the default set of Flickr 
+  API endpoints
+*/
+#define OFZooomrEndPoints	@"OFZooomrEndPoints"
+
+/*!
+ @define kOFRESTAPIEndPointKey
  @discussion The key for Flickr REST API end point.
 */
 #define OFRESTAPIEndPointKey			@"RESTAPIEndPoint"
@@ -216,6 +238,16 @@
   file is. Note: dot (".") is <em>not</em> used in specifying the file type.
 */
 - (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size type:(NSString*)type;
+
+/*!
+ @method setDefaultEndPointsByName
+ @abstract Set the default API endpoints, the default is set of OFFlickrEndPoints
+ @discussion For available endpoints, see the section for constants. An example is the
+  OFZoomrEndPoints and OF23HQEndPoints provided in this library. If no valid
+  endpoints dictionary can be found under that name, the default (Flickr) one is used.
+*/
++ (void)setDefaultEndPointsByName:(NSString*)name;
+
 @end
 
 @interface OFFlickrContext (OFFlickrDataPreparer)
