@@ -36,7 +36,8 @@
 @implementation ObjectiveFlickrDemoDelegate
 - (void)awakeFromNib 
 {	
-	[OFFlickrContext setDefaultEndPointsByName:OF23HQEndPoints];
+	// uncomment this line to use 23HQ's services
+	// [OFFlickrContext setDefaultEndPointsByName:OF23HQEndPoints];
 	
 	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
 	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self] retain];
