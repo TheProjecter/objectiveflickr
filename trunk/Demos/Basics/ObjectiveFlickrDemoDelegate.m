@@ -36,6 +36,8 @@
 @implementation ObjectiveFlickrDemoDelegate
 - (void)awakeFromNib 
 {	
+	[OFFlickrContext setDefaultEndPointsByName:OF23HQEndPoints];
+	
 	context = [[OFFlickrContext contextWithAPIKey:OFDemoAPIKey sharedSecret:OFDemoSharedSecret] retain];
 	invoc = [[OFFlickrInvocation invocationWithContext:context delegate:self] retain];
 	uploader = [[OFFlickrUploader uploaderWithContext:context delegate:self] retain];
