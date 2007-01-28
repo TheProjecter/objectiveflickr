@@ -264,7 +264,7 @@
   NO is no connection can be made. Authentication information is 
   automatically supplied if it's required. Some Flickr methods have
   different behaviors when authenticated. If you need to "force
-  authentication", pass an <tt>\@"auth", nil</tt> arugment pair in 
+  authentication", pass an <tt>\@"auth", [NSNull null]</tt> arugment pair in 
   the <tt>arguments</tt> parameter.
   
   Any error or received XML data block will be handled either by 

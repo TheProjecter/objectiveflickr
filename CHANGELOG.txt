@@ -1,8 +1,58 @@
 ObjectiveFlickr: Change Log
 
+2007-01-29:
+
+* In sync with Flickr's latest photo URL scheme now
+
+  Which means added support for "farm id" and the new "originalsecret"
+  and "originalformat" data in the photo response block.
+  
+  Which in turn means -photoURLFromID:serverID:secret:size:type: and
+  -photoURLFromDictionary:size:type: are deprecated. Use
+  -photoURLFromDictionary:size: instead.
+  
+  For the Flickr additions, please refer to this framework's
+  documentation and Flickr API document:
+  
+    http://flickr.com/services/api/misc.urls.html
+
+* Added support for forming "buddy icon" URL
+
+* Supports different Flickr API-compatible sites. You can "switch"
+  API endpoints by calling OFFlickrContext's +setDefaultEndPointsByName:.
+  23hq's endpoints (OF23HQEndPoints) seem to be more reliable whereas
+  zooomr's (OFZooomrEndPoints) is not fully tested. My thanks
+  to Tristan O'Tierney for having helped in shaping this feature.
+  
+* Unit tests for the framework. Currently testing only flickr.test.echo.
+  This is a good start for test-driven framework development.
+
+* Fixed a possible breakage caused by an unretained NSTimer instance.
+  Thanks to Cam Stevenson for having pointed this out.
+  
+* The "forced auth" mode was not working. This is because NSArray
+  and NSDictionary do not accept nil as contained objects/values.
+  Please pass an [NSNull null] instead of nil if you want to make 
+  a forced auth call. My thanks to Geoffrey Spear for having pointed
+  this out.
+  
+* OFFlickrContext's +setDefaultContext: and +defaultContext can help
+  you save time and cut redundant context creation (since in one
+  app you probably only need one shared context instance). 
+  Thanks to Olivier Destrebecq for contributing this part of the code.
+
+* Changes in the demo code: now FlickrBasics uses flickr.photo.search
+  instead of flickr.people.getPublicPhotos to fetch the user's photo
+  list--including private ones.
+  
+* Changes in the demo code: ContactsBrowser adds "buddy icon view"
+  that demos how to fetch the buddy icon of a contact
+
+
 2006-10-23:
 
-We'll say this is a 1.0 release, with all the documentation work completed!
+The documentation work done!
+
 
 2006-10-04: 
 

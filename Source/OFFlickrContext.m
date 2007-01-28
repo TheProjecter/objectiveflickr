@@ -36,6 +36,7 @@
 
 static NSDictionary *_OFPresetEndPoints = nil;
 static NSDictionary *_OFDefaultEndPoints = nil;
+static OFFlickrContext *_OFDefaultContext = nil;
 
 @interface OFFlickrContext (OFFlickrContextInternals)
 + (void)initialize;
@@ -66,6 +67,20 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 	}
 	return self;
 }
++ (OFFlickrContext*)defaultContext
+{
+  return _OFDefaultContext;
+}
+
++ (void)setDefaultContext: (OFFlickrContext*) inContext
+{
+  if (![_OFDefaultContext isEqualTo:inContext])
+  {
+    [_OFDefaultContext release];
+    _OFDefaultContext = [inContext retain];
+  }
+}
+
 - (void)setAuthToken:(NSString*)token {
 	if (_authToken) [_authToken release];
 	_authToken = [[NSString alloc] initWithString:token];
@@ -85,7 +100,9 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 }
 - (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type
 {
-	NSMutableString *r=[NSMutableString stringWithFormat:@"%@%@/%@_%@", [_endPoints objectForKey:OFPhotoURLPrefixKey], server_id, photo_id, secret];
+	// no farm id here
+	NSString *urlbase =  [NSString stringWithFormat:[_endPoints objectForKey:OFPhotoURLPrefixKey], @""];
+	NSMutableString *r=[NSMutableString stringWithFormat:@"%@%@/%@_%@", urlbase, server_id, photo_id, secret];
 	
 	if (size) {
 		if ([size length]) {
@@ -105,6 +122,58 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 		size:size
 		type:type];
 }
+- (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size
+{
+	NSString *pid = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"id"]];
+	NSString *secret = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"secret"]];
+	NSString *sid = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"server"]];
+	NSString *farm = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"farm"]];
+	NSString *osct = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"originalsecret"]];
+	NSString *ofmt = [photoDict objectForKey:[NSXMLDocument flickrXMLAttribute:@"originalformat"]];
+
+	NSString *farmurl = @"";
+	if (farm) { if (![farm isEqualToString:@""]) farmurl = [NSString stringWithFormat:@"farm%@.", farm]; }
+	NSString *urlbase =  [NSString stringWithFormat:[_endPoints objectForKey:OFPhotoURLPrefixKey], farmurl];
+
+	if (size) { 
+		if ([size isEqualToString:@"o"]) {
+			return [NSMutableString stringWithFormat:@"%@%@/%@_%@_o.%@", urlbase, sid, pid, osct, ofmt];
+		}
+	}
+
+	NSMutableString *r=[NSMutableString stringWithFormat:@"%@%@/%@_%@", urlbase, sid, pid, secret];
+	
+	if (size) {
+		if ([size length]) {
+			[r appendString:@"_"];
+			[r appendString:size];
+		}
+	}
+	
+ 	[r appendString:@".jpg"];
+	return r;
+}
+- (NSString*)buddyIconURLWithUserID:(NSString*)nsid iconServer:(NSString*)server iconFarm:(NSString*)farm
+{
+	NSString *def = [_endPoints objectForKey:OFDefaultBuddyIconKey];
+	if (!server) return def;
+	if ([server isEqualToString:@""] || [server isEqualToString:@"0"]) return def;
+	
+	NSString *farmurl = @"";
+	if (farm) { if (![farm isEqualToString:@""]) farmurl = [NSString stringWithFormat:@"farm%@.", farm]; }
+	NSString *urlbase =  [NSString stringWithFormat:[_endPoints objectForKey:OFPhotoURLPrefixKey], farmurl];
+
+	return [NSString stringWithFormat:@"%@%@/buddyicons/%@.jpg", urlbase, server, nsid];
+}
+- (NSString*)buddyIconURLFromDictionary:(NSDictionary*)userdict
+{
+	return [self buddyIconURLWithUserID:
+			[userdict objectForKey:[NSXMLDocument flickrXMLAttribute:@"nsid"]]
+		iconServer:
+			[userdict objectForKey:[NSXMLDocument flickrXMLAttribute:@"iconserver"]]
+		iconFarm:
+			[userdict objectForKey:[NSXMLDocument flickrXMLAttribute:@"iconfarm"]]];
+}
 @end
 
 @implementation OFFlickrContext (OFFlickrContextInternals)
@@ -115,7 +184,8 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 			[NSDictionary dictionaryWithObjectsAndKeys:
 				@"http://api.flickr.com/services/rest/", OFRESTAPIEndPointKey,
 				@"http://flickr.com/services/auth/", OFAuthenticationEndPointKey, 
-				@"http://static.flickr.com/", OFPhotoURLPrefixKey, 
+				@"http://%@static.flickr.com/", OFPhotoURLPrefixKey, 
+				@"http://www.flickr.com/images/buddyicon.jpg", OFDefaultBuddyIconKey,
 				@"http://api.flickr.com/services/upload/", OFUploadEndPointKey,
 				@"http://www.flickr.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
 			OFFlickrEndPoints,
@@ -124,6 +194,7 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 				@"http://beta.zooomr.com/bluenote/api/rest/", OFRESTAPIEndPointKey,
 				@"http://beta.zooomr.com/auth/", OFAuthenticationEndPointKey, 
 				@"http://static.zooomr.com/images/", OFPhotoURLPrefixKey, 
+				@"http://static.zooomr.com/images/buddyicon.jpg", OFDefaultBuddyIconKey,
 				@"http://beta.zooomr.com/bluenote/api/upload/", OFUploadEndPointKey,
 				@"http://beta.zooomr.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
 			OFZooomrEndPoints,
@@ -132,6 +203,7 @@ static NSDictionary *_OFDefaultEndPoints = nil;
 				@"http://www.23hq.com/services/rest/", OFRESTAPIEndPointKey,
 				@"http://www.23hq.com/services/auth/", OFAuthenticationEndPointKey, 
 				@"http://www.23hq.com/", OFPhotoURLPrefixKey, 
+				@"http://www.23hq.com/images/buddyicon.jpg", OFDefaultBuddyIconKey,
 				@"http://www.23hq.com/services/upload/", OFUploadEndPointKey,
 				@"http://www.23hq.com/tools/uploader_edit.gne", OFUploadCallBackEndPointKey, nil],
 			OF23HQEndPoints, nil];

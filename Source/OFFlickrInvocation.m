@@ -31,7 +31,7 @@
 #import <ObjectiveFlickr/ObjectiveFlickr.h>
 
 // this stops compiler from giving us a warning when we call this
-// undocumented method
+// undocumented method (yes, it's undocumented...)
 @interface NSMethodSignature (OFFlickrInvocationHack)
 + (NSMethodSignature*)signatureWithObjCTypes:(const char*)type;
 @end
@@ -43,7 +43,7 @@
 @end
 
 @interface OFFlickrInvocation (OFFlickrInvocationUtility)
-+ (NSSet*)getRequiresSignSet;
++ (NSSet*)getRequiresSignSet;	
 + (NSSet*)getRequiresPOSTSet;
 + (NSSet*)getRequiresAuthSet;	// anything requires auth requires sign (the reverse not necessarily true)
 + (NSArray*)parseSelectorString:(const char *)selname;
@@ -147,10 +147,7 @@
 	if ([[OFFlickrInvocation getRequiresAuthSet] containsObject:method]) auth = YES;
 	if ([[OFFlickrInvocation getRequiresPOSTSet] containsObject:method]) post = YES;
 	
-	NSLog(@"invoking method %@, use auth = %@, signed = %@, use HTTP POST = %@", method,
-		auth ? @"YES" : @"NO",
-		sign ? @"YES" : @"NO",
-		post ? @"YES" : @"NO");
+	// NSLog(@"invoking method %@, use auth = %@, signed = %@, use HTTP POST = %@", method, auth ? @"YES" : @"NO", sign ? @"YES" : @"NO", post ? @"YES" : @"NO");
 	
 	if ([d objectForKey:@"auth"]) {			// force to use authentication
 		auth = YES;
@@ -214,6 +211,8 @@
 	
 	for (i=0; i<c; i++) {
 		NSString *key = [array objectAtIndex:i];
+		
+		// fixes the problem that nil can't be value in NSDictionary		
 		id value;
 		
 		i++;
@@ -231,7 +230,7 @@
 @implementation OFFlickrInvocation (OFFlickrInvocationCallbacks)
 - (void)HTTPRequest:(OFHTTPRequest*)request didCancel:(id)userinfo
 {
-	NSLog(@"HTTPRequest didCancel");
+	// NSLog(@"HTTPRequest didCancel");
 
 	NSString *errmsg = nil;
 	int errcode = OFConnectionCanceled;
@@ -370,12 +369,12 @@
 }
 -(void)forwardInvocation:(NSInvocation*)inv
 {
-    NSLog(@"method invocation, detail=%@", [inv description]);
+    // NSLog(@"method invocation, detail=%@", [inv description]);
 
 	const char *selname = sel_getName([inv selector]);
 	NSArray *selarray = [OFFlickrInvocation parseSelectorString:selname];
 
-	NSLog(@"method invocation, selname=%s, array=%@", selname, [selarray description]);
+	// NSLog(@"method invocation, selname=%s, array=%@", selname, [selarray description]);
 
 	NSMutableArray *param = [NSMutableArray array];
 	
@@ -388,7 +387,7 @@
 		methodname = [selarray objectAtIndex:0];
 		[inv getArgument:&arg atIndex:2];
 		[self setUserInfo:arg];
-		NSLog(@"has user info = %@", arg);
+		// NSLog(@"has user info = %@", arg);
 	}
 	else {
 		methodname = [NSString stringWithUTF8String:selname];
@@ -420,7 +419,7 @@
 		}
 	}
 	
-	NSLog(@"finished prepared, method = %@, argument = %@", methodname, [param description]);
+	// NSLog(@"finished prepared, method = %@, argument = %@", methodname, [param description]);
 
 	BOOL r;
 	r = [self callMethod:methodname arguments:param];

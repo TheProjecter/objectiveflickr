@@ -117,6 +117,10 @@
 	}
 	
 	_timer = [NSTimer scheduledTimerWithTimeInterval:_timeoutInterval target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
+	
+	// fixed thanks to Cam Stevenson
+	[_timer retain];
+
 	return YES;
 }
 @end

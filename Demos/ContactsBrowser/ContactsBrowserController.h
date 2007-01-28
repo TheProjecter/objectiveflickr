@@ -12,7 +12,8 @@
     IBOutlet id labelFriend;
     IBOutlet id progressIndicator;
     IBOutlet id sheetController;
-	
+    IBOutlet id webView;
+		
 	OFFlickrInvocation *_apicall;
 	NSArray *_contacts;
 }
