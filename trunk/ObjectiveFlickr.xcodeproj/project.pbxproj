@@ -18,6 +18,7 @@
 				6AA0A0430AC6C7A7003E682E /* PBXTargetDependency */,
 				6A18EC580AD8237B007CED62 /* PBXTargetDependency */,
 				6A22071E0AEBFCB500A65449 /* PBXTargetDependency */,
+				6A3B52C80B6D5CE600732DE0 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -66,6 +67,14 @@
 		6A18EC820AD82647007CED62 /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
 		6A31EAEF0AC6BFBD0084DA74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31EAEE0AC6BFBD0084DA74 /* main.m */; };
 		6A31EB190AC6C0A40084DA74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A31EB180AC6C0A40084DA74 /* InfoPlist.strings */; };
+		6A3B52310B6D5B5900732DE0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB518350AC6B8580083374D /* WebKit.framework */; };
+		6A3B52CC0B6D5D0100732DE0 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3B52CB0B6D5D0100732DE0 /* SenTestingKit.framework */; };
+		6A3B53790B6D5D0E00732DE0 /* ObjectiveFlickr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
+		6A3B537A0B6D5D0E00732DE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */; };
+		6A3B537B0B6D5D0E00732DE0 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */; };
+		6A3B53850B6D5D2100732DE0 /* ObjectiveFlickr.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AD7B2B30AC6B57C004644DE /* ObjectiveFlickr.framework */; };
+		6A3B538B0B6D5D4900732DE0 /* ObjectiveFlickrTests.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A3B538A0B6D5D4900732DE0 /* ObjectiveFlickrTests.h */; };
+		6A3B53930B6D5D6300732DE0 /* ObjectiveFlickrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3B53920B6D5D6300732DE0 /* ObjectiveFlickrTests.m */; };
 		6A78BA750AD4DFC50021EB1C /* OFPOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A78BA740AD4DFC50021EB1C /* OFPOSTRequest.m */; };
 		6A78BA770AD4DFE50021EB1C /* OFPOSTRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A78BA760AD4DFE50021EB1C /* OFPOSTRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6A78BA890AD50A3D0021EB1C /* OFFlickrUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A78BA880AD50A3D0021EB1C /* OFFlickrUploader.m */; };
@@ -112,6 +121,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6ADA2A9A0AE8015E0069AC5E;
 			remoteInfo = Documentation;
+		};
+		6A3B52C70B6D5CE600732DE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A3B52BF0B6D5CDA00732DE0 /* OFUnitTests */;
+			remoteInfo = OFUnitTests;
 		};
 		6AA0A03E0AC6C7A2003E682E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -178,6 +194,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6A3B537C0B6D5D1700732DE0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6A3B53850B6D5D2100732DE0 /* ObjectiveFlickr.framework in CopyFiles */,
+				6A3B538B0B6D5D4900732DE0 /* ObjectiveFlickrTests.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A7D7CF00AC9C1A400E9FCA3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -236,6 +263,11 @@
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
 		6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowser_Prefix.pch; path = Demos/ContactsBrowser/ContactsBrowser_Prefix.pch; sourceTree = "<group>"; };
 		6A31EB030AC6C08C0084DA74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/ContactsBrowser/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6A3B52C00B6D5CDA00732DE0 /* OFUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = OFUnitTests.octest; path = build/Release/OFUnitTests.octest; sourceTree = "<group>"; };
+		6A3B52C10B6D5CDA00732DE0 /* OFUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "OFUnitTests-Info.plist"; sourceTree = "<group>"; };
+		6A3B52CB0B6D5D0100732DE0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		6A3B538A0B6D5D4900732DE0 /* ObjectiveFlickrTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickrTests.h; path = Tests/ObjectiveFlickrTests.h; sourceTree = "<group>"; };
+		6A3B53920B6D5D6300732DE0 /* ObjectiveFlickrTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickrTests.m; path = Tests/ObjectiveFlickrTests.m; sourceTree = "<group>"; };
 		6A78BA740AD4DFC50021EB1C /* OFPOSTRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFPOSTRequest.m; path = Source/OFPOSTRequest.m; sourceTree = "<group>"; };
 		6A78BA760AD4DFE50021EB1C /* OFPOSTRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFPOSTRequest.h; path = Source/OFPOSTRequest.h; sourceTree = "<group>"; };
 		6A78BA880AD50A3D0021EB1C /* OFFlickrUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFFlickrUploader.m; path = Source/OFFlickrUploader.m; sourceTree = "<group>"; };
@@ -285,9 +317,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A3B52310B6D5B5900732DE0 /* WebKit.framework in Frameworks */,
 				6AA0A08D0AC6C827003E682E /* ObjectiveFlickr.framework in Frameworks */,
 				6AA09F3D0AC6C165003E682E /* Cocoa.framework in Frameworks */,
 				6AA09E9A0AC6C15F003E682E /* AppKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A3B52BD0B6D5CDA00732DE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A3B53790B6D5D0E00732DE0 /* ObjectiveFlickr.framework in Frameworks */,
+				6A3B537A0B6D5D0E00732DE0 /* Cocoa.framework in Frameworks */,
+				6A3B537B0B6D5D0E00732DE0 /* AppKit.framework in Frameworks */,
+				6A3B52CC0B6D5D0100732DE0 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +417,15 @@
 			name = ContactsBrowser;
 			sourceTree = "<group>";
 		};
+		6A3B529B0B6D5C9E00732DE0 /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6A3B538A0B6D5D4900732DE0 /* ObjectiveFlickrTests.h */,
+				6A3B53920B6D5D6300732DE0 /* ObjectiveFlickrTests.m */,
+			);
+			name = "Unit Tests";
+			sourceTree = "<group>";
+		};
 		6A4639640AC6DCC20015C3E9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,11 +443,13 @@
 				6AAA6DA90AD551E60093515C /* LICENSE.txt */,
 				6AAA6DA80AD551E60093515C /* ACKNOWLEDGMENTS.txt */,
 				6AD7B2AD0AC6B556004644DE /* Framework */,
+				6A3B529B0B6D5C9E00732DE0 /* Unit Tests */,
 				6ADA2B2D0AE807CC0069AC5E /* Documentation */,
 				6AD7B2BC0AC6B5E1004644DE /* Demos */,
 				6AD7B2C90AC6B674004644DE /* Linked Frameworks */,
 				6AD7B2D20AC6B6AD004644DE /* Linked Libraries */,
 				6AD7B2B40AC6B57C004644DE /* Products */,
+				6A3B52C10B6D5CDA00732DE0 /* OFUnitTests-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -427,6 +482,7 @@
 				6AD7B2E40AC6B778004644DE /* FlickrBasics.app */,
 				6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */,
 				6A18EA9D0AD816AD007CED62 /* PhotoSearch.app */,
+				6A3B52C00B6D5CDA00732DE0 /* OFUnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -454,6 +510,7 @@
 		6AD7B2C90AC6B674004644DE /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6A3B52CB0B6D5D0100732DE0 /* SenTestingKit.framework */,
 				6AB518350AC6B8580083374D /* WebKit.framework */,
 				6AD7B2CA0AC6B6A6004644DE /* AppKit.framework */,
 				6AD7B2CB0AC6B6A6004644DE /* Cocoa.framework */,
@@ -572,6 +629,25 @@
 			productReference = 6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */;
 			productType = "com.apple.product-type.application";
 		};
+		6A3B52BF0B6D5CDA00732DE0 /* OFUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A3B52C20B6D5CDA00732DE0 /* Build configuration list for PBXNativeTarget "OFUnitTests" */;
+			buildPhases = (
+				6A3B537C0B6D5D1700732DE0 /* CopyFiles */,
+				6A3B52BB0B6D5CDA00732DE0 /* Resources */,
+				6A3B52BC0B6D5CDA00732DE0 /* Sources */,
+				6A3B52BD0B6D5CDA00732DE0 /* Frameworks */,
+				6A3B52BE0B6D5CDA00732DE0 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OFUnitTests;
+			productName = OFUnitTests;
+			productReference = 6A3B52C00B6D5CDA00732DE0 /* OFUnitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		6AD7B2B20AC6B57C004644DE /* ObjectiveFlickr */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6AD7B2B60AC6B57D004644DE /* Build configuration list for PBXNativeTarget "ObjectiveFlickr" */;
@@ -627,6 +703,7 @@
 				6A31EAE60AC6BF2D0084DA74 /* ContactsBrowser */,
 				6A18EA9C0AD816AD007CED62 /* PhotoSearch */,
 				6ADA2A9A0AE8015E0069AC5E /* Documentation */,
+				6A3B52BF0B6D5CDA00732DE0 /* OFUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -652,6 +729,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6A3B52BB0B6D5CDA00732DE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AD7B2AF0AC6B57C004644DE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -670,6 +754,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6A3B52BE0B6D5CDA00732DE0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		6ADA2A990AE8015E0069AC5E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -703,6 +800,14 @@
 				6A0792DB0AC70AD30004DA47 /* LoginSheetController.m in Sources */,
 				6A0792DF0AC70AD80004DA47 /* ContactsBrowserController.m in Sources */,
 				6A0792E30AC70AE00004DA47 /* ContactsBrowserApplication.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A3B52BC0B6D5CDA00732DE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A3B53930B6D5D6300732DE0 /* ObjectiveFlickrTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -741,6 +846,11 @@
 			isa = PBXTargetDependency;
 			target = 6ADA2A9A0AE8015E0069AC5E /* Documentation */;
 			targetProxy = 6A22071D0AEBFCB500A65449 /* PBXContainerItemProxy */;
+		};
+		6A3B52C80B6D5CE600732DE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A3B52BF0B6D5CDA00732DE0 /* OFUnitTests */;
+			targetProxy = 6A3B52C70B6D5CE600732DE0 /* PBXContainerItemProxy */;
 		};
 		6AA0A03F0AC6C7A2003E682E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -923,6 +1033,58 @@
 			};
 			name = Release;
 		};
+		6A3B52C30B6D5CDA00732DE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "OFUnitTests-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = OFUnitTests;
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		6A3B52C40B6D5CDA00732DE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "OFUnitTests-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = OFUnitTests;
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		6AA0A0600AC6C7AD003E682E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -988,7 +1150,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Source/ObjectiveFlickr-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1018,7 +1180,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Source/ObjectiveFlickr-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1128,6 +1290,15 @@
 			buildConfigurations = (
 				6A31EAEB0AC6BF2D0084DA74 /* Debug */,
 				6A31EAEC0AC6BF2D0084DA74 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A3B52C20B6D5CDA00732DE0 /* Build configuration list for PBXNativeTarget "OFUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A3B52C30B6D5CDA00732DE0 /* Debug */,
+				6A3B52C40B6D5CDA00732DE0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

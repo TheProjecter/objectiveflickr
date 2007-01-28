@@ -1,3 +1,4 @@
+#import <WebKit/WebKit.h>
 #import "ContactsBrowserApplication.h"
 #import "ContactsBrowserController.h"
 #import "LoginSheetController.h"
@@ -49,7 +50,7 @@
 	[contactsList setDelegate:self];
 	
 	[[self window] setTitle:[NSString stringWithFormat:@"Contacts of %@", 
-		[[[token objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"@fullname"]
+		[[[token objectForKey:@"auth"] objectForKey:@"user"] objectForKey:@"_username"]
 		]];
 	
 	OFFlickrContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
@@ -70,8 +71,10 @@
 	if (![realname length]) realname = [[_contacts objectAtIndex:rowIndex] objectForKey:@"_username"];
 	return realname;
 }
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
+	int rowIndex = [contactsList selectedRow];
+	if (rowIndex == -1) return; 
 	NSDictionary *d = [_contacts objectAtIndex:rowIndex];
 
 	NSString *un = [d objectForKey:@"_username"];
@@ -84,6 +87,8 @@
 	[labelFriend setStringValue:[fr isEqualToString:@"1"] ? @"yes" : @"no"];
 	[labelFamily setStringValue:[fa isEqualToString:@"1"] ? @"yes" : @"no"];
 
-	return YES;
+	OFFlickrContext *c = [(ContactsBrowserApplication*)[NSApp delegate] context];
+	NSString *buddyIconURL = [c buddyIconURLFromDictionary:d];
+	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:buddyIconURL]]];
 }
 @end

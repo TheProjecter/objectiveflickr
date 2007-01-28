@@ -81,6 +81,13 @@
 */
 #define OFPhotoURLPrefixKey				@"photoURLPrefix"
 
+/*!  
+ @define OFDefaultBuddyIconKey
+ @discussion The default "buddy icon" where a user has none
+*/
+#define OFDefaultBuddyIconKey			@"defaultBuddyIcon"
+
+
 /*! 
  @define OFUploadEndPointKey
  @discussion The key of the end point of Flickr's upload service.
@@ -194,7 +201,7 @@
 
 /*!
  @method photoURLFromID:serverID:secret:size:type:
- @abstract Prepares the photo URL from photo ID and other information
+ @abstract DEPRECATED. Prepares the photo URL from photo ID and other information
   you extracted from an Flickr API return block (i.e. the <tt>&lt;photo&gt;</tt>
   XML tag).
  @param photo_id The photo ID in the tag.
@@ -214,6 +221,8 @@
   the file type is always .jpg; you'll need to call
   <tt>flickr.photos.getSizes</tt> to find out what the type of the original
   file is. Note: dot (".") is <em>not</em> used in specifying the file type.
+  @discussion This method is deprecated since Flickr now employs a more 
+   complex photo URL schemes. Use -photoURLFromDictionary:size: instead
 */
 - (NSString*)photoURLFromID:(NSString*)photo_id serverID:(NSString*)server_id secret:(NSString*)secret size:(NSString*)size type:(NSString*)type;
 
@@ -236,8 +245,48 @@
   the file type is always .jpg; you'll need to call
   <tt>flickr.photos.getSizes</tt> to find out what the type of the original
   file is. Note: dot (".") is <em>not</em> used in specifying the file type.
+  @discussion This method is deprecated since Flickr now employs a more 
+   complex photo URL schemes. Use -photoURLFromDictionary:size: instead
 */
 - (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size type:(NSString*)type;
+
+
+/*!
+ @method photoURLFromDictionary:size:
+ @abstract Prepares the photo URL from an NSDictionary that is converted
+  from the <tt>&lt;photo&gt;</tt> data block.
+ @param photoDict an NSDictionary that has the keys _id, _secret and _server; Flickr now also adds extra _farm, _originalformat and _originalsecret keys
+ @param size An NSString specifying the size. For example, <tt>\@"s"</tt> means
+  a 75x75 small square photo. For more information on this parameter,
+  please refer to the Flickr API documentation at
+  <a href="http://flickr.com/services/api/misc.urls.html">http://flickr.com/services/api/misc.urls.html</a>.
+  By default, if you pass an empty string or nil, the default is a medium-sized
+  picture (500 px on logest side). Please note that not all sizes are
+  always available. You may need to call <tt>flickr.photos.getSizes</tt> to
+  check what sizes are available first.
+  @discussion This method is recommended for forming photo URL from Flickr photo information.
+*/
+- (NSString*)photoURLFromDictionary:(NSDictionary*)photoDict size:(NSString*)size;
+
+/*!
+ @method buddyIconURLWithUserID:iconServer:iconFarm:
+ @abstract Get the URL of a user's "buddy icon"
+ @param nsid The user's Flickr ID
+ @param server The user's icon server id, obtained from flickr.people.getInfo
+ @param farm The user's icon server farm id, obtained from flickr.people.getInfo
+ @discussion Returns the buddy icon's URL, or none if iconServer is not given
+  (which means no buddy icon is available for this user)
+ */
+- (NSString*)buddyIconURLWithUserID:(NSString*)nsid iconServer:(NSString*)server iconFarm:(NSString*)farm;
+
+
+/*!
+ @method buddyIconURLFromDictionary:
+ @abstract Get the URL of a user's "buddy icon" from a Flickr user info dictionary
+ @param userdict The user's information returned by flickr.people.getInfo
+ @discussion This is the shorthand of buddyIconURLWithUserID:iconServer:iconFarm:
+ */
+- (NSString*)buddyIconURLFromDictionary:(NSDictionary*)userdict;
 
 /*!
  @method setDefaultEndPointsByName
@@ -247,6 +296,21 @@
   endpoints dictionary can be found under that name, the default (Flickr) one is used.
 */
 + (void)setDefaultEndPointsByName:(NSString*)name;
+
+/*!
+ @method defaultContext
+ @abstract Retrieve the default context stored by setDefaultContext, so that there's
+  no need to create a context object repeated.
+*/
++ (OFFlickrContext*)defaultContext;
+
+/*!
+ @method setDefaultContext
+ @abstract Set the default context. The context object must be created first.
+  This class method retains the context object, so it's ok if the passed
+  context is created by using a contextWith* class method.
+*/
++ (void)setDefaultContext: (OFFlickrContext*)inContext;
 
 @end
 

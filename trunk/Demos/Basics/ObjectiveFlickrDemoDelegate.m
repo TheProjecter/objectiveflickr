@@ -182,7 +182,11 @@ reauth:
 		[progressIndicator startAnimation:self];
 	
 		[invoc setUserInfo:@"getPhotoList"];
-		[invoc callMethod:@"flickr.people.getPublicPhotos" arguments:[NSArray arrayWithObjects:@"user_id", [token valueForKeyPath:@"auth.user._nsid"], nil]];
+		// [invoc callMethod:@"flickr.people.getPublicPhotos" arguments:[NSArray arrayWithObjects:@"user_id", [token valueForKeyPath:@"auth.user._nsid"], nil]];
+
+		// this, instead of flickr.people.getPublicPhotos, retrieves all the user's photos, include private ones
+		// NOTE: we force this method call to be auth'ed
+		[invoc callMethod:@"flickr.photos.search" arguments:[NSArray arrayWithObjects:@"auth", [NSNull null], @"user_id", [token valueForKeyPath:@"auth.user._nsid"], nil]];
 	}
 	else if ([userinfo isEqualToString:@"getPhotoList"]) {
 		if (photos) [photos release];
@@ -195,11 +199,7 @@ reauth:
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex {
 	NSDictionary *o=[photos objectAtIndex:rowIndex];
 			
-	NSString *u = [context photoURLFromID:[o objectForKey:@"_id"]
-		serverID:[o objectForKey:@"_server"]
-		secret:[o objectForKey:@"_secret"]
-		size:@"t" 
-		type:nil];
+	NSString *u = [context photoURLFromDictionary:o size:@"t"];
 
 	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:u]]];
 	

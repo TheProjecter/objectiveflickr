@@ -23,6 +23,7 @@
                 labelUserName = id; 
                 progressIndicator = id; 
                 sheetController = id; 
+                webView = id; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 
