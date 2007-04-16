@@ -92,13 +92,12 @@
 			}
 			else {
 				// it's already an array
-				if ([obj isKindOfClass:[NSMutableArray class]]) {
-					[obj addObject:[n flickrDictionaryFromNode]];
-				}
-				else {
+				if (![obj isKindOfClass:[NSMutableArray class]]) {
 					NSMutableArray *a = [NSMutableArray arrayWithObject:obj];
 					[d setObject:a forKey:name];
+					obj = a;
 				}
+				[obj addObject:[n flickrDictionaryFromNode]];
 			}
 		}
 		else {
