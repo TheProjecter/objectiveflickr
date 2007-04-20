@@ -59,9 +59,9 @@
 	if (errorMsg) *errorMsg = [NSString stringWithString:[msg stringValue]];
 	return YES;
 }
-- (NSDictionary*)flickrDictionaryFromDocument
+- (NSDictionary*)flickrDictionaryFromDocumentWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary
 {
-	NSMutableDictionary *d=(NSMutableDictionary*)[[self rootElement] flickrDictionaryFromNode];
+	NSMutableDictionary *d=(NSMutableDictionary*)[[self rootElement] flickrDictionaryFromNodeWithArrayedNodes:arrayedNodesDictionary];
 	
 	NSXMLNode *stat =[[self rootElement] attributeForName:@"stat"];
 	if ([[stat stringValue] isEqualToString:@"ok"])  {
@@ -69,12 +69,19 @@
 	}
 	return d;
 }
+- (NSDictionary*)flickrDictionaryFromDocument
+{
+	return [self flickrDictionaryFromDocumentWithArrayedNodes:nil];
+}
 @end
 
 @implementation NSXMLNode(OFFlickrXMLExtension)
-- (NSDictionary*)flickrDictionaryFromNode
+- (NSDictionary*)flickrDictionaryFromNodeWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary
 {
 	// NSLog(@"node name=%@, value=%@", [self name], [self stringValue]);
+
+	BOOL useArray = NO;
+	if ([arrayedNodesDictionary objectForKey:[self name]]) useArray = YES;
 
 	NSMutableDictionary *d = [NSMutableDictionary dictionary];
 	
@@ -88,7 +95,14 @@
 			id obj = [d objectForKey:name];
 			
 			if (!obj) {
-				[d setObject:[n flickrDictionaryFromNode] forKey:name];
+				if (useArray) {
+					NSMutableArray *a = [NSMutableArray array];
+					[a addObject:[n flickrDictionaryFromNodeWithArrayedNodes:arrayedNodesDictionary]];
+					[d setObject:a forKey:name];
+				}					
+				else {
+					[d setObject:[n flickrDictionaryFromNodeWithArrayedNodes:arrayedNodesDictionary] forKey:name];
+				}
 			}
 			else {
 				// it's already an array
@@ -97,7 +111,7 @@
 					[d setObject:a forKey:name];
 					obj = a;
 				}
-				[obj addObject:[n flickrDictionaryFromNode]];
+				[obj addObject:[n flickrDictionaryFromNodeWithArrayedNodes:arrayedNodesDictionary]];
 			}
 		}
 		else {
@@ -106,13 +120,17 @@
 	}
 	return d;
 }
+- (NSDictionary*)flickrDictionaryFromNode
+{
+	return [self flickrDictionaryFromNodeWithArrayedNodes:nil];
+}	
 @end
 
 @implementation NSXMLElement(OFFlickrXMLExtension)
-- (NSDictionary*)flickrDictionaryFromNode
+- (NSDictionary*)flickrDictionaryFromNodeWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary
 {
 	// NSLog(@"element name=%@, value=%@", [self name], [self stringValue]);
-	NSMutableDictionary *d = (NSMutableDictionary*)[super flickrDictionaryFromNode];
+	NSMutableDictionary *d = (NSMutableDictionary*)[super flickrDictionaryFromNodeWithArrayedNodes:arrayedNodesDictionary];
 
 	NSArray *a = [self attributes];
 	unsigned i, c = [a count];
@@ -124,4 +142,8 @@
 	}
 	return d;
 }
+- (NSDictionary*)flickrDictionaryFromNode
+{
+	return [self flickrDictionaryFromNodeWithArrayedNodes:nil];
+}	
 @end
