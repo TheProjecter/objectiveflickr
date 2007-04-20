@@ -41,10 +41,12 @@
 
 
 @interface NSXMLNode(OFFlickrXMLExtension)
+- (NSDictionary*)flickrDictionaryFromNodeWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary;
 - (NSDictionary*)flickrDictionaryFromNode;
 @end
 
 @interface NSXMLElement(OFFlickrXMLExtension)
+- (NSDictionary*)flickrDictionaryFromNodeWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary;
 - (NSDictionary*)flickrDictionaryFromNode;
 @end
 
@@ -80,6 +82,7 @@
  @abstract Converts the present NSXMLDocument into an NSDictionary object
 */
 - (NSDictionary*)flickrDictionaryFromDocument;
+- (NSDictionary*)flickrDictionaryFromDocumentWithArrayedNodes:(NSDictionary*)arrayedNodesDictionary;
 + (NSString*)flickrXMLAttribute:(NSString*)attr;
 + (NSString*)flickrXMLAttributePrefix;
 + (NSString*)flickrXMLTextNodeKey;

@@ -132,7 +132,7 @@ static void OFFUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventTy
 	
 	if (_timeoutInterval > 0.0)
 	{
-		NSLog(@"timeout timer created: %f", _timeoutInterval);
+		// NSLog(@"timeout timer created: %f", _timeoutInterval);
 		_timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:_timeoutInterval target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
 		[_timeoutTimer retain];
 	}
@@ -218,7 +218,7 @@ static void OFFUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventTy
 }
 - (void)handleTimeout:(NSTimer*)timer
 {
-	NSLog(@"timeout!");
+	// NSLog(@"timeout!");
 	// we do what [self cancel] has done. the received timer is already invalidated
 	CFReadStreamUnscheduleFromRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);	
  	CFReadStreamClose(_stream);
@@ -237,13 +237,13 @@ static void OFFUReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventTy
 	CFNumberGetValue (bytesWrittenProperty, kCFNumberSInt32Type, &bytesWritten);
 
     size_t _newBytesSent = (size_t)bytesWritten;
-	NSLog(@"old %ld, new %ld", _bytesSent, _newBytesSent);
+	// NSLog(@"old %ld, new %ld", _bytesSent, _newBytesSent);
 
     if (_newBytesSent > _bytesSent)
     {
 		if (_timeoutTimer)
 		{
-			NSLog(@"reset timeout!");
+			// NSLog(@"reset timeout!");
 			// we have indeed some progress, so we reset the timeout timer
 			[_timeoutTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:_timeoutInterval]];
 		}
