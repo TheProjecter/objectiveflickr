@@ -1,5 +1,5 @@
 ObjectiveFlickr
-Version 0.9.5 (2007-01-29)
+Version 0.9.5 (2007-02-14)
 
 ObjectiveFlickr is a Flickr API framework that makes it easy to 
 develop Flickr applications using Objective-C and Cocoa.
