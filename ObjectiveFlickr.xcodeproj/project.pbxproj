@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -126,7 +126,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AD7B2A20AC6B550004644DE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6A3B52BF0B6D5CDA00732DE0 /* OFUnitTests */;
+			remoteGlobalIDString = 6A3B52BF0B6D5CDA00732DE0;
 			remoteInfo = OFUnitTests;
 		};
 		6AA0A03E0AC6C7A2003E682E /* PBXContainerItemProxy */ = {
@@ -254,18 +254,18 @@
 		6A18EADE0AD81A79007CED62 /* unittest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = unittest.js; sourceTree = "<group>"; };
 		6A2206590AEBEC5700A65449 /* Framework.hdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Framework.hdoc; path = Source/Framework.hdoc; sourceTree = "<group>"; };
 		6A22065A0AEBEC6E00A65449 /* toctemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = toctemplate.html; path = Source/toctemplate.html; sourceTree = "<group>"; };
-		6A2206C00AEBF56100A65449 /* ObjectiveFlickr-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "ObjectiveFlickr-Info.plist"; path = "Source/ObjectiveFlickr-Info.plist"; sourceTree = "<group>"; };
-		6A2206C10AEBF57600A65449 /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "FlickrBasics-Info.plist"; path = "Demos/Basics/FlickrBasics-Info.plist"; sourceTree = "<group>"; };
-		6A2206C20AEBF58300A65449 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "ContactsBrowser-Info.plist"; path = "Demos/ContactsBrowser/ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
-		6A2206C30AEBF59000A65449 /* PhotoSearch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "PhotoSearch-Info.plist"; path = "Demos/PhotoSearch/PhotoSearch-Info.plist"; sourceTree = "<group>"; };
+		6A2206C00AEBF56100A65449 /* ObjectiveFlickr-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ObjectiveFlickr-Info.plist"; path = "Source/ObjectiveFlickr-Info.plist"; sourceTree = "<group>"; };
+		6A2206C10AEBF57600A65449 /* FlickrBasics-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FlickrBasics-Info.plist"; path = "Demos/Basics/FlickrBasics-Info.plist"; sourceTree = "<group>"; };
+		6A2206C20AEBF58300A65449 /* ContactsBrowser-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ContactsBrowser-Info.plist"; path = "Demos/ContactsBrowser/ContactsBrowser-Info.plist"; sourceTree = "<group>"; };
+		6A2206C30AEBF59000A65449 /* PhotoSearch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "PhotoSearch-Info.plist"; path = "Demos/PhotoSearch/PhotoSearch-Info.plist"; sourceTree = "<group>"; };
 		6A2206CF0AEBF5F800A65449 /* headerDoc2HTML.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = headerDoc2HTML.config; path = Source/headerDoc2HTML.config; sourceTree = "<group>"; };
 		6A31EAE70AC6BF2D0084DA74 /* ContactsBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A31EAEE0AC6BFBD0084DA74 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demos/ContactsBrowser/main.m; sourceTree = "<group>"; };
 		6A31EAF20AC6BFE50084DA74 /* ContactsBrowser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsBrowser_Prefix.pch; path = Demos/ContactsBrowser/ContactsBrowser_Prefix.pch; sourceTree = "<group>"; };
 		6A31EB030AC6C08C0084DA74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Demos/ContactsBrowser/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6A3B52C00B6D5CDA00732DE0 /* OFUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = OFUnitTests.octest; path = build/Release/OFUnitTests.octest; sourceTree = "<group>"; };
-		6A3B52C10B6D5CDA00732DE0 /* OFUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "OFUnitTests-Info.plist"; sourceTree = "<group>"; };
-		6A3B52CB0B6D5D0100732DE0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		6A3B52C00B6D5CDA00732DE0 /* OFUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OFUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A3B52C10B6D5CDA00732DE0 /* OFUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OFUnitTests-Info.plist"; sourceTree = "<group>"; };
+		6A3B52CB0B6D5D0100732DE0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		6A3B538A0B6D5D4900732DE0 /* ObjectiveFlickrTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickrTests.h; path = Tests/ObjectiveFlickrTests.h; sourceTree = "<group>"; };
 		6A3B53920B6D5D6300732DE0 /* ObjectiveFlickrTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickrTests.m; path = Tests/ObjectiveFlickrTests.m; sourceTree = "<group>"; };
 		6A78BA740AD4DFC50021EB1C /* OFPOSTRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFPOSTRequest.m; path = Source/OFPOSTRequest.m; sourceTree = "<group>"; };
@@ -691,6 +691,7 @@
 		6AD7B2A20AC6B550004644DE /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 6AD7B2A30AC6B550004644DE /* Build configuration list for PBXProject "ObjectiveFlickr" */;
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 0;
 			mainGroup = 6AD7B2A00AC6B550004644DE;
 			productRefGroup = 6AD7B2B40AC6B57C004644DE /* Products */;
@@ -1037,6 +1038,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -1064,6 +1069,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -1115,7 +1124,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = macosx10.4;
 			};
 			name = Debug;
 		};
@@ -1127,7 +1136,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = macosx10.4;
 			};
 			name = Release;
 		};
