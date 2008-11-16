@@ -29,7 +29,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/Foundation.h>
-#ifdef TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE
     #import <CoreFoundation/CoreFoundation.h>
     #import <CFNetwork/CFNetwork.h>
 #endif
@@ -131,7 +131,6 @@ extern NSString *LFHTTPRequestPOSTMethod;
 
 // note if you implemented this, the data is never written to the receivedData of the HTTP request instance
 - (void)httpRequest:(LFHTTPRequest *)request writeReceivedBytes:(void *)bytes size:(NSUInteger)blockSize expectedTotal:(NSUInteger)total;
-
 #else
 - (void)httpRequest:(LFHTTPRequest *)request didReceiveStatusCode:(unsigned int)statusCode URL:(NSURL *)url responseHeader:(CFHTTPMessageRef)header;
 - (void)httpRequestDidComplete:(LFHTTPRequest *)request;
@@ -139,8 +138,7 @@ extern NSString *LFHTTPRequestPOSTMethod;
 - (void)httpRequest:(LFHTTPRequest *)request didFailWithError:(NSString *)error;
 - (void)httpRequest:(LFHTTPRequest *)request receivedBytes:(unsigned int)bytesReceived expectedTotal:(unsigned int)total;
 - (void)httpRequest:(LFHTTPRequest *)request sentBytes:(unsigned int)bytesSent total:(unsigned int)total;
+- (void)httpRequest:(LFHTTPRequest *)request writeReceivedBytes:(void *)bytes size:(unsigned int)blockSize expectedTotal:(unsigned int)total;
 
-// note if you implemented this, the data is never written to the receivedData of the HTTP request instance
-- (void)httpRequest:(LFHTTPRequest *)request writeReceivedBytes:(void *)bytes size:(unsigned int)blockSize expectedTotal:(NSUInteger)total;
 #endif
 @end
