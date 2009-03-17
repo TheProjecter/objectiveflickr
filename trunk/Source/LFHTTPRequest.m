@@ -347,8 +347,6 @@ void LFHRReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType even
 		return NO;
 	}
 	
-	
-	
 	CFHTTPMessageRef request = CFHTTPMessageCreateRequest(NULL, (CFStringRef)methodName, (CFURLRef)url, kCFHTTPVersion1_1);
 	if (!request) {
 		return NO;
@@ -393,11 +391,22 @@ void LFHRReadStreamClientCallBack(CFReadStreamRef stream, CFStreamEventType even
 	}
 
 	CFReadStreamSetProperty(tmpReadStream, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
-
+	
 	// apply current proxy settings
-	CFDictionaryRef proxyDict = SCDynamicStoreCopyProxies(NULL);
-	CFReadStreamSetProperty(tmpReadStream, kCFStreamPropertyHTTPProxy, proxyDict);	
-	CFRelease(proxyDict);
+	#if !TARGET_OS_IPHONE
+		CFDictionaryRef proxyDict = SCDynamicStoreCopyProxies(NULL); // kCFNetworkProxiesHTTPProxy
+	#else
+		#if TARGET_IPHONE_SIMULATOR
+			CFDictionaryRef proxyDict = (CFDictionaryRef)[[NSDictionary alloc] init];
+		#else
+			CFDictionaryRef proxyDict = CFNetworkCopySystemProxySettings();
+		#endif
+	#endif
+
+	if (proxyDict) {
+		CFReadStreamSetProperty(tmpReadStream, kCFStreamPropertyHTTPProxy, proxyDict);	
+		CFRelease(proxyDict);
+	}
 	
 	CFStreamClientContext streamContext;
 	streamContext.version = 0;

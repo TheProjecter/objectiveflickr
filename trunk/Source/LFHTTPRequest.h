@@ -32,6 +32,7 @@
 #if TARGET_OS_IPHONE
     #import <CoreFoundation/CoreFoundation.h>
     #import <CFNetwork/CFNetwork.h>
+	#import <CFNetwork/CFProxySupport.h>
 #endif
 
 extern NSString *LFHTTPRequestConnectionError;
